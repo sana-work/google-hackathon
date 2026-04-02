@@ -18,6 +18,11 @@ This guide uses the code provided in the `Vertex_ADK_Agent` folder.
    ```bash
    gcloud config set project <YOUR_PROJECT_ID>
    ```
+5. **Install ADK & Fix PATH**:
+   ```bash
+   pip install "google-cloud-aiplatform[agent_engines,adk]>=1.118"
+   export PATH=$PATH:~/.local/bin
+   ```
 
 ---
 
@@ -35,15 +40,21 @@ This guide uses the code provided in the `Vertex_ADK_Agent` folder.
 
 ---
 
-## Step 2: Initialize the ADK Agent
+## Step 2: Local Execution & Testing
 
-In your terminal, initialize the local directory as an ADK project. This command configures the local environment to recognize `agent.py` as an Agent Engine component.
+The rubric requires terminal screenshots showing a successful local interaction. In newer versions of the ADK, you no longer need an `init` step.
 
-```bash
-adk init
-```
+1. Navigate to the **parent** directory (the ADK CLI needs to see your folder as a package):
+   ```bash
+   cd ~/Codes/tcs-hackathon-2026/Idea\ 1\ poc
+   ```
 
-*When prompted for the entry point, select `agent.py:agent`.*
+2. Run the local interactive loop by pointing to the agent folder:
+   ```bash
+   adk run Vertex_ADK_Agent
+   ```
+
+*When prompted for the entry point, enter **`agent:root_agent`** (this points to the `root_agent` object inside `agent.py`).*
 
 ---
 
