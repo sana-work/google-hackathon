@@ -1,0 +1,78 @@
+DOCUMENT TYPE: Vendor Contract Extract
+CONTRACT: Data Analytics and Business Intelligence Services Agreement
+VENDOR: AnalyticsPro International Pte. Ltd.
+CONTRACT ID: VND-2024-0587
+EFFECTIVE DATE: 2024-08-01
+EXPIRY DATE: 2026-07-31
+ANNUAL CONTRACT VALUE: ₹1.8 Crore
+RELATIONSHIP: HIGH Vendor — Analytics and BI platform provider
+
+═══════════════════════════════════════════
+SECTION 1 — SERVICES PROVIDED
+═══════════════════════════════════════════
+
+1.1 AnalyticsPro provides a managed business intelligence platform, including dashboarding, reporting, customer segmentation analytics, and predictive analytics APIs.
+
+1.2 The organization sends customer behavioral data (browsing patterns, purchase history, product interactions) to AnalyticsPro for processing and visualization.
+
+1.3 AnalyticsPro also provides a customer segmentation ML model that processes customer demographic and behavioral data to generate audience segments for marketing campaigns.
+
+═══════════════════════════════════════════
+SECTION 2 — DATA CENTER LOCATIONS
+═══════════════════════════════════════════
+
+2.1 AnalyticsPro's primary infrastructure is hosted in Singapore (AWS ap-southeast-1).
+2.2 AnalyticsPro does NOT have data centers in India or the European Union.
+2.3 Disaster Recovery: AnalyticsPro uses AWS Sydney (ap-southeast-2) for disaster recovery.
+
+2.4 Data Residency: All organization data sent to AnalyticsPro is processed and stored in Singapore. There is no data localization clause in the current contract.
+
+═══════════════════════════════════════════
+SECTION 3 — DATA HANDLING
+═══════════════════════════════════════════
+
+3.1 Data Received: AnalyticsPro receives the following data categories from the organization:
+    (a) Customer pseudonymized IDs (linked to CRM records)
+    (b) Behavioral data: page views, click events, purchase transactions, search queries
+    (c) Demographic data: age range, gender, location (city-level)
+    (d) Product interaction data: viewed products, cart additions, wishlists
+
+3.2 PII Handling: The organization provides pseudonymized customer IDs to AnalyticsPro. However, the behavioral data combined with demographic data may constitute personal data under GDPR and DPDPA definitions (re-identification risk).
+
+3.3 Data Retention: AnalyticsPro retains all received data for the duration of the contract plus 6 months for transition purposes. No automatic deletion upon contract expiry.
+
+═══════════════════════════════════════════
+SECTION 4 — SECURITY
+═══════════════════════════════════════════
+
+4.1 AnalyticsPro maintains SOC2 Type II and ISO 27001 certifications.
+4.2 Encryption at rest: AES-256 with AnalyticsPro-managed keys.
+4.3 Encryption in transit: TLS 1.2.
+4.4 Access to organization data is restricted to AnalyticsPro employees with a business need.
+
+═══════════════════════════════════════════
+SECTION 5 — BREACH NOTIFICATION
+═══════════════════════════════════════════
+
+5.1 AnalyticsPro will notify the organization of any suspected data breach within 48 hours of detection.
+5.2 AnalyticsPro will provide root cause analysis within 30 days.
+
+═══════════════════════════════════════════
+SECTION 6 — SUB-PROCESSORS
+═══════════════════════════════════════════
+
+6.1 AnalyticsPro uses the following sub-processors:
+    (a) AWS (Singapore, Sydney) — Infrastructure hosting
+    (b) DataRefinery Inc. (US, Oregon) — ML model training pipeline
+        — NOTE: Customer data may be processed in the US by DataRefinery for model training purposes
+
+6.2 AnalyticsPro will notify the organization 14 days before engaging new sub-processors.
+
+═══════════════════════════════════════════
+SECTION 7 — COMPLIANCE GAPS (Internal Assessment Notes)
+═══════════════════════════════════════════
+
+7.1 Transfer Impact Assessment (TIA) for Singapore transfer: Completed in 2024. Due for annual review.
+7.2 Standard Contractual Clauses (SCCs): SCCs are in place for EU data but use the 2021 version — not yet updated to incorporate the new Module 5 requirements.
+7.3 DPDPA Compliance: Singapore is on the DPDPA approved jurisdiction list, BUT the sub-processor DataRefinery in the US may not be compliant as the US is not on the approved list.
+7.4 No data localization clause exists — financial data flowing to AnalyticsPro (via behavioral analytics on payment transactions) may violate RBI data localization requirements.

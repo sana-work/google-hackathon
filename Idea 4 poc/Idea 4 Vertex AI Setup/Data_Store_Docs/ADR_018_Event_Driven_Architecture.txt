@@ -1,0 +1,28 @@
+DOCUMENT TYPE: Architectural Decision Record (ADR)
+ID: ADR-018
+DATE: 2024-08-15
+TOPIC: Adoption of Event-Driven Architecture for Inter-Service Communication
+STATUS: Accepted
+SUPERSEDES: ADR-007 (REST-based Synchronous Communication)
+
+CONTEXT:
+Our microservices architecture has grown to 35+ services. Synchronous REST-based communication (as established in ADR-007) is causing cascading failures during peak traffic. The Payment API experienced a 23-minute outage on 2024-07-22 because the Inventory Service was slow, which blocked the Order Service, which timed out the Payment API.
+
+DECISION:
+All new inter-service communication MUST use asynchronous event-driven messaging via Google Cloud Pub/Sub. Existing critical paths (Order → Payment → Fulfillment) must be migrated to Pub/Sub by Q1 2025.
+
+RATIONALE ("THE WHY"):
+1. Decoupling: Services no longer need to know about each other's availability. A slow Inventory Service will not cascade into a Payment outage.
+2. Resilience: Pub/Sub provides at-least-once delivery guarantees with configurable retry policies.
+3. Scalability: Each service can independently scale its consumption rate without affecting upstream producers.
+4. Observability: Pub/Sub provides built-in metrics for message throughput, latency, and dead-letter queue monitoring.
+
+ALTERNATIVES CONSIDERED:
+- gRPC with circuit breakers: Rejected because it still requires synchronous availability and adds circuit breaker tuning complexity.
+- Apache Kafka on GKE: Rejected due to operational overhead of managing Kafka clusters vs. using a fully managed Pub/Sub service.
+
+CONSTRAINTS/CONSEQUENCES:
+1. Teams must design for eventual consistency. If a workflow requires strong consistency across services, it must use the Saga pattern with compensating transactions.
+2. All Pub/Sub topics must follow the naming convention: {domain}.{entity}.{event} (e.g., orders.payment.completed).
+3. Dead-letter topics must be configured for every subscription with a maximum retry of 5 attempts.
+4. Any proposal to use synchronous REST for NEW inter-service calls will be rejected during architecture review.

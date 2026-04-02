@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy-to-Flow Compiler | Deterministic AI Journeys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a; /* Slate 900 */
+            --bg-panel: rgba(30, 41, 59, 0.7); /* Slate 800 */
+            --border-color: rgba(255, 255, 255, 0.1);
+            
+            --primary: #0ea5e9; /* Sky 500 */
+            --primary-glow: rgba(14, 165, 233, 0.4);
+            --secondary: #8b5cf6; /* Violet 500 */
+            --accent: #10b981; /* Emerald 500 */
+            --danger: #ef4444; /* Red 500 */
+            --warning: #f59e0b; /* Amber 500 */
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 85% 15%, rgba(14, 165, 233, 0.15), transparent 25%),
+                radial-gradient(circle at 15% 85%, rgba(139, 92, 246, 0.1), transparent 25%);
+        }
+
+        /* Standard Components */
+        .glass-panel {
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            height: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            color: var(--primary);
+            -webkit-text-fill-color: initial;
+        }
+
+        .nav-section { margin-bottom: 32px; }
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-main); }
+        .nav-btn.active {
+            background: rgba(14, 165, 233, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+
+        .nav-btn i { width: 16px; text-align: center; }
+
+        /* Main Content Wrapper */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .header {
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title { font-size: 1.5rem; font-weight: 600; }
+        
+        .content-area {
+            flex: 1;
+            padding: 32px 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .view-section {
+            display: none;
+            height: 100%;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .view-section.active { display: flex; flex-direction: column; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* VIEW: Policy Compiler */
+        .compiler-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: 100%;
+        }
+
+        .doc-panel, .flow-panel {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .doc-content {
+            padding: 24px;
+            font-family: 'Georgia', serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .doc-content h2 {
+            font-family: 'Inter', sans-serif;
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .highlight {
+            transition: all 0.3s;
+            border-radius: 4px;
+            padding: 2px 4px;
+        }
+
+        .highlight.active-entity { background: rgba(14, 165, 233, 0.3); border-bottom: 2px solid var(--primary); }
+        .highlight.active-rule { background: rgba(139, 92, 246, 0.3); border-bottom: 2px solid var(--secondary); }
+
+        .flow-content {
+            padding: 24px;
+            flex: 1;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            background: #0f172a;
+            position: relative;
+        }
+
+        .dsl-block {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 3px solid transparent;
+            opacity: 0.3;
+            transform: translateX(10px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .dsl-block.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .dsl-entity { background: rgba(14, 165, 233, 0.1); border-left-color: var(--primary); }
+        .dsl-rule { background: rgba(139, 92, 246, 0.1); border-left-color: var(--secondary); }
+
+        .code-key { color: var(--primary); font-weight: 700; }
+        .code-string { color: var(--accent); }
+        .code-logic { color: var(--warning); font-weight: 700; }
+
+        .compiling-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .compiling-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* VIEW: Fuzz Testing */
+        .fuzz-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 24px;
+            height: 100%;
+        }
+
+        .fuzz-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .stat-card .val { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--text-main); }
+        .stat-card .lbl { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+
+        .fuzz-main {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fuzz-terminal {
+            flex: 1;
+            padding: 20px;
+            background: #000;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #10b981;
+            overflow-y: auto;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .log-line { margin-bottom: 4px; opacity: 0; animation: fadeIn 0.2s forwards; }
+        .log-line.error { color: var(--danger); }
+        .log-line.warn { color: var(--warning); }
+
+        .report-card {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            animation: fadeIn 0.4s forwards;
+        }
+
+        /* VIEW: Conversation Runtime */
+        .runtime-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: 100%;
+        }
+
+        .chat-interface {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: flexIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes flexIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .bubble-user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 4px; }
+        .bubble-ai { align-self: flex-start; background: rgba(255, 255, 255, 0.1); border-bottom-left-radius: 4px; }
+
+        .chat-input {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .engine-xray {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .node-state {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+        }
+
+        .node-state.changed {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--secondary);
+            transform: scale(1.02);
+        }
+
+        .xray-title { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.05em; font-weight: 700; }
+        
+        .constraint-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .constraint-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+            border-left: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .constraint-item.forbidden { border-left-color: var(--danger); text-decoration: line-through; opacity: 0.6; }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar glass-panel" style="border-radius: 0; border-top: none; border-bottom: none; border-left: none;">
+        <div class="logo">
+            <i class="fa-solid fa-code-merge"></i> Policy2Flow
+        </div>
+
+        <div class="nav-section">
+            <h3>Compiler Pipeline</h3>
+            <div class="nav-btn active" onclick="switchTab('compiler', this)">
+                <i class="fa-solid fa-file-export"></i> Policy Compiler
+            </div>
+            <div class="nav-btn" onclick="switchTab('fuzz', this)">
+                <i class="fa-solid fa-flask-vial"></i> Auto-Fuzz Tester
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <h3>Execution Environment</h3>
+            <div class="nav-btn" onclick="switchTab('runtime', this)">
+                <i class="fa-solid fa-robot"></i> Conversation Runtime
+            </div>
+        </div>
+
+        <div style="flex: 1;"></div>
+        
+        <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center;">
+            Powered by Gemini on Vertex AI
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title" id="view-title">Policy-to-Flow Compiler</div>
+        </header>
+
+        <div class="content-area">
+            
+            <!-- VIEW 1: POLICY COMPILER -->
+            <div id="view-compiler" class="view-section active">
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Upload unstructured policies. Gemini extracts entities and logical conditions into a deterministic Flow DSL.</p>
+                
+                <div class="compiler-grid">
+                    <div class="doc-panel">
+                        <div class="panel-header">
+                            <div><i class="fa-regular fa-file-word"></i> Warranty_Returns_Policy_v2.docx</div>
+                        </div>
+                        <div class="doc-content">
+                            <h2>Standard Return Policy</h2>
+                            <p>Customers may return most new, unopened items sold and fulfilled by our company within <span class="highlight" id="h-ent1">30 days of delivery</span> for a full refund.</p>
+                            <br>
+                            <p><strong>Exceptions:</strong></p>
+                            <p>If the item is a <span class="highlight" id="h-ent2">Consumer Electronics (e.g., Laptops, Phones)</span>, the return window is restricted to <span class="highlight" id="h-rule1">14 days</span>. The item must be in its original packaging. If the packaging is damaged or missing, we will apply a <span class="highlight" id="h-rule2">15% restocking fee</span>.</p>
+                            <br>
+                            <p>At the start of any return interaction, the agent <span class="highlight" id="h-rule3">must state standard processing times (5-7 business days)</span> before accepting the return request.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-panel">
+                        <div class="panel-header">
+                            <div><i class="fa-solid fa-code"></i> Generated Policy DSL</div>
+                            <button class="btn" style="padding: 6px 16px; font-size: 0.8rem;" onclick="runCompiler()" id="btnCompile">
+                                Compile Rules <i class="fa-solid fa-play"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="compiling-overlay" id="compilingOverlay">
+                            <i class="fa-solid fa-microchip fa-bounce" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 16px;"></i>
+                            <div style="font-weight: 600;">Gemini extracting logic...</div>
+                        </div>
+
+                        <div class="flow-content" id="dslOutput">
+                            <!-- Injected by JS -->
+                            <div style="color: var(--text-muted); text-align: center; margin-top: 40%;">Click 'Compile Rules' to extract DSL from policy text.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: FUZZ TESTING -->
+            <div id="view-fuzz" class="view-section">
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Generating purely synthetic conversations traversing every logical branch of the compiled DSL to ensure 100% compliance mapping.</p>
+                
+                <div class="fuzz-dashboard">
+                    <div class="fuzz-stats">
+                        <button class="btn" style="width: 100%; justify-content: center; margin-bottom: 16px;" onclick="runFuzzer()" id="btnFuzz">
+                            <i class="fa-solid fa-bolt"></i> Run Auto-Fuzz (2,000 passes)
+                        </button>
+                        
+                        <div class="stat-card">
+                            <div class="val" id="stat-paths">0</div>
+                            <div class="lbl">Paths Traversed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="val" id="stat-cov" style="color: var(--warning);">0%</div>
+                            <div class="lbl">Rule Coverage</div>
+                        </div>
+                        <div class="stat-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                            <div class="val" id="stat-err" style="color: var(--danger);">0</div>
+                            <div class="lbl">Critical Gaps Caught</div>
+                        </div>
+                    </div>
+                    
+                    <div class="fuzz-main">
+                        <div class="panel-header" style="background: rgba(0,0,0,0.5);">
+                            <div><i class="fa-solid fa-terminal"></i> Fuzzer Execution Log</div>
+                        </div>
+                        <div class="fuzz-terminal" id="fuzzTerminal">
+                            > Fuzzer initialized. Awaiting command...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: CONVERSATION RUNTIME -->
+            <div id="view-runtime" class="view-section">
+                <p style="color: var(--text-muted); margin-bottom: 20px;">The live execution layer. The LLM generates language, but the compiled Policy Engine dictates allowed decisions and next steps.</p>
+                
+                <div class="runtime-grid">
+                    <div class="chat-interface">
+                        <div class="panel-header" style="border-bottom-color: rgba(255,255,255,0.05);">
+                            <div><i class="fa-solid fa-user-headset"></i> Customer Interaction</div>
+                        </div>
+                        <div class="chat-history" id="rtChat">
+                            <div class="chat-bubble bubble-ai">
+                                Hello! How can I assist you with your purchase today?
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <button class="btn" style="background: rgba(255,255,255,0.1); flex: 1; justify-content: center;" onclick="simUserMsg1()" id="btnUser1">Say: "I want to return a laptop"</button>
+                            <button class="btn" style="background: rgba(255,255,255,0.1); flex: 1; justify-content: center; display: none;" onclick="simUserMsg2()" id="btnUser2">Say: "I bought it 18 days ago"</button>
+                        </div>
+                    </div>
+                    
+                    <div class="engine-xray">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <div class="xray-title"><i class="fa-solid fa-microchip"></i> Policy Engine State X-Ray</div>
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent);">State: Enforcing</span>
+                        </div>
+                        
+                        <div class="node-state" id="xrayState">
+                            <div style="font-family: 'JetBrains Mono', monospace; color: var(--primary); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">
+                                Node: IDLE_GREETING
+                            </div>
+                            
+                            <div class="xray-title">Allowed Intent Mappings</div>
+                            <ul class="constraint-list">
+                                <li class="constraint-item"><i class="fa-solid fa-arrow-right"></i> START_RETURN_FLOW</li>
+                                <li class="constraint-item"><i class="fa-solid fa-arrow-right"></i> CHECK_WARRANTY</li>
+                                <li class="constraint-item"><i class="fa-solid fa-arrow-right"></i> ESCALATE_TO_HUMAN</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="node-state" style="opacity: 0.5;">
+                            <div class="xray-title">LLM Language Constraints</div>
+                            <ul class="constraint-list">
+                                <li class="constraint-item"><i class="fa-solid fa-check" style="color: var(--accent);"></i> Empathetic tone</li>
+                                <li class="constraint-item forbidden"><i class="fa-solid fa-xmark"></i> Promise refunds</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
+            document.getElementById('view-' + tabId).classList.add('active');
+            
+            const titles = {
+                'compiler': 'Policy Compiler (Unstructured -> DSL)',
+                'fuzz': 'Auto-Fuzz Testing (Compliance Validation)',
+                'runtime': 'Conversation Runtime (Deterministic Execution)'
+            };
+            document.getElementById('view-title').innerText = titles[tabId];
+        }
+
+        /* Compiler Script */
+        function runCompiler() {
+            document.getElementById('btnCompile').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Compiling...';
+            document.getElementById('compilingOverlay').classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('h-ent1').classList.add('active-entity');
+                document.getElementById('h-ent2').classList.add('active-entity');
+                document.getElementById('h-rule1').classList.add('active-rule');
+                document.getElementById('h-rule2').classList.add('active-rule');
+                document.getElementById('h-rule3').classList.add('active-rule');
+                
+                document.getElementById('compilingOverlay').classList.remove('active');
+                document.getElementById('btnCompile').innerHTML = 'Compiled <i class="fa-solid fa-check"></i>';
+                document.getElementById('btnCompile').style.background = 'var(--accent)';
+                
+                document.getElementById('dslOutput').innerHTML = `
+                    <div class="dsl-block dsl-rule revealed">
+                        <span class="code-key">node</span>: START_RETURN<br>
+                        <span class="code-key">action</span>: display_disclaimer<br>
+                        <span class="code-string">"Standard processing time is 5-7 business days"</span><br>
+                        <span class="code-key">next</span>: CHECK_PRODUCT_CATEGORY
+                    </div>
+                    
+                    <div class="dsl-block dsl-entity revealed" style="transition-delay: 0.2s;">
+                        <span class="code-key">entity</span>: ProductCategory<br>
+                        <span class="code-key">enum</span>: [ELECTRONICS, OTHER]<br>
+                    </div>
+
+                    <div class="dsl-block dsl-rule revealed" style="transition-delay: 0.4s;">
+                        <span class="code-key">node</span>: CHECK_ELIGIBILITY<br>
+                        <span class="code-logic">IF</span> ProductCategory == ELECTRONICS:<br>
+                        &nbsp;&nbsp;max_days = 14<br>
+                        <span class="code-logic">ELSE</span>:<br>
+                        &nbsp;&nbsp;max_days = 30<br>
+                        <br>
+                        <span class="code-logic">IF</span> days_since_delivery <= max_days:<br>
+                        &nbsp;&nbsp;<span class="code-key">next</span>: CHECK_PACKAGING<br>
+                        <span class="code-logic">ELSE</span>:<br>
+                        &nbsp;&nbsp;<span class="code-key">state</span>: REJECT_RETURN
+                    </div>
+                `;
+            }, 1500);
+        }
+
+        /* Fuzzer Script */
+        function runFuzzer() {
+            const btn = document.getElementById('btnFuzz');
+            const term = document.getElementById('fuzzTerminal');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Simulating Virtual Users...';
+            btn.style.opacity = '0.7';
+            term.innerHTML = '';
+            
+            let count = 0;
+            const interval = setInterval(() => {
+                count += 47;
+                document.getElementById('stat-paths').innerText = count;
+                document.getElementById('stat-cov').innerText = Math.min(Math.floor(count / 20), 100) + '%';
+                
+                if(count % 141 === 0) {
+                    term.innerHTML += `<div class="log-line">> Path ${count}: OK. Outcome: APPROVED_FULL_REFUND</div>`;
+                } else if (count > 800 && count < 850) {
+                    // Inject a synthetic error catch
+                    term.innerHTML += `<div class="log-line error">> Path ${count}: FAIL. EDGE CASE DETECTED.</div>`;
+                    document.getElementById('stat-err').innerText = '1';
+                    
+                    // Show report card inside terminal
+                    term.innerHTML += `
+                        <div class="report-card" style="display:block;">
+                            <h4 style="color:var(--danger); margin-bottom:8px;"><i class="fa-solid fa-triangle-exclamation"></i> Edge Case Discrepancy Found</h4>
+                            <p style="color:white; font-size:12px; font-family: Inter;"><strong>Scenario:</strong> User requests return for Electronics. Order date is exactly 14 days ago. Delivery time took 3 days.</p>
+                            <p style="color:white; font-size:12px; font-family: Inter; margin-top:8px;"><strong>Issue:</strong> Expected Reject (due to order date), but Engine Approved (due to delivery date). Policy text says "days of delivery", flow logic ambiguously maps to order system.</p>
+                            <p style="color:var(--warning); font-size:12px; font-family: Inter; margin-top:8px;"><strong>Fix Required:</strong> Explicitly bind 'days_since_delivery' variable to tracking API, not order creation API.</p>
+                        </div>
+                    `;
+                    clearInterval(interval);
+                    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Run Auto-Fuzz (2,000 passes)';
+                    btn.style.opacity = '1';
+                    document.getElementById('stat-cov').style.color = 'var(--accent)';
+                } else {
+                    term.innerHTML += `<div class="log-line">> Path ${count}: OK. Outcome: REJECT_OUT_OF_WINDOW</div>`;
+                }
+                
+                term.scrollTop = term.scrollHeight;
+                
+            }, 100);
+        }
+
+        /* Runtime Script */
+        function simUserMsg1() {
+            document.getElementById('btnUser1').style.display = 'none';
+            document.getElementById('btnUser2').style.display = 'flex';
+            
+            const chat = document.getElementById('rtChat');
+            chat.innerHTML += `<div class="chat-bubble bubble-user">I want to return a laptop I bought recently.</div>`;
+            
+            // X-Ray Update
+            const xray = document.getElementById('xrayState');
+            xray.classList.remove('changed');
+            void xray.offsetWidth; // trigger reflow
+            xray.classList.add('changed');
+            
+            xray.innerHTML = `
+                <div style="font-family: 'JetBrains Mono', monospace; color: var(--primary); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">
+                    Node: EVALUATE_PRODUCT
+                </div>
+                
+                <div class="xray-title">Extracted Entities</div>
+                <ul class="constraint-list" style="margin-bottom: 16px;">
+                    <li class="constraint-item"><span class="badge" style="background:#0ea5e9;color:white;">ProductCategory</span> : ELECTRONICS</li>
+                </ul>
+
+                <div class="xray-title">Engine Logic (Required Action)</div>
+                <ul class="constraint-list">
+                    <li class="constraint-item" style="border-left-color: var(--secondary)"><i class="fa-solid fa-exclamation-circle"></i> MUST_STATE_DISCLAIMER: "5-7 days processing"</li>
+                    <li class="constraint-item"><i class="fa-solid fa-question-circle"></i> NEXT_ACTION: Ask for purchase timeframe</li>
+                </ul>
+            `;
+            
+            setTimeout(() => {
+                chat.innerHTML += `<div class="chat-bubble bubble-ai">I can help you with returning your laptop. Please note that standard return processing times are 5-7 business days. <br><br>Since a laptop is considered an electronic item, could you tell me how many days ago it was delivered?</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 800);
+        }
+
+        function simUserMsg2() {
+            document.getElementById('btnUser2').style.display = 'none';
+            
+            const chat = document.getElementById('rtChat');
+            chat.innerHTML += `<div class="chat-bubble bubble-user">I received it 18 days ago.</div>`;
+            
+            // X-Ray Update
+            const xray = document.getElementById('xrayState');
+            xray.classList.remove('changed');
+            void xray.offsetWidth; // trigger reflow
+            xray.classList.add('changed');
+            xray.style.borderColor = 'var(--danger)';
+            xray.style.background = 'rgba(239, 68, 68, 0.1)';
+            
+            xray.innerHTML = `
+                <div style="font-family: 'JetBrains Mono', monospace; color: var(--danger); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;">
+                    Node: CHECK_ELIGIBILITY
+                </div>
+                
+                <div class="xray-title">Logic Evaluation</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                    if (ELECTRONICS): max_days = 14<br>
+                    val(days) = 18<br>
+                    18 <= 14 : <span style="color: var(--danger)">FALSE</span>
+                </div>
+
+                <div class="xray-title">Engine Decision</div>
+                <ul class="constraint-list">
+                    <li class="constraint-item forbidden"><i class="fa-solid fa-ban"></i> OUTCOME: REJECT_RETURN</li>
+                </ul>
+            `;
+            
+            setTimeout(() => {
+                chat.innerHTML += `<div class="chat-bubble bubble-ai">I sincerely apologize, but I won't be able to process a return for the laptop. Our policy requires electronics to be returned within 14 days of delivery, and since it has been 18 days, it falls outside the eligible window. I'm sorry for the inconvenience.</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

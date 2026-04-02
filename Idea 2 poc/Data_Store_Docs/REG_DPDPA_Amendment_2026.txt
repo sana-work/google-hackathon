@@ -1,0 +1,59 @@
+DOCUMENT TYPE: Regulatory Circular
+REGULATION: Digital Personal Data Protection Act (DPDPA) — Amendment Notification 2026
+ISSUING AUTHORITY: Ministry of Electronics and Information Technology (MeitY), Government of India
+NOTIFICATION NUMBER: S.O. 1247(E)
+DATE OF NOTIFICATION: January 15, 2026
+EFFECTIVE DATE: April 15, 2026 (90-day compliance window)
+JURISDICTION: Republic of India
+APPLICABILITY: All Data Fiduciaries and Data Processors handling personal data of Indian citizens
+
+═══════════════════════════════════════════
+SECTION 1 — AMENDMENTS TO DATA RETENTION (Chapter IV, Section 8)
+═══════════════════════════════════════════
+
+1.1 Maximum Retention Period: Personal data collected for service delivery purposes SHALL NOT be retained beyond 3 years from the date of last interaction with the Data Principal, unless a longer retention is mandated by a sector-specific regulator (e.g., RBI, SEBI, IRDAI).
+    — PREVIOUS RULE: 5-year maximum retention was permitted.
+    — CHANGE: Reduced to 3 years. All existing data exceeding the new limit must be purged within the 90-day compliance window.
+
+1.2 Retention Justification: Data Fiduciaries MUST maintain a documented justification for retaining personal data beyond 1 year. This justification must be reviewed annually by the Data Protection Officer (DPO) and made available to the Data Protection Board upon request.
+
+1.3 Automated Deletion: All systems storing personal data MUST implement automated deletion mechanisms that trigger purging once the retention period expires. Manual-only deletion processes are no longer acceptable.
+
+═══════════════════════════════════════════
+SECTION 2 — CONSENT MANAGEMENT (Chapter II, Section 6)
+═══════════════════════════════════════════
+
+2.1 Explicit Opt-In: Data Fiduciaries MUST obtain explicit, affirmative opt-in consent from Data Principals before processing personal data for marketing, analytics, or profiling purposes. Pre-checked consent boxes, implied consent, or bundled consent are PROHIBITED.
+    — PREVIOUS RULE: Opt-out model was acceptable for non-sensitive data.
+    — CHANGE: All processing now requires opt-in consent. Existing opt-out consents are invalid as of the effective date.
+
+2.2 Consent Granularity: Consent MUST be collected separately for each processing purpose (e.g., service delivery, marketing, analytics, third-party sharing). A single blanket consent covering multiple purposes is NOT valid.
+
+2.3 Consent Withdrawal: Data Principals must be able to withdraw consent through the same channel used to provide it, within a maximum of 48 hours of request submission.
+
+═══════════════════════════════════════════
+SECTION 3 — CROSS-BORDER DATA TRANSFER (Chapter IV, Section 16)
+═══════════════════════════════════════════
+
+3.1 Approved Jurisdictions: Personal data of Indian citizens may only be transferred to jurisdictions explicitly approved by the Central Government via notification. As of this amendment, the approved list includes: European Union member states, United Kingdom, Japan, and Singapore.
+    — IMPORTANT: United States is NOT on the approved list unless a bilateral data protection agreement is executed.
+
+3.2 Data Localization for Sensitive Data: Sensitive personal data (financial records, health records, biometric data) MUST be stored and processed exclusively within the territory of India. No exceptions for cloud provider mirroring or disaster recovery.
+
+3.3 Third-Party Transfer Notice: Any transfer of personal data to a third-party processor (domestic or international) MUST be disclosed to the Data Principal at the time of consent collection.
+
+═══════════════════════════════════════════
+SECTION 4 — PENALTIES
+═══════════════════════════════════════════
+
+4.1 Non-compliance with data retention limits: Up to ₹50 Crore per instance.
+4.2 Failure to implement proper consent mechanisms: Up to ₹100 Crore per instance.
+4.3 Unauthorized cross-border transfer: Up to ₹250 Crore per instance.
+4.4 Failure to implement automated deletion: Up to ₹10 Crore per instance.
+
+═══════════════════════════════════════════
+SECTION 5 — COMPLIANCE TIMELINE
+═══════════════════════════════════════════
+
+All Data Fiduciaries must achieve full compliance by April 15, 2026 (90 days from notification date).
+Data Fiduciaries with more than 10 million Data Principal records may apply for a 30-day extension (maximum deadline: May 15, 2026) by submitting a compliance roadmap to the Data Protection Board.

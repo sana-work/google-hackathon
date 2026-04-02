@@ -1,0 +1,77 @@
+DOCUMENT TYPE: Vendor Contract Extract
+CONTRACT: Cloud Infrastructure Services Agreement
+VENDOR: Acme Cloud Services (Third-Party Sub-Processor)
+CONTRACT ID: VND-2024-0891
+EFFECTIVE DATE: 2024-06-01
+EXPIRY DATE: 2026-05-31
+ANNUAL CONTRACT VALUE: $2.4 Million
+RELATIONSHIP: CRITICAL Vendor — Primary Kubernetes and compute infrastructure
+
+═══════════════════════════════════════════
+SECTION 1 — SERVICES AND UPTIME
+═══════════════════════════════════════════
+
+1.1 Acme provides managed Kubernetes clusters, compute instances, and container registry services.
+
+1.2 Uptime Guarantee: Acme guarantees 99.95% monthly uptime for all managed Kubernetes clusters.
+
+1.3 SLA Penalties: If uptime falls below 99.95%, a 10% service credit applies. Below 99.9%, a 25% service credit applies. Below 99.0%, the organization may terminate the contract without penalty.
+
+═══════════════════════════════════════════
+SECTION 2 — DATA SOVEREIGNTY
+═══════════════════════════════════════════
+
+2.1 Acme is contractually prohibited from replicating or storing any of our data outside the regions we explicitly designate (US-East, EU-West).
+
+2.2 Any unauthorized cross-region replication is a material breach triggering immediate contract termination rights and liability for resulting regulatory penalties.
+
+2.3 Acme must maintain SOC2 Type II, ISO 27001, and ISO 27017 certifications at all times. Lapse of any certification is a material breach.
+
+═══════════════════════════════════════════
+SECTION 3 — SUBCONTRACTING AND SUB-PROCESSORS
+═══════════════════════════════════════════
+
+3.1 Acme may NOT engage additional sub-processors without 30 days prior written notice and our explicit approval.
+
+3.2 Any unauthorized sub-processing is a material breach triggering immediate contract termination rights.
+
+3.3 Acme must maintain and share an up-to-date list of all sub-processors, their locations, and the data they access.
+
+3.4 Sub-processors must meet the same security and compliance standards as Acme (SOC2, ISO 27001, GDPR-compliant DPA).
+
+═══════════════════════════════════════════
+SECTION 4 — SECURITY AND ENCRYPTION
+═══════════════════════════════════════════
+
+4.1 All data stored on Acme infrastructure must be encrypted at rest using AES-256 with customer-managed encryption keys (CMEK).
+
+4.2 Acme must support CMEK integration with our Cloud KMS. Google-managed encryption keys (GMEK) alone are NOT acceptable.
+
+4.3 All data in transit between our systems and Acme infrastructure must use TLS 1.2 or higher.
+
+═══════════════════════════════════════════
+SECTION 5 — INCIDENT RESPONSE
+═══════════════════════════════════════════
+
+5.1 Acme must notify us of any confirmed security incident within 4 hours of detection.
+
+5.2 For suspected data breaches, Acme must provide a detailed incident report within 72 hours.
+
+5.3 Acme must cooperate with our incident response team and provide full access to relevant logs and forensic data.
+
+═══════════════════════════════════════════
+SECTION 6 — AUDIT AND TERMINATION
+═══════════════════════════════════════════
+
+6.1 Security Audit Rights: We retain the right to conduct annual security audits of Acme's infrastructure with 14 days advance notice.
+
+6.2 Data Return: Upon contract termination, Acme must return all data in a portable format within 30 days.
+
+6.3 Data Deletion: Acme must certify complete and irrecoverable deletion of all our data within 60 days of data return.
+
+6.4 Post-termination audit rights: 12 months after termination.
+
+CROSS-REFERENCES:
+- Data sovereignty requirements: see Global Security Policy v4, Section 1
+- GDPR sub-processor obligations: see GDPR Data Processing Addendum, Article 8
+- Encryption standards: see Global Security Policy v4, Section 3

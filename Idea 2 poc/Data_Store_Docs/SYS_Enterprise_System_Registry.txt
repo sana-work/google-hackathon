@@ -1,0 +1,109 @@
+DOCUMENT TYPE: Enterprise System Registry
+REGISTRY: IT System Inventory with Data Flow Mapping
+VERSION: 2.3
+LAST UPDATED: 2025-10-01
+OWNER: Enterprise Architecture Team / CTO Office
+PURPOSE: Central registry of all IT systems that store, process, or transmit personal data, financial data, or regulated data. Used for regulatory impact mapping and compliance assessments.
+
+═══════════════════════════════════════════
+SYSTEM 1: CRM SYSTEM (Salesforce)
+═══════════════════════════════════════════
+System ID: SYS-001
+Owner: VP Sales & Marketing
+Vendor: Salesforce (SaaS)
+Data Center Location: India (Mumbai) — primary; Singapore — DR replica
+Data Stored:
+    - Customer names, email addresses, phone numbers (PII)
+    - Contact history and interaction records
+    - Marketing consent flags (currently using OPT-OUT model)
+    - Lead scoring and segmentation data
+Data Subjects: ~2.5 million customer records (India: 1.8M, EU: 400K, US: 300K)
+Connected Systems: Customer Portal (API), Customer Data Lake (nightly ETL), Marketing Automation (API)
+AI/ML Models Deployed: Customer Churn Prediction Model (MEDIUM IMPACT)
+Key Compliance Notes:
+    - EU customer data is stored in the India-Mumbai instance (relies on SCCs for EU data)
+    - Marketing consent is opt-out based — default consent status is "opted-in" for new records
+    - DR replica in Singapore contains full customer records including EU and Indian customers
+
+═══════════════════════════════════════════
+SYSTEM 2: CUSTOMER DATA LAKE (Google BigQuery)
+═══════════════════════════════════════════
+System ID: SYS-002
+Owner: Chief Data Officer
+Platform: Google BigQuery
+Data Center Location: India (Mumbai) — primary; EU (Frankfurt) — EU customer shard
+Data Stored:
+    - Aggregated customer behavioral data (clickstream, purchase history, app usage)
+    - Customer profile embeddings (used by ML models)
+    - Pseudonymized analytics datasets
+    - Raw event data (retained for 3 years; pseudonymized after 30 days)
+Data Subjects: All 2.5 million customers (behavioral data)
+Connected Systems: CRM (ingest), Customer Portal (ingest), Product Recommendation Engine (read), Fraud Detection Model (read)
+AI/ML Models Deployed: Product Recommendation Engine (MEDIUM IMPACT)
+Key Compliance Notes:
+    - EU customer shard is isolated in Frankfurt
+    - Indian customer data in Mumbai region
+    - Pseudonymization is applied after 30-day ingestion window — raw PII exists for first 30 days
+    - No automated deletion mechanism — relies on quarterly manual purge per Data Retention SOP
+
+═══════════════════════════════════════════
+SYSTEM 3: PAYMENT GATEWAY (PaySecure)
+═══════════════════════════════════════════
+System ID: SYS-003
+Owner: CFO / Head of Payments
+Vendor: PaySecure (India-based, PCI-DSS Level 1 certified)
+Data Center Location: India (Mumbai) — primary and DR
+Data Stored:
+    - Transaction records (amount, date, merchant, status, settlement)
+    - Tokenized card numbers (PCI-DSS vault)
+    - UPI Virtual Payment Addresses (VPAs)
+    - KYC verification records linked to payment accounts
+Data Subjects: ~1.2 million payment-active customers
+Connected Systems: Core Banking (settlement), CRM (transaction history sync), Fraud Detection Model (real-time scoring)
+AI/ML Models Deployed: Credit Risk Scoring Model (HIGH IMPACT), Fraud Detection Model (HIGH IMPACT)
+Key Compliance Notes:
+    - Fully localized in India — no cross-border data flow for payment data
+    - PCI-DSS compliant with quarterly ASV scans
+    - Transaction data retained for 7 years per RBI guidelines
+    - Uses CMEK for encryption at rest (only system using CMEK)
+
+═══════════════════════════════════════════
+SYSTEM 4: HR SYSTEM (SuccessFactors)
+═══════════════════════════════════════════
+System ID: SYS-004
+Owner: CHRO
+Vendor: SAP SuccessFactors (SaaS)
+Data Center Location: EU (Frankfurt) — all employee data
+Data Stored:
+    - Employee PII (name, address, national ID, bank details)
+    - Compensation and performance data
+    - Leave and attendance records
+    - Background verification documents
+Data Subjects: ~15,000 employees across India, EU, and US
+Connected Systems: Payroll System (API), Identity Provider (SSO), Compliance Training Platform (API)
+AI/ML Models Deployed: None
+Key Compliance Notes:
+    - All employee data (including Indian employees) stored in EU due to SuccessFactors instance location
+    - Employee consent for data processing is collected at onboarding (opt-in for mandated purposes)
+    - Data retained for duration of employment plus 7 years post-separation
+
+═══════════════════════════════════════════
+SYSTEM 5: CUSTOMER PORTAL (Custom Web Application)
+═══════════════════════════════════════════
+System ID: SYS-005
+Owner: VP Digital / Product Team
+Platform: Google Cloud (GKE) — custom-built application
+Data Center Location: India (Mumbai) — primary; autoscaling to asia-south2 (Delhi) during peak
+Data Stored:
+    - Customer login credentials (hashed passwords)
+    - Profile data (name, email, phone, preferences)
+    - Session data and activity logs
+    - Product browsing and search history
+Data Subjects: ~1.5 million registered portal users
+Connected Systems: CRM (profile sync), Customer Data Lake (event streaming), Payment Gateway (checkout), Product Recommendation Engine (API)
+AI/ML Models Deployed: Product Recommendation Engine (MEDIUM IMPACT — serves AI-generated product recommendations)
+Key Compliance Notes:
+    - Serves customers across India, EU, and US from the India instance
+    - Cookie consent banner implemented but does not distinguish between essential and non-essential cookies
+    - No explicit AI disclosure — customers are not notified that product recommendations are AI-generated
+    - Browsing history and search data sent to Customer Data Lake in raw (non-pseudonymized) form

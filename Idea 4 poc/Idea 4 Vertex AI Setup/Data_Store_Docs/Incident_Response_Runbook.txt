@@ -1,0 +1,21 @@
+DOCUMENT TYPE: Operational Runbook
+SERVICE: Incident Response Playbook
+VERSION: 3.0
+EFFECTIVE DATE: 2025-05-01
+OWNER: SRE Team Lead
+
+SECTION 1 – SEVERITY CLASSIFICATION
+- SEV-1 (Critical): Complete service outage or data breach affecting >10,000 users. Response time: 15 minutes. War room activation: Mandatory.
+- SEV-2 (Major): Partial degradation affecting core functionality (e.g., payments, authentication). Response time: 30 minutes.
+- SEV-3 (Minor): Non-critical feature degradation. Response time: 4 hours.
+- SEV-4 (Low): Cosmetic issues or non-user-facing bugs. Response time: Next business day.
+
+SECTION 2 – MANDATORY ESCALATION RULES
+1. Any incident involving the Payment Processing API or Authentication Service is automatically classified as SEV-2 or higher.
+2. If a SEV-1 or SEV-2 incident is not resolved within 60 minutes, it MUST be escalated to the VP of Engineering.
+3. Any incident suspected of involving a data breach MUST immediately trigger the GDPR breach notification process (see GDPR Data Processing Addendum, Article 5).
+
+SECTION 3 – POST-INCIDENT REVIEW
+1. All SEV-1 and SEV-2 incidents require a blameless post-mortem document within 5 business days.
+2. All post-mortem action items must be tracked in Jira with a target resolution of 14 days.
+3. Root causes must be classified using the "5 Whys" methodology.

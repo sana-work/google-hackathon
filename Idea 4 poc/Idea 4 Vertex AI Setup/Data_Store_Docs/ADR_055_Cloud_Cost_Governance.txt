@@ -1,0 +1,47 @@
+DOCUMENT TYPE: Architectural Decision Record (ADR)
+ID: ADR-055
+DATE: 2025-10-01
+TOPIC: Cloud Cost Governance and FinOps Standards
+STATUS: Accepted
+
+CONTEXT:
+Cloud infrastructure costs increased 340% year-over-year without proportional business growth. Root cause analysis identified: engineers provisioning oversized instances, no auto-scaling caps, GPU usage for non-ML workloads, forgotten development environments running 24/7, and no cost accountability at the team level. CFO escalated this to the CTO as a P1 operational issue.
+
+DECISION:
+All cloud resource provisioning MUST follow the cost governance standards outlined below. Team leads are accountable for their team's cloud spend.
+
+REQUIREMENTS:
+
+1. RESOURCE LABELING:
+   All cloud resources (VMs, GKE clusters, Cloud SQL, BigQuery datasets, Pub/Sub topics, Cloud Storage buckets) MUST have the following labels:
+   - team: [owning team name]
+   - environment: [production | staging | development]
+   - cost-center: [finance cost center code]
+   - project: [project or product name]
+   Resources without labels will be flagged for deletion after 7 days.
+
+2. COMPUTE INSTANCE GOVERNANCE:
+   - Development environments MUST use preemptible/spot instances. On-demand instances for dev/test are prohibited.
+   - Production auto-scaling MUST have a maximum instance cap. Unlimited auto-scaling is prohibited.
+   - GPU instances (A100, T4, L4) require FinOps Team approval and are permitted ONLY for ML model training and inference workloads.
+   - Instance types larger than n2-standard-8 require team lead approval with documented justification.
+
+3. DEVELOPMENT ENVIRONMENT LIFECYCLE:
+   - All non-production environments (dev, staging, sandbox) MUST auto-shutdown outside business hours (auto-stop at 20:00, auto-start at 08:00 local time).
+   - Development environments unused for 14 days are automatically flagged for deletion.
+   - Each team is allocated a maximum monthly dev/staging budget. Alerts fire at 80% and 100%.
+
+4. STORAGE LIFECYCLE:
+   - All Cloud Storage buckets MUST have lifecycle policies. Data older than 90 days must transition to Nearline or Coldline storage.
+   - BigQuery datasets must use partition expiration. Tables without partition expiration are flagged.
+
+5. COST REVIEWS:
+   - Monthly cost review meetings per team, led by team leads.
+   - Any single resource costing more than $1,000/month requires documented justification.
+
+ENFORCEMENT:
+Non-compliant resources will receive automated warnings at Day 1, Day 3, and Day 7. After Day 7, non-compliant resources in non-production environments are automatically stopped.
+
+CROSS-REFERENCES:
+- Cloud Architecture Standards (approved instance types and regions)
+- Global Security Policy v4, Section 5 (infrastructure rules still apply even with cost optimization)

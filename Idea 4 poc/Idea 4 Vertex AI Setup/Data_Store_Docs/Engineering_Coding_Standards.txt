@@ -1,0 +1,34 @@
+DOCUMENT TYPE: Engineering Coding Standards
+VERSION: 2.0
+EFFECTIVE DATE: 2025-04-01
+OWNER: Principal Engineer / Engineering Excellence Team
+
+SECTION 1 — API DESIGN STANDARDS
+1. All public APIs MUST follow RESTful conventions with proper HTTP status codes (200, 201, 400, 401, 403, 404, 500).
+2. All API endpoints MUST implement request validation and return structured error responses in the format: { "error": { "code": "<ERROR_CODE>", "message": "<human-readable>" } }.
+3. API versioning MUST use URL path versioning (e.g., /api/v1/resource), not header-based versioning.
+4. All external-facing APIs MUST implement rate limiting with a default of 100 requests per minute per client.
+
+SECTION 2 — SECURITY STANDARDS
+1. Secrets, API keys, and credentials MUST NEVER be hardcoded in source code. All secrets must be loaded from Google Secret Manager or environment variables injected at deploy time.
+2. All inter-service authentication MUST use service account tokens or JWT with RS256 signing. API keys are not acceptable for service-to-service auth.
+3. All user input MUST be sanitized before processing. SQL queries MUST use parameterized queries — no string concatenation.
+4. All HTTP endpoints MUST enforce HTTPS. Plaintext HTTP is prohibited in production.
+
+SECTION 3 — LOGGING AND OBSERVABILITY
+1. All services MUST implement structured JSON logging compatible with Cloud Logging.
+2. Log entries MUST include: timestamp, severity, service_name, trace_id, and a message field.
+3. CRITICAL: PII (names, emails, phone numbers, addresses) MUST NEVER appear in log entries. Mask or omit PII fields.
+4. All deployable services MUST expose a /health endpoint that returns HTTP 200 with { "status": "healthy" }.
+5. All services MUST report custom metrics to Cloud Monitoring for request count, error rate, and latency percentiles.
+
+SECTION 4 — ERROR HANDLING
+1. All external API calls and database queries MUST be wrapped in try/catch blocks with appropriate error handling.
+2. Retry logic MUST use exponential backoff with jitter for transient failures. Maximum 3 retries.
+3. Circuit breaker patterns SHOULD be implemented for calls to external services to prevent cascading failures.
+
+SECTION 5 — DATABASE STANDARDS
+1. All database migrations MUST be version-controlled and applied via automated migration tools (not manual DDL).
+2. All tables storing user data MUST include: created_at, updated_at, and deleted_at (soft delete) columns.
+3. Indexes MUST be created for any column used in WHERE clauses or JOIN conditions.
+4. Database connection pooling MUST be used. Direct per-request connections are prohibited.

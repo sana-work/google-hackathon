@@ -1,0 +1,71 @@
+DOCUMENT TYPE: Post-Mortem / Incident Report
+INCIDENT: PII Data Leak via Cloud Logging
+DATE OF INCIDENT: 2025-01-14
+SEVERITY: SEV-2 (Major)
+AUTHOR: Application Security Lead
+STATUS: Closed — All action items resolved
+GDPR BREACH REPORT FILED: Yes (Supervisory Authority notified per GDPR Article 33)
+
+═══════════════════════════════════════════
+INCIDENT SUMMARY
+═══════════════════════════════════════════
+
+On January 14, 2025, a routine security audit discovered that the Customer Onboarding Service had been logging unmasked Personally Identifiable Information (PII) — including full names, email addresses, phone numbers, and partial national ID numbers — to Google Cloud Logging for approximately 6 weeks (December 2 – January 14).
+
+The affected data included records of 12,400 EU customers, triggering a mandatory GDPR breach notification to the Irish Data Protection Commission (our lead Supervisory Authority).
+
+═══════════════════════════════════════════
+TIMELINE
+═══════════════════════════════════════════
+
+2024-12-02 — A developer on the Customer Onboarding team adds debug logging to troubleshoot a production issue. The logging statement includes the full user object, which contains PII fields (name, email, phone, partial national ID).
+
+2024-12-03 — Code passes peer review. The reviewer does not catch the PII logging. No automated PII detection in the CI/CD pipeline.
+
+2024-12-04 — Code deployed to production. PII begins flowing to Cloud Logging.
+
+2025-01-14 — Security audit discovers PII in Cloud Logging during quarterly log review. Security Team immediately classifies this as a SEV-2 security incident.
+
+2025-01-14 (within 4 hours) — DPO notified per GDPR Data Processing Addendum, Article 7. DPO determines this affects EU data subjects and constitutes a reportable breach.
+
+2025-01-15 — Hotfix deployed to remove PII from logging. Cloud Logging retention for the affected log entries is force-expired. Affected log entries are confirmed deleted from all Cloud Logging sinks.
+
+2025-01-16 — DPO files breach notification with Irish DPC within the 72-hour window.
+
+═══════════════════════════════════════════
+ROOT CAUSE ANALYSIS
+═══════════════════════════════════════════
+
+1. The developer logged the entire user object for debugging purposes, which included PII fields.
+2. The code review process did not catch PII in logging — reviewers are not consistently trained to check for this.
+3. No automated tooling existed in the CI/CD pipeline to detect PII patterns in log statements.
+4. Cloud Logging default retention (30 days) meant PII persisted in logs for up to 6 weeks.
+5. Engineering Coding Standards Section 3.3 clearly prohibits PII in logs, but the rule was not enforced through automation.
+
+═══════════════════════════════════════════
+ACTION ITEMS (ALL RESOLVED)
+═══════════════════════════════════════════
+
+1. [RESOLVED] Automated PII Detection: Implement automated PII scanning in the CI/CD pipeline that blocks deployments containing PII patterns in log statements (regex + ML-based detection).
+
+2. [RESOLVED] Code Review Training: All engineers complete mandatory training on "Secure Logging Practices" with specific focus on PII identification.
+
+3. [RESOLVED] Cloud Logging DLP: Enable Google Cloud DLP inspection on Cloud Logging sinks to detect and alert on PII in production logs in real-time.
+
+4. [RESOLVED] Log Sanitization Library: Engineering Excellence team publishes a standard logging library that automatically redacts known PII field names (email, phone, name, ssn, national_id, address).
+
+5. [RESOLVED] Coding Standards Update: Engineering Coding Standards Section 3.3 updated to explicitly list prohibited PII fields and mandate use of the standard logging library.
+
+═══════════════════════════════════════════
+LESSONS LEARNED
+═══════════════════════════════════════════
+
+1. Manual code review alone is not sufficient to catch PII in logs. Automated enforcement is essential.
+2. Debug logging is the most common vector for PII leaks. Developers must NEVER log full user/customer objects.
+3. The cost of this incident: 200+ hours of engineering time, legal fees, DPO filing, and reputational risk with the Irish DPC — all from a single logging statement.
+
+CROSS-REFERENCES:
+- Engineering Coding Standards, Section 3.3 — the violated standard
+- GDPR Data Processing Addendum, Article 4 — data minimization requirement
+- GDPR Data Processing Addendum, Article 7 — breach notification process that was followed
+- Global Security Policy v4, Section 3.4 — secrets and sensitive data handling

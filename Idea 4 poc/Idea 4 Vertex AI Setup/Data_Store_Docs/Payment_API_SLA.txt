@@ -1,0 +1,66 @@
+DOCUMENT TYPE: Service Level Agreement (SLA)
+SERVICE: Payment Processing API
+VERSION: 2.1
+EFFECTIVE DATE: 2024-11-01
+LAST REVIEWED: 2025-07-15
+OWNER: VP Engineering / Head of Payments
+CLASSIFICATION: INTERNAL — CONTRACTUAL OBLIGATION
+
+═══════════════════════════════════════════
+SECTION 1 — AVAILABILITY TARGETS
+═══════════════════════════════════════════
+
+1.1 The Payment Processing API must maintain a 99.99% uptime per calendar month. This equates to a maximum of 4.32 minutes of unplanned downtime per month.
+
+1.2 Planned maintenance windows are excluded from uptime calculations but must be scheduled during the designated maintenance window: Sundays 02:00–06:00 UTC with 7 days advance notice.
+
+═══════════════════════════════════════════
+SECTION 2 — LATENCY TARGETS
+═══════════════════════════════════════════
+
+2.1 P95 Latency: 95% of all transaction requests must be processed and acknowledged within 400 milliseconds.
+
+2.2 P99 Latency: 99% of all transaction requests must be processed within 800 milliseconds.
+
+2.3 Any proposed architectural changes to the Payment API gateway or backend processing queues must be load-tested to prove they do not degrade the P95 latency below 400ms.
+
+═══════════════════════════════════════════
+SECTION 3 — ERROR RATE BUDGET
+═══════════════════════════════════════════
+
+3.1 The Payment API's error rate (5xx responses) must not exceed 0.1% of total requests in any rolling 24-hour period.
+
+3.2 If the error rate exceeds 0.1%, an automatic deployment freeze is triggered until the root cause is identified and resolved.
+
+3.3 Client-side errors (4xx) are excluded from this budget but must be monitored for anomalies.
+
+═══════════════════════════════════════════
+SECTION 4 — CHANGE MANAGEMENT
+═══════════════════════════════════════════
+
+4.1 Code Freeze Windows: No deployments to the Payment API are permitted during:
+    - Quarter-end processing (last 3 business days of each quarter)
+    - Peak shopping events (Black Friday through Cyber Monday)
+    - Year-end close (December 28–January 2)
+
+4.2 All Payment API changes require:
+    - Load test results proving P95 < 400ms under 2x peak traffic
+    - Security review sign-off (see Security Review Checklist)
+    - Canary deployment with 5% traffic for minimum 30 minutes before full rollout
+
+4.3 Rollback SLA: Any failed deployment must be rolled back within 10 minutes. Canary deployments must support instant rollback.
+
+═══════════════════════════════════════════
+SECTION 5 — CAPACITY AND FAILOVER
+═══════════════════════════════════════════
+
+5.1 The Payment API must be provisioned to handle a minimum of 3x average peak traffic at all times.
+
+5.2 Multi-region failover must complete within 30 seconds with zero data loss for in-flight transactions.
+
+5.3 All upstream dependencies (fraud detection, KYC, settlement) must have circuit breakers configured. A failing dependency must degrade gracefully, not cascade into Payment API failures.
+
+CROSS-REFERENCES:
+- Cascading failure prevention: see ADR-018 (Event-Driven Architecture)
+- Payment Outage incident: see Post-Mortem — Payment Outage July 2024
+- Incident escalation: see Incident Response Runbook, Section 2

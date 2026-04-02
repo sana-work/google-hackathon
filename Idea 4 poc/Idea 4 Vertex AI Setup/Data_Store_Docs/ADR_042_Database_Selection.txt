@@ -1,0 +1,41 @@
+DOCUMENT TYPE: Architectural Decision Record (ADR)
+ID: ADR-042
+DATE: 2025-06-20
+TOPIC: Selection of Primary Database for User Profiles
+STATUS: Accepted
+REAFFIRMED: 2025-09-10 (Architecture Review Board Session #47)
+
+CONTEXT:
+We need to store millions of user profiles with high read-throughput requirements and flexible schema evolution. The User Profile Service is a mission-critical component accessed by 12+ downstream microservices.
+
+DECISION:
+We will standardize on Google Cloud Firestore as our primary NoSQL document database for user profiles. All new microservices that require user profile data MUST use Firestore.
+
+RATIONALE ("THE WHY"):
+After evaluating Cloud SQL (Postgres), Cloud Spanner, and Firestore, we selected Firestore because:
+1. Its real-time synchronization capabilities natively support our mobile frontend without requiring a separate websocket layer.
+2. The automatic scaling handles our unpredictable traffic spikes during marketing campaigns (up to 15x baseline) better than provisioned Cloud SQL instances.
+3. We avoid the schema migration overhead that slows down our agile sprint deployments.
+4. Firestore's document-based model maps naturally to our user profile structure (nested preferences, activity history, feature flags).
+5. Built-in caching and offline support reduces client-side complexity.
+
+ALTERNATIVES CONSIDERED:
+- Cloud SQL (PostgreSQL): Rejected. While Postgres has improved JSON support, it requires manual scaling, schema migrations, and a separate real-time sync layer for mobile. The provisioned instance model does not handle our traffic spikes cost-effectively.
+- Cloud Spanner: Not appropriate for this use case. Spanner is reserved for services requiring multi-region strong-consistency ACID transactions (see exception criteria below). Its cost per read is significantly higher than Firestore for our profile read patterns.
+
+EXCEPTION CRITERIA:
+Teams building microservices that require complex multi-region ACID transactions across multiple entity types should NOT use Firestore, and must request a review for Cloud Spanner. To request an exception:
+1. Submit an Architecture Review Board request with justification
+2. Provide benchmarks showing Firestore cannot meet the consistency requirements
+3. Obtain approval from the Principal Architect
+
+PERFORMANCE BENCHMARKS (established during evaluation):
+- Firestore: P95 read latency 12ms, auto-scales to 10,000 reads/sec without provisioning
+- Cloud SQL (Postgres): P95 read latency 8ms at baseline, degrades to 200ms+ during traffic spikes without manual scaling
+
+REAFFIRMATION HISTORY:
+- 2025-09-10: Architecture Review Board Session #47. A proposal to re-evaluate Cloud SQL due to new Postgres JSON capabilities was reviewed. The board REAFFIRMED ADR-042, noting that the real-time sync and auto-scaling benefits of Firestore remain more critical than Postgres's improved JSON support.
+
+CROSS-REFERENCES:
+- ARB Meeting #47 (2025-09-10) — reaffirmation decision
+- ADR-018 (Event-Driven Architecture) — user profile changes should propagate via Pub/Sub events

@@ -1,0 +1,78 @@
+DOCUMENT TYPE: Post-Mortem / Incident Report
+INCIDENT: Payment API Cascading Failure and 23-Minute Outage
+DATE OF INCIDENT: 2024-07-22
+SEVERITY: SEV-1 (Critical)
+AUTHOR: SRE Team Lead
+STATUS: Closed — All action items resolved
+
+═══════════════════════════════════════════
+INCIDENT SUMMARY
+═══════════════════════════════════════════
+
+On July 22, 2024, the Payment Processing API experienced a complete outage lasting 23 minutes (14:12–14:35 UTC), affecting approximately 45,000 transactions and resulting in an estimated revenue loss of $180,000.
+
+═══════════════════════════════════════════
+TIMELINE
+═══════════════════════════════════════════
+
+14:02 UTC — Inventory Service begins experiencing elevated latency due to a database connection pool exhaustion (underlying cause: a runaway batch job consuming all connections).
+
+14:05 UTC — Order Service, which calls Inventory Service synchronously via REST, begins timing out. Order Service has a 5-second timeout configured. Retry logic triggers up to 3 retries per request.
+
+14:08 UTC — Order Service thread pool is exhausted. All threads are blocked waiting for Inventory Service responses. New incoming requests to Order Service begin failing with 503 errors.
+
+14:10 UTC — Payment API, which calls Order Service synchronously via REST to validate order status before processing payment, begins timing out. The synchronous dependency chain is now: Payment API → Order Service → Inventory Service.
+
+14:12 UTC — Payment API breaches its error rate threshold (0.1% 5xx over 24 hours). Automated monitoring fires a SEV-1 alert. All payment processing halts.
+
+14:15 UTC — War room activated. SRE team identifies the cascading failure chain.
+
+14:25 UTC — Inventory Service batch job is killed. Connection pool recovers. However, Order Service and Payment API remain degraded due to exhausted thread pools and circuit breakers not being configured.
+
+14:35 UTC — Full service recovery after manual restart of Order Service and Payment API pods.
+
+═══════════════════════════════════════════
+ROOT CAUSE ANALYSIS (5 Whys)
+═══════════════════════════════════════════
+
+1. WHY did the Payment API fail? → Because Order Service was returning 503 errors.
+2. WHY was Order Service failing? → Because Inventory Service was not responding and Order Service calls it synchronously.
+3. WHY did Inventory Service not respond? → Because a runaway batch job exhausted its database connection pool.
+4. WHY did the failure cascade? → Because all inter-service communication was synchronous REST with no circuit breakers, no bulkheads, and no fallback mechanisms.
+5. WHY was there no circuit breaker? → Because the synchronous REST architecture (ADR-007) did not mandate resilience patterns, and the team had no architectural standard requiring them.
+
+═══════════════════════════════════════════
+ROOT CAUSE
+═══════════════════════════════════════════
+
+The fundamental root cause was the synchronous REST-based inter-service communication architecture. A single slow service (Inventory) caused a chain reaction that brought down the entire payment processing pipeline. The architecture had no isolation between services — a healthy service (Payment API) was killed by a failing service three hops away.
+
+═══════════════════════════════════════════
+ACTION ITEMS (ALL RESOLVED)
+═══════════════════════════════════════════
+
+1. [RESOLVED] ADR-018 Created: Mandate event-driven architecture via Pub/Sub for all inter-service communication. Eliminate synchronous REST dependency chains. → ADR-018 accepted on 2024-08-15.
+
+2. [RESOLVED] Circuit Breakers: Implement circuit breaker pattern on all remaining synchronous calls during the migration period.
+
+3. [RESOLVED] Database Connection Pooling: Enforce connection pool limits on all services with dedicated pools for batch vs. real-time workloads.
+
+4. [RESOLVED] Payment API SLA Update: Establish explicit error rate budget and automated deployment freeze when breached. → Payment API SLA v2.1 updated.
+
+5. [RESOLVED] Monitoring: Add dependency health checks — Payment API must monitor the health of its upstream dependencies and report status.
+
+═══════════════════════════════════════════
+LESSONS LEARNED
+═══════════════════════════════════════════
+
+1. Synchronous dependency chains are the #1 reliability risk in a microservices architecture. Any proposal to add new synchronous REST calls between services introduces the same cascading failure risk that caused this outage.
+
+2. Resilience must be architectural, not team-level. Individual teams cannot be relied upon to implement circuit breakers consistently — the platform must enforce decoupling.
+
+3. The 23-minute outage exceeded our 4.32-minute monthly downtime SLA budget in a single incident. This is unacceptable for a payment-critical system.
+
+CROSS-REFERENCES:
+- ADR-018 (Event-Driven Architecture) — created as a direct result of this incident
+- ADR-007 (Synchronous REST) — SUPERSEDED by ADR-018 due to this incident
+- Payment API SLA v2.1 — error rate budget added after this incident
+- Incident Response Runbook, Section 2 — escalation process followed during this incident

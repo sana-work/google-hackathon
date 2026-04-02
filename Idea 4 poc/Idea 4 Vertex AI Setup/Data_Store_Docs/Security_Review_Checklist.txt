@@ -1,0 +1,35 @@
+DOCUMENT TYPE: Security Review Checklist
+VERSION: 1.0
+EFFECTIVE DATE: 2025-02-15
+OWNER: Application Security Team
+
+This checklist MUST be completed before any service is approved for production deployment.
+
+CATEGORY A — AUTHENTICATION & AUTHORIZATION
+□ A-1: Service implements authentication on all endpoints (no unauthenticated public endpoints unless explicitly approved by Security Team).
+□ A-2: Authorization checks enforce principle of least privilege.
+□ A-3: Service accounts use dedicated IAM roles — no use of Owner or Editor roles.
+□ A-4: JWT tokens are validated for signature, expiry, and audience claim.
+
+CATEGORY B — DATA PROTECTION
+□ B-1: All data at rest is encrypted using AES-256 with Customer-Managed Encryption Keys (CMEK) via Cloud KMS.
+□ B-2: All data in transit uses TLS 1.2 or higher.
+□ B-3: PII fields are masked in all non-production environments.
+□ B-4: Backup data is encrypted and access-controlled with separate IAM policies.
+
+CATEGORY C — INPUT VALIDATION
+□ C-1: All user inputs are validated against expected schemas before processing.
+□ C-2: File uploads are restricted by type and size (max 10MB default).
+□ C-3: SQL injection prevention via parameterized queries (no string concatenation).
+□ C-4: XSS prevention via output encoding for all web-rendered content.
+
+CATEGORY D — INFRASTRUCTURE
+□ D-1: Container images use distroless or minimal base images — no full OS images.
+□ D-2: Container images are scanned for CVEs before deployment. Critical CVEs block deployment.
+□ D-3: Network policies restrict pod-to-pod communication to explicitly allowed paths only.
+□ D-4: Cloud Run services or GKE pods do NOT run as root.
+
+CATEGORY E — INCIDENT PREPAREDNESS
+□ E-1: Service has documented runbook in the Incident Response Playbook.
+□ E-2: Alerting is configured for error rate > 1% and latency P95 > SLA threshold.
+□ E-3: Service supports graceful shutdown (drains in-flight requests on SIGTERM).

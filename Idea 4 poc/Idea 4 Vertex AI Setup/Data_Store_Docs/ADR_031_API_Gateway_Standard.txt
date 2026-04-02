@@ -1,0 +1,36 @@
+DOCUMENT TYPE: Architectural Decision Record (ADR)
+ID: ADR-031
+DATE: 2024-12-10
+TOPIC: Mandatory API Gateway for All External-Facing APIs
+STATUS: Accepted
+
+CONTEXT:
+Multiple teams have been deploying services with direct internet exposure, creating an inconsistent security surface. Three security audit findings in Q3 2024 identified publicly exposed services without rate limiting, authentication, or WAF protection. The Security Team escalated this as a systemic risk requiring a platform-level architectural standard.
+
+DECISION:
+All external-facing APIs MUST be routed through a centralized API Gateway (Google Cloud Apigee or Cloud Endpoints). Direct exposure of backend services to the internet is PROHIBITED.
+
+RATIONALE ("THE WHY"):
+1. Centralized Security: API Gateway enforces authentication (OAuth 2.0, API keys), rate limiting, and request validation at the edge — before traffic reaches backend services.
+2. Observability: All external API traffic flows through a single control plane, enabling unified monitoring, logging, and analytics.
+3. Consistent Developer Experience: API consumers interact with versioned, documented endpoints with consistent error formats.
+4. DDoS Protection: API Gateway integrates with Cloud Armor for automatic DDoS mitigation.
+
+ALTERNATIVES CONSIDERED:
+- Per-service rate limiting and auth middleware: Rejected. Teams implemented this inconsistently, leading to the security audit findings that prompted this ADR.
+- AWS API Gateway: Not applicable — we are standardized on Google Cloud.
+
+REQUIREMENTS:
+1. All external APIs MUST use OAuth 2.0 for client authentication. API key-only authentication is permitted only for read-only public data APIs, and requires Security Team approval.
+2. Rate limiting MUST be configured on every API product. Default: 100 requests/minute/client. Custom limits require Product Owner justification.
+3. API versioning MUST use URL path versioning (e.g., /v1/resource). Header-based versioning is not permitted.
+4. All APIs MUST have OpenAPI 3.0 specifications registered in the API catalog.
+5. Backend services MUST NOT have public IP addresses or be directly accessible from the internet.
+
+EXCEPTIONS:
+- Webhook receiver endpoints that require direct access (e.g., payment processor callbacks) must be approved by the Security Team and protected with HMAC signature verification.
+
+CROSS-REFERENCES:
+- Engineering Coding Standards, Section 1 (API Design Standards)
+- Global Security Policy v4, Section 5 (Network Security)
+- Security Review Checklist, Category A (Authentication)

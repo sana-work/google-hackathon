@@ -1,0 +1,17 @@
+DOCUMENT TYPE: Meeting Summary / Architecture Review Board Minutes
+MEETING: Architecture Review Board (ARB) Session #47
+DATE: 2025-09-10
+ATTENDEES: VP Engineering (Chair), Principal Architect, Security Lead, SRE Lead, Product Director
+
+AGENDA ITEM 1: Proposal to deploy User Analytics Service in asia-south1 (Mumbai)
+DECISION: REJECTED.
+RATIONALE: The User Analytics Service processes behavioral data linked to EU users. Under the GDPR Data Processing Addendum (Article 3), EEA data cannot be processed in India (a non-adequate country). The team is directed to deploy in europe-west1 (Belgium) instead. If latency to APAC clients is a concern, a read-replica with pseudonymized data may be considered after DPO approval.
+
+AGENDA ITEM 2: Proposal to increase Payment API timeout from 400ms to 800ms
+DECISION: CONDITIONALLY APPROVED.
+RATIONALE: The Payment API SLA v2.1 mandates a P95 latency of 400ms. Increasing the internal timeout to 800ms is acceptable only for the downstream fraud-check call, provided the overall API response still meets the 400ms P95 target. The SRE team must produce load test evidence before deployment.
+ACTION ITEM: SRE Lead to run load tests in staging and share results by 2025-09-17.
+
+AGENDA ITEM 3: Review of ADR-042 – Firestore for User Profiles
+DECISION: REAFFIRMED.
+RATIONALE: A proposal was made to re-evaluate Cloud SQL for user profiles due to new Postgres JSON capabilities. The board reaffirmed ADR-042, noting that the real-time sync and auto-scaling benefits of Firestore remain more critical than Postgres's improved JSON support. The board also noted that ADR-042's constraint about using Cloud Spanner for multi-region ACID transactions remains valid and should be enforced.

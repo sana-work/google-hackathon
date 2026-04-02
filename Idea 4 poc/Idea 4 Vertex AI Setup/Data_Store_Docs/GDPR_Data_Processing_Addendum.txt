@@ -1,0 +1,52 @@
+DOCUMENT TYPE: Compliance Standard
+STANDARD: GDPR Data Processing Addendum
+VERSION: 1.2
+EFFECTIVE DATE: 2025-03-01
+LAST REVIEWED: 2025-08-15
+OWNER: Data Protection Officer (DPO)
+
+ARTICLE 1 – SCOPE
+This addendum governs all processing of personal data originating from European Economic Area (EEA) residents by any system, service, or sub-processor operated by the organization.
+
+ARTICLE 2 – DATA SUBJECT ACCESS REQUESTS (DSARs)
+1. All systems that store or process EEA personal data MUST support the ability to export a complete copy of a data subject's records within 72 hours of receiving a DSAR.
+2. All systems MUST support the ability to permanently and irrecoverably delete a data subject's personal data ("Right to Erasure") within 30 days of a verified request.
+3. DSAR fulfillment must include data from ALL systems — primary databases, backups, analytics pipelines, ML training datasets, and third-party sub-processors.
+
+ARTICLE 3 – DATA PROCESSING LOCATIONS
+1. EEA personal data MUST be processed exclusively within the European Union (EU) or in countries with an EU adequacy decision.
+2. Processing of EEA data in the United States is ONLY permitted if Standard Contractual Clauses (SCCs) are in place AND approved by the DPO in writing.
+3. Processing of EEA data in any other non-adequate country is STRICTLY PROHIBITED.
+4. This includes ALL processing — computation, storage, caching, logging, analytics, and ML model training. Temporary processing (e.g., in-memory during API calls) in non-approved regions is ALSO a violation.
+
+ARTICLE 4 – DATA MINIMIZATION AND PURPOSE LIMITATION
+1. Services MUST NOT collect more personal data fields than are strictly necessary for the stated processing purpose.
+2. Personal data used for analytics or ML model training MUST be pseudonymized at the point of ingestion. Raw personal data MUST NOT be used for secondary purposes (analytics, profiling, ML training) without explicit DPO approval.
+3. Data sharing with internal teams for purposes other than the original collection purpose requires a documented Legitimate Interest Assessment (LIA) approved by the DPO.
+
+ARTICLE 5 – AUTOMATED DECISION-MAKING AND PROFILING
+1. Any system that makes automated decisions with legal or significant effects on EEA data subjects (e.g., credit scoring, fraud blocking, eligibility determination) MUST provide meaningful human review upon request.
+2. Users MUST be informed when automated profiling is used, including the logic involved and its significance.
+3. AI/ML models used for profiling EU citizens MUST maintain an audit trail showing inputs, outputs, and model version for each decision.
+
+ARTICLE 6 – CONSENT MANAGEMENT
+1. Consent for non-essential data processing MUST be freely given, specific, informed, and unambiguous.
+2. Pre-ticked consent boxes are PROHIBITED. Consent must require an affirmative action.
+3. Consent withdrawal must be as easy as consent provision. All systems must support consent revocation within 24 hours.
+4. Cookie and tracking consent must comply with the ePrivacy Directive — non-essential cookies/trackers require opt-in consent.
+
+ARTICLE 7 – BREACH NOTIFICATION
+1. Any suspected data breach involving EEA personal data MUST be reported to the DPO within 4 hours of detection.
+2. The DPO will notify the relevant Supervisory Authority within the mandatory 72-hour window per GDPR Article 33.
+3. Data subjects must be notified "without undue delay" if the breach is likely to result in a high risk to their rights and freedoms.
+
+ARTICLE 8 – THIRD-PARTY SUB-PROCESSORS
+1. Any third-party vendor or sub-processor that will receive, store, or process EEA personal data MUST be pre-approved by the DPO.
+2. A Data Processing Agreement (DPA) with Standard Contractual Clauses (SCCs) MUST be executed before any data transfer to a sub-processor.
+3. The DPO maintains the official Register of Sub-Processors. Engaging an unapproved sub-processor is a CRITICAL compliance violation.
+
+CROSS-REFERENCES:
+- Data processing locations: see Global Security Policy v4, Section 1
+- Encryption requirements: see Global Security Policy v4, Section 3
+- Breach notification escalation: see Incident Response Runbook, Section 2
+- Vendor sub-processor obligations: see Vendor Contract (Acme Cloud), Section 3

@@ -1,0 +1,76 @@
+DOCUMENT TYPE: Regulatory Compliance Notice
+REGULATION: European Union Artificial Intelligence Act (EU AI Act) — Implementation Requirements
+ISSUING AUTHORITY: European Commission, DG CONNECT
+REFERENCE: Regulation (EU) 2024/1689
+DATE OF NOTICE: November 1, 2025
+COMPLIANCE DEADLINE: August 2, 2026 (for high-risk AI systems)
+JURISDICTION: European Union / European Economic Area (EEA)
+APPLICABILITY: All providers and deployers of AI systems that operate within the EU, or whose AI systems' outputs are used within the EU, regardless of where the provider is established
+
+═══════════════════════════════════════════
+SECTION 1 — RISK CLASSIFICATION
+═══════════════════════════════════════════
+
+1.1 All AI systems must be classified into one of four risk tiers:
+    (a) UNACCEPTABLE RISK (Prohibited): Social scoring, real-time biometric identification in public spaces, manipulation of vulnerable populations
+    (b) HIGH RISK: AI systems used in credit scoring, insurance underwriting, recruitment, medical diagnosis, judicial decision support, critical infrastructure management
+    (c) LIMITED RISK: Chatbots, AI-generated content, emotion recognition systems
+    (d) MINIMAL RISK: Spam filters, AI-powered video games
+
+1.2 Entities MUST complete and document an AI Risk Classification Assessment for every AI system deployed or under development by the compliance deadline.
+
+═══════════════════════════════════════════
+SECTION 2 — HIGH-RISK AI REQUIREMENTS
+═══════════════════════════════════════════
+
+2.1 Risk Management System: A documented risk management process must be established, covering the entire lifecycle of the AI system (design, development, deployment, monitoring, decommissioning).
+
+2.2 Data Governance: Training, validation, and testing datasets must be:
+    (a) Documented with data provenance and lineage
+    (b) Examined for biases and representativeness
+    (c) Subject to data quality criteria that are measurable and auditable
+
+2.3 Technical Documentation: Detailed technical documentation must be maintained, including:
+    (a) Model architecture and training methodology
+    (b) Performance metrics (accuracy, precision, recall, fairness metrics)
+    (c) Known limitations and failure modes
+    (d) Intended use and foreseeable misuse scenarios
+
+2.4 Transparency: Users interacting with a high-risk AI system MUST be informed that they are interacting with an AI. The system must provide clear explanations of how its outputs were generated (explainability requirement).
+
+2.5 Human Oversight: High-risk AI systems MUST include mechanisms for meaningful human oversight, including:
+    (a) Ability for a human to override or reverse AI decisions
+    (b) Real-time monitoring dashboards for model performance and drift
+    (c) Escalation paths when AI confidence is below defined thresholds
+
+2.6 Accuracy and Robustness: AI systems must meet documented accuracy benchmarks and be tested for robustness against adversarial inputs, data drift, and distribution shift.
+
+═══════════════════════════════════════════
+SECTION 3 — GENERAL-PURPOSE AI (GPAI) MODELS
+═══════════════════════════════════════════
+
+3.1 Providers of GPAI models (including foundation models and LLMs) must:
+    (a) Maintain and publish a sufficiently detailed summary of training data content
+    (b) Comply with EU copyright law in training data usage
+    (c) Publish a model card describing capabilities, limitations, and risks
+
+3.2 GPAI models with systemic risk (training compute > 10^25 FLOPs) must additionally:
+    (a) Perform model evaluations including adversarial testing
+    (b) Report serious incidents to the AI Office
+    (c) Implement adequate cybersecurity measures
+
+═══════════════════════════════════════════
+SECTION 4 — CONFORMITY ASSESSMENT AND REGISTRATION
+═══════════════════════════════════════════
+
+4.1 All high-risk AI systems must undergo a conformity assessment before deployment.
+4.2 All high-risk AI systems must be registered in the EU AI Database before being placed on the market.
+4.3 Deployers of high-risk AI systems must conduct a Fundamental Rights Impact Assessment (FRIA) before deployment.
+
+═══════════════════════════════════════════
+SECTION 5 — PENALTIES
+═══════════════════════════════════════════
+
+5.1 Deploying a prohibited AI system: Up to €35 million or 7% of global annual turnover.
+5.2 Non-compliance with high-risk AI requirements: Up to €15 million or 3% of global annual turnover.
+5.3 Providing incorrect information to authorities: Up to €7.5 million or 1.5% of global annual turnover.

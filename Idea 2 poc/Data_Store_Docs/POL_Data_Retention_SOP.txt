@@ -1,0 +1,72 @@
+DOCUMENT TYPE: Internal Standard Operating Procedure (SOP)
+PROCEDURE: Data Retention and Deletion SOP
+VERSION: 2.0
+EFFECTIVE DATE: 2024-06-01
+LAST REVIEWED: 2025-04-15
+OWNER: IT Operations Manager / Data Governance Team
+APPLICABILITY: All systems that store personal data, customer data, financial data, or transactional data
+
+═══════════════════════════════════════════
+SECTION 1 — RETENTION SCHEDULES BY DATA CATEGORY
+═══════════════════════════════════════════
+
+1.1 Customer Profile Data:
+    - Active customers: Retained for the duration of the relationship
+    - Inactive customers: Retained for 5 years after last interaction, then deleted
+    - Source systems: CRM System, Customer Portal
+
+1.2 Financial Transaction Data:
+    - Retained for 7 years per RBI and tax regulations
+    - Source systems: Payment Gateway, Core Banking System (for banking clients)
+
+1.3 Marketing Consent Records:
+    - Retained for the duration of consent validity plus 2 years (for audit trail)
+    - Source systems: CRM System, Marketing Automation Platform
+
+1.4 Application Logs:
+    - Retained for 1 year in hot storage, then archived to cold storage for an additional 2 years
+    - Source systems: All application servers
+
+1.5 Analytical/Behavioral Data:
+    - Retained for 3 years
+    - Source system: Customer Data Lake
+
+═══════════════════════════════════════════
+SECTION 2 — DELETION PROCESS
+═══════════════════════════════════════════
+
+2.1 Scheduled Deletion: Data that has exceeded its retention period is identified and deleted during QUARTERLY purge cycles (January, April, July, October).
+
+2.2 Deletion Method: For databases, records are soft-deleted (flagged as deleted) and then hard-deleted in the next purge cycle. For file storage, files are moved to a "pending deletion" folder and permanently deleted after a 30-day grace period.
+
+2.3 Deletion Verification: After each purge cycle, the Data Governance team generates a deletion report confirming:
+    (a) Number of records/files identified for deletion
+    (b) Number successfully deleted
+    (c) Any failures or exceptions (with remediation plan)
+
+2.4 Backup Deletion: Backups containing deleted data are allowed to expire naturally per the backup retention schedule (90 days for daily backups, 1 year for monthly backups). Deleted data in unexpired backups is acceptable under current policy.
+
+═══════════════════════════════════════════
+SECTION 3 — DATA SUBJECT DELETION REQUESTS
+═══════════════════════════════════════════
+
+3.1 When a Data Subject submits a Right to Erasure / Right to be Forgotten request:
+    (a) The request is logged in the DSAR tracking system
+    (b) IT Operations identifies all systems containing the data subject's personal data
+    (c) Deletion is performed within 30 days of the verified request
+    (d) A deletion certificate is issued to the Data Subject
+
+3.2 Limitations: Data required for legal or regulatory compliance (e.g., financial transaction records) is retained for the minimum legally required period, even after a deletion request. The Data Subject is informed of any retained data and the legal basis.
+
+═══════════════════════════════════════════
+SECTION 4 — AUTOMATION STATUS
+═══════════════════════════════════════════
+
+4.1 Current State: Deletion is primarily manual, triggered by the quarterly purge schedule. The IT Operations team runs deletion scripts against each system individually.
+
+4.2 Planned Enhancement: An automated retention management system is budgeted for implementation in FY2026-27. This system will:
+    (a) Automatically flag data approaching retention limits
+    (b) Auto-delete data that has exceeded retention periods
+    (c) Generate compliance dashboards in real-time
+
+4.3 Gap Acknowledgment: The current manual process introduces a risk of up to 3 months of over-retention between purge cycles. This risk is accepted by the Data Governance Committee pending automation implementation.

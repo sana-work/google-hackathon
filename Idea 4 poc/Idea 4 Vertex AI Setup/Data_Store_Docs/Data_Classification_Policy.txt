@@ -1,0 +1,58 @@
+DOCUMENT TYPE: Data Classification and Handling Policy
+VERSION: 1.0
+EFFECTIVE DATE: 2025-07-01
+OWNER: Chief Information Security Officer (CISO) / Data Protection Officer (DPO)
+CLASSIFICATION: INTERNAL — MANDATORY
+
+═══════════════════════════════════════════
+SECTION 1 — DATA CLASSIFICATION TIERS
+═══════════════════════════════════════════
+
+All data processed by the organization must be classified into one of four tiers:
+
+TIER 1 — PUBLIC
+Definition: Information intended for public disclosure.
+Examples: Marketing materials, public API documentation, press releases.
+Handling: No restrictions on storage or transmission.
+
+TIER 2 — INTERNAL
+Definition: Information intended for internal use only, not harmful if disclosed but not intended for external audiences.
+Examples: Internal wikis, engineering documentation, architecture diagrams, non-sensitive meeting notes.
+Handling: Must be stored on approved corporate systems. Must not be shared on personal devices or public cloud storage.
+
+TIER 3 — CONFIDENTIAL
+Definition: Sensitive business information that would cause competitive or financial harm if disclosed.
+Examples: Business strategies, financial projections, vendor contract terms, pre-release product plans, employee compensation data.
+Handling: Must be encrypted at rest (AES-256 with CMEK). Access restricted to named individuals with business need. Must not be sent via unencrypted email. Third-party sharing requires Legal approval and NDA.
+
+TIER 4 — RESTRICTED
+Definition: Highly sensitive data subject to regulatory requirements. Unauthorized disclosure would result in regulatory penalties, legal liability, or significant harm to individuals.
+Examples: Customer PII (names, emails, phone numbers, national IDs), financial transaction data, payment card data, health records, authentication credentials, encryption keys.
+Handling: Must be encrypted at rest AND in transit. Access requires MFA and JIT provisioning. Must NOT appear in logs (see Post-Mortem PII Leak 2025-01). Must be pseudonymized for analytics/ML (see GDPR Addendum, Article 4). Processing location restricted per data residency policy. Third-party access requires DPO approval, DPA, and SCCs.
+
+═══════════════════════════════════════════
+SECTION 2 — VENDOR ACCESS BY DATA TIER
+═══════════════════════════════════════════
+
+2.1 Tier 1 (Public): Any vendor may process.
+2.2 Tier 2 (Internal): Vendors with signed NDA may process.
+2.3 Tier 3 (Confidential): Vendors with NDA + SOC2 certification may process. Requires VP approval.
+2.4 Tier 4 (Restricted): Vendors with NDA + SOC2 + ISO 27001 + executed DPA with SCCs. Requires DPO and CISO approval. Vendor must appear on the approved Sub-Processor Register (see GDPR Addendum, Article 8).
+
+═══════════════════════════════════════════
+SECTION 3 — CLASSIFICATION RESPONSIBILITIES
+═══════════════════════════════════════════
+
+3.1 Data owners (product/service teams) are responsible for classifying data at the point of creation or collection.
+
+3.2 When data classification is unclear, default to the HIGHER tier until clarified by the CISO or DPO.
+
+3.3 Data classification must be reviewed annually or when data handling processes change.
+
+CROSS-REFERENCES:
+- Global Security Policy v4, Section 3 — encryption requirements by tier
+- Global Security Policy v4, Section 4 — IAM requirements for Tier 4 data
+- GDPR Data Processing Addendum — all EEA personal data is Tier 4
+- Engineering Coding Standards, Section 3.3 — Tier 4 data must not appear in logs
+- Post-Mortem PII Leak 2025-01 — incident caused by Tier 4 data in logs
+- Vendor Contract (Acme Cloud) — example of Tier 4 vendor handling

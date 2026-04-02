@@ -1,0 +1,69 @@
+DOCUMENT TYPE: Internal Enterprise Policy
+POLICY: AI/ML Model Governance Policy
+VERSION: 1.0
+EFFECTIVE DATE: 2025-03-01
+LAST REVIEWED: 2025-09-15
+OWNER: Chief Data Officer (CDO) / AI Ethics Committee
+APPLICABILITY: All AI and Machine Learning models developed, deployed, or procured by the organization
+
+═══════════════════════════════════════════
+SECTION 1 — MODEL INVENTORY AND CLASSIFICATION
+═══════════════════════════════════════════
+
+1.1 Model Registry: All AI/ML models in development or production must be registered in the central Model Registry with: model name, purpose, owner, training data sources, deployment date, and current status.
+
+1.2 Risk Classification: Models are classified based on their impact:
+    (a) HIGH IMPACT: Models making or influencing decisions about individuals (credit scoring, insurance pricing, hiring, medical diagnosis)
+    (b) MEDIUM IMPACT: Models used for operational optimization (demand forecasting, inventory management, fraud detection)
+    (c) LOW IMPACT: Models used for internal productivity (document classification, search ranking, chatbots for internal use)
+
+1.3 Current Model Inventory:
+    — Credit Risk Scoring Model (HIGH IMPACT) — deployed in Payment Gateway
+    — Customer Churn Prediction Model (MEDIUM IMPACT) — deployed in CRM System
+    — Product Recommendation Engine (MEDIUM IMPACT) — deployed in Customer Portal
+    — Document Classification Model (LOW IMPACT) — deployed internally
+    — Fraud Detection Model (HIGH IMPACT) — deployed in Payment Gateway
+
+═══════════════════════════════════════════
+SECTION 2 — DEVELOPMENT STANDARDS
+═══════════════════════════════════════════
+
+2.1 Training Data: 
+    (a) Training data must be documented with data provenance and lineage
+    (b) Training data must be reviewed for bias before model training begins
+    (c) Personal data used for training SHOULD be anonymized, but pseudonymized data is currently accepted for HIGH IMPACT models where anonymization degrades model accuracy
+    — NOTE: Full anonymization for training data is a goal but not yet a requirement.
+
+2.2 Bias Testing: All HIGH IMPACT models must undergo bias testing across protected attributes (gender, age, ethnicity, religion) before deployment. Bias test results must be documented and approved by the AI Ethics Committee.
+
+2.3 Model Documentation: Each model must have a Model Card containing: intended use, training methodology, performance metrics, known limitations, and failure modes.
+    — NOTE: Model Cards are currently required for HIGH IMPACT models only. MEDIUM and LOW IMPACT models have optional documentation.
+
+═══════════════════════════════════════════
+SECTION 3 — DEPLOYMENT AND MONITORING
+═══════════════════════════════════════════
+
+3.1 Approval Gate: HIGH IMPACT models require sign-off from the AI Ethics Committee and the relevant business unit head before production deployment.
+
+3.2 Human Oversight: HIGH IMPACT models operate in a "human-in-the-loop" mode where outputs are reviewed by a qualified human before final decisions are communicated to customers.
+    — NOTE: The Fraud Detection Model operates in "human-on-the-loop" mode (automated decisions with human review of flagged edge cases) due to latency requirements. This exception was approved by the AI Ethics Committee on 2025-05-20.
+
+3.3 Model Monitoring: Production models are monitored for performance drift quarterly. Retraining is triggered when accuracy drops below the documented threshold.
+    — NOTE: Real-time drift monitoring is not yet implemented. Drift detection relies on quarterly manual evaluation.
+
+═══════════════════════════════════════════
+SECTION 4 — TRANSPARENCY AND EXPLAINABILITY
+═══════════════════════════════════════════
+
+4.1 Customer Notification: Customers are currently NOT explicitly notified when an AI system is involved in processing their request or making a decision affecting them.
+    — NOTE: A customer notification mechanism is planned for Q4 2026.
+
+4.2 Explainability: HIGH IMPACT models must provide feature-level explanations (e.g., SHAP values) for individual decisions when requested by a customer or regulator.
+
+═══════════════════════════════════════════
+SECTION 5 — THIRD-PARTY AI MODELS
+═══════════════════════════════════════════
+
+5.1 Procured AI models (e.g., vendor APIs, SaaS AI features) must undergo the same risk classification and governance as internally developed models.
+5.2 Vendor AI model documentation must be obtained and stored in the Model Registry.
+5.3 The organization reserves the right to audit vendor AI model performance and bias metrics.

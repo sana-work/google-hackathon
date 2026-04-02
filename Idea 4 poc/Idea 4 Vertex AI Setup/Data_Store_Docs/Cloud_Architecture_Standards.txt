@@ -1,0 +1,79 @@
+DOCUMENT TYPE: Cloud Architecture Standards
+VERSION: 1.0
+EFFECTIVE DATE: 2025-08-01
+OWNER: Principal Architect / Cloud Platform Team
+CLASSIFICATION: INTERNAL — MANDATORY
+
+═══════════════════════════════════════════
+SECTION 1 — APPROVED CLOUD REGIONS
+═══════════════════════════════════════════
+
+1.1 Primary Production Region: us-east4 (Northern Virginia)
+    - All US customer workloads
+    - Default region for non-geographically-sensitive services
+
+1.2 EU Production Region: europe-west1 (Belgium)
+    - Mandatory for all EEA customer data (per GDPR Data Processing Addendum)
+    - EU-only services must be deployed exclusively here
+
+1.3 Approved DR Region: us-central1 (Iowa)
+    - Disaster recovery only. Not for primary workloads.
+
+1.4 PROHIBITED REGIONS for production workloads:
+    - asia-south1 (Mumbai) — rejected by ARB Session #47 for EU data
+    - us-west1 (Oregon) — not approved; use us-east4 instead
+    - Any region not explicitly listed above requires Principal Architect approval
+
+═══════════════════════════════════════════
+SECTION 2 — CONTAINER ORCHESTRATION
+═══════════════════════════════════════════
+
+2.1 All containerized production workloads MUST run on GKE Autopilot. Self-managed GKE Standard clusters are deprecated and must be migrated by Q2 2026.
+
+2.2 Container images MUST use Google's distroless base images. Full OS images are prohibited (see Global Security Policy, Section 5.4).
+
+2.3 All deployments must use rolling updates with maxUnavailable: 0 and maxSurge: 25%. Big-bang deployments are prohibited.
+
+2.4 Pod resource requests and limits MUST be defined for all containers. Pods without resource limits will be rejected by the admission controller.
+
+═══════════════════════════════════════════
+SECTION 3 — NETWORKING
+═══════════════════════════════════════════
+
+3.1 All production workloads MUST run within the organization's shared VPC. Standalone project-level VPCs are prohibited.
+
+3.2 Private Google Access MUST be enabled. Services must access Google APIs (BigQuery, Cloud Storage, Pub/Sub) via private networking, not public endpoints.
+
+3.3 All external-facing traffic MUST be routed through Cloud Load Balancer with Cloud Armor WAF policies attached.
+
+3.4 Service-to-service communication within the cluster MUST use private ClusterIP services. NodePort and LoadBalancer service types for internal traffic are prohibited.
+
+═══════════════════════════════════════════
+SECTION 4 — APPROVED TECHNOLOGY STACK
+═══════════════════════════════════════════
+
+4.1 Approved Databases:
+    - Firestore: User profiles, session data, feature flags (see ADR-042)
+    - Cloud SQL (PostgreSQL): Transactional workloads requiring ACID (with approval)
+    - Cloud Spanner: Multi-region strong consistency (with Principal Architect approval)
+    - BigQuery: Analytics and data warehouse workloads only
+    - Memorystore (Redis): Caching layer only
+
+4.2 Approved Messaging:
+    - Google Cloud Pub/Sub: All inter-service communication (see ADR-018)
+    - Cloud Tasks: Scheduled/delayed task execution
+    - Apache Kafka: NOT approved. Use Pub/Sub instead.
+
+4.3 Approved Compute:
+    - GKE Autopilot: Primary compute platform
+    - Cloud Run: Stateless HTTP services with low traffic
+    - Cloud Functions: Event-triggered lightweight processing only
+    - Compute Engine VMs: NOT approved for application workloads. Infrastructure-only (bastion hosts, legacy migration).
+
+CROSS-REFERENCES:
+- ADR-018 (Event-Driven Architecture) — Pub/Sub mandate
+- ADR-042 (Database Selection) — Firestore mandate
+- ADR-031 (API Gateway) — external traffic routing
+- ADR-055 (Cost Governance) — instance sizing and labeling
+- Global Security Policy v4 — encryption and network rules
+- ARB Meeting #47 — asia-south1 rejection

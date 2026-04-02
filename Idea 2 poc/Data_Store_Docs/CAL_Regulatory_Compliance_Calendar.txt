@@ -1,0 +1,111 @@
+DOCUMENT TYPE: Regulatory Compliance Calendar
+TITLE: Key Regulatory Deadlines and Compliance Milestones
+VERSION: 2.0
+LAST UPDATED: 2025-11-01
+OWNER: Chief Compliance Officer (CCO) / Regulatory Affairs Team
+PURPOSE: Central tracking of all regulatory deadlines, enforcement dates, audit schedules, and compliance milestones.
+
+═══════════════════════════════════════════
+Q4 2025 (October — December 2025)
+═══════════════════════════════════════════
+
+2025-10-31 | GDPR | Transfer Impact Assessment (TIA) for AnalyticsPro — OVERDUE
+  Status: IN PROGRESS (DPO)
+  Risk: Cannot continue data transfers to Singapore without completed TIA under new GDPR amendment
+
+2025-11-15 | EU AI ACT | Prohibited AI Practices ban takes effect
+  Action: Confirm no prohibited AI practices in our portfolio (social scoring, real-time biometric ID in public)
+  Status: Self-assessment COMPLETE — no prohibited practices identified
+
+2025-11-30 | EU AI ACT | Begin conformity assessment for high-risk AI models — OVERDUE
+  Action: Engage external AI audit firm for Credit Risk Scoring Model and Fraud Detection Model
+  Status: RFP issued to 3 audit firms. Selection expected by Dec 15.
+  Risk: 6-month assessment timeline means we need to start NOW to meet Aug 2026 deadline
+
+2025-12-31 | SEBI | 24x7 SOC operational — revised deadline
+  Action: Security Operations Center must operate 24x7 per SEBI Cyber Security Framework
+  Status: Vendor shortlisted, contract negotiation in progress
+  Risk: Original deadline was Sept 15 — already 3 months overdue
+
+═══════════════════════════════════════════
+Q1 2026 (January — March 2026)
+═══════════════════════════════════════════
+
+2026-01-15 | DPDPA | Expected notification of DPDPA Amendment 2026
+  Action: Monitor MeitY gazette notifications
+  Status: WATCHING — draft amendment was circulated for industry comment in Nov 2025
+  Impact: If notified, 6-12 month compliance window for consent model overhaul and automated deletion
+
+2026-02-01 | SEBI | Semi-annual external VAPT due
+  Action: External vulnerability assessment and penetration testing
+  Status: Vendor engaged (CyberDefense India)
+  Risk: Must demonstrate improved posture from last assessment
+
+2026-03-01 | RBI | Annual data localization compliance self-certification
+  Action: Self-certify to RBI that all payment system data is stored exclusively in India
+  Status: Preliminary audit shows compliance post-COMP-2024-007 remediation
+
+2026-03-31 | SEBI | Quarterly internal VAPT due
+  Action: Internal vulnerability assessment
+  Status: Scheduled with Security Operations team
+
+═══════════════════════════════════════════
+Q2 2026 (April — June 2026)
+═══════════════════════════════════════════
+
+2026-04-15 | SEBI | Expected SEBI on-site cyber security audit
+  Action: Full audit readiness — prepare documentation, evidence packages, and remediation evidence
+  Status: NOT READY — 7 of 12 requirements still non-compliant
+  Risk: CRITICAL — Audit findings could result in operational restrictions
+
+2026-05-01 | GDPR | Annual DPA renewal with CloudVault Storage
+  Action: Review and renew Data Processing Agreement with updated SCCs
+
+2026-06-30 | DPDPA | Estimated deadline for consent model compliance (if notified Jan 2026)
+  Action: Implement opt-in consent across CRM, Customer Portal, and Marketing Automation
+  Status: Technical design in progress
+
+═══════════════════════════════════════════
+Q3 2026 (July — September 2026)
+═══════════════════════════════════════════
+
+2026-08-02 | EU AI ACT | High-risk AI system requirements become enforceable
+  Action: All high-risk AI models must have conformity assessment, FRIA, EU AI Database registration, and transparency notices
+  Status: Assessment not yet started — 6-month process
+  Risk: CRITICAL if conformity assessment not completed by this date
+
+2026-09-01 | DPDPA | Estimated deadline for automated deletion system (if notified Jan 2026)
+  Action: Replace quarterly manual purge with automated deletion per retention schedules
+  Status: Budget approved. Vendor selection in progress.
+
+═══════════════════════════════════════════
+RECURRING DEADLINES
+═══════════════════════════════════════════
+
+MONTHLY:
+- Vendor sub-processor registry review (DPO)
+- Cloud data residency spot check (Cloud Architecture Team)
+
+QUARTERLY:
+- Internal VAPT (Security Operations) — SEBI requirement
+- Data retention SOP compliance audit (IT Operations)
+- Board Compliance Committee report (CCO)
+
+SEMI-ANNUALLY:
+- External VAPT (Third-party vendor) — SEBI requirement
+- AI/ML model bias review (Data Science + Ethics Team) — AI/ML Governance Policy
+
+ANNUALLY:
+- RBI data localization self-certification
+- GDPR DPA renewals with all third-party processors
+- Full vendor security assessment (Vendor Management team)
+- AI/ML Governance Policy review and update
+- Data Privacy Policy review and update
+- IT Security Policy review and update
+
+CROSS-REFERENCES:
+- Board Compliance Report Q3 2025 — current compliance baseline
+- Compliance Breach History — past incidents that inform risk priorities
+- SEBI Cyber Security Framework — audit preparation
+- EU AI Act Compliance Notice — high-risk model timeline
+- DPDPA Amendment 2026 — anticipated changes

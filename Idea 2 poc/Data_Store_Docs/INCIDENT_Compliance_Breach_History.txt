@@ -1,0 +1,76 @@
+DOCUMENT TYPE: Compliance Incident History
+REGISTRY: Historical Compliance Breaches and Regulatory Penalties
+VERSION: 1.0
+LAST UPDATED: 2025-11-01
+OWNER: Chief Compliance Officer (CCO)
+CLASSIFICATION: CONFIDENTIAL
+PURPOSE: Institutional memory of past compliance failures to prevent recurrence and inform risk assessments.
+
+═══════════════════════════════════════════
+INCIDENT 1: GDPR BREACH NOTIFICATION DELAY
+═══════════════════════════════════════════
+Incident ID: COMP-2024-003
+Date: 2024-03-15
+Regulation Violated: GDPR (Article 33 — 72-hour breach notification)
+Supervisory Authority: Irish Data Protection Commission (DPC)
+
+INCIDENT SUMMARY:
+A data breach affecting 8,200 EU customer records (email addresses and purchase history) was discovered on March 12, 2024. The Security Operations team confirmed the breach within 4 hours. However, the notification to the Irish DPC was delayed to 96 hours (4 days) due to confusion over the internal escalation process — the Security team notified Legal, but Legal waited for CPO sign-off before filing, adding 2 unnecessary days.
+
+PENALTY: EUR 150,000 fine imposed by the Irish DPC.
+ROOT CAUSE: Internal escalation procedure was ambiguous — no clear ownership of breach notification to supervisory authority.
+REMEDIATION:
+- Updated Incident Response SOP with explicit 24-hour internal escalation deadline (leaving 48 hours for DPC filing).
+- Appointed DPO as single owner of supervisory authority notifications.
+- Implemented automated breach detection pipeline that triggers DPO alert within 1 hour.
+
+LESSON LEARNED: The 72-hour GDPR window is absolute. Internal processes must leave a 24-hour buffer for drafting and filing the notification. Delays in internal approvals directly translate to regulatory penalties.
+
+═══════════════════════════════════════════
+INCIDENT 2: RBI DATA LOCALIZATION NON-COMPLIANCE
+═══════════════════════════════════════════
+Incident ID: COMP-2024-007
+Date: 2024-08-22
+Regulation Violated: RBI Circular on Storage of Payment System Data (April 2018, reiterated March 2024)
+Supervisory Authority: Reserve Bank of India
+
+INCIDENT SUMMARY:
+During a scheduled RBI inspection, auditors discovered that the CRM system's disaster recovery replica in Singapore contained payment-adjacent data — specifically, transaction summary records linked to customer profiles. While the core payment data (card numbers, UPI VPAs) was correctly localized in India via PaySecure, the CRM's transaction sync included settlement amounts and transaction dates, which RBI classified as "payment system data" under its circular.
+
+PENALTY: Written warning from RBI with 90-day remediation deadline. Failure to remediate would result in suspension of certain payment processing capabilities.
+ROOT CAUSE: The definition of "payment system data" in our Data Privacy Policy was narrower than RBI's definition. We only treated card/UPI data as payment data, while RBI includes any data "associated with payment transactions."
+REMEDIATION:
+- Expanded the definition of payment data in Data Privacy Policy v3.2 to align with RBI's broader scope.
+- Modified CRM-to-Singapore DR replication to exclude transaction-related fields.
+- Added automated data classification tagging for payment-adjacent data.
+- Scheduled quarterly audit of DR data to ensure no payment data leakage.
+
+LESSON LEARNED: Regulatory definitions of data categories are often BROADER than internal definitions. When assessing localization compliance, we must use the REGULATOR's definition, not our own. This applies to all regulations — GDPR's definition of "personal data," RBI's "payment system data," and SEBI's "material information."
+
+═══════════════════════════════════════════
+INCIDENT 3: EU AI ACT TRANSPARENCY WARNING
+═══════════════════════════════════════════
+Incident ID: COMP-2025-002
+Date: 2025-06-10
+Regulation: EU AI Act (Article 52 — Transparency Obligations)
+Status: Pre-enforcement advisory (no fine, but formal warning)
+
+INCIDENT SUMMARY:
+An EU Supervisory Authority pre-enforcement review flagged that our Customer Portal uses AI-generated product recommendations served to EU customers without any disclosure. Article 52 of the EU AI Act requires that when AI interacts with humans, they must be notified that they are interacting with an AI system. Our Product Recommendation Engine (MEDIUM IMPACT) generates personalized product suggestions visible on the Customer Portal, but no transparency notice is displayed.
+
+PENALTY: No fine (pre-enforcement period), but formal advisory letter with 6-month remediation deadline.
+ROOT CAUSE: AI/ML Governance Policy requires Model Cards for HIGH IMPACT models but does not mandate transparency notices for MEDIUM IMPACT models like the Product Recommendation Engine.
+REMEDIATION:
+- Added AI disclosure banner to Customer Portal: "Recommendations powered by AI"
+- Updated AI/ML Governance Policy to require transparency notices for ALL models serving end users, regardless of impact level.
+- Commissioned audit of all customer-facing AI touchpoints.
+
+LESSON LEARNED: The EU AI Act's transparency requirements apply to LIMITED-RISK and HIGH-RISK AI systems alike. Internal impact classification (HIGH/MEDIUM/LOW) must not be used as a proxy for regulatory classification. Any AI system interacting with EU citizens must have transparency controls.
+
+CROSS-REFERENCES:
+- Data Privacy Policy v3.2 — expanded payment data definition after Incident 2
+- IT Security Policy v2 — incident escalation updated after Incident 1
+- AI/ML Governance Policy — transparency requirement expanded after Incident 3
+- GDPR Data Processing Addendum — breach notification process
+- RBI Data Localization Circular — scope of "payment system data"
+- EU AI Act Compliance Notice — transparency obligations

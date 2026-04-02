@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulatory Change Impact Radar</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #09090b;
+            --bg-panel: rgba(24, 24, 27, 0.7);
+            --bg-panel-hover: rgba(39, 39, 42, 0.8);
+            --border-color: rgba(255, 255, 255, 0.08);
+
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.4);
+            --secondary: #3b82f6;
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+
+            --critical: #ef4444;
+            --high: #f97316;
+            --medium: #eab308;
+            --low: #22c55e;
+
+            --glass-blur: blur(12px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+        }
+
+        /* Glass Panel Standard */
+        .glass-panel {
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            height: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            background: rgba(9, 9, 11, 0.8);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            color: var(--primary);
+            -webkit-text-fill-color: initial;
+        }
+
+        .nav-section {
+            margin-bottom: 32px;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-btn i {
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .header {
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: flex;
+            gap: 24px;
+        }
+
+        .metric-item {
+            text-align: right;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .view-section {
+            display: none;
+            height: 100%;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .view-section.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dashboard / Graph View */
+        .graph-wrapper {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4) 0%, transparent 70%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .graph-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .graph-line {
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 2;
+            transition: stroke 0.3s ease, stroke-width 0.3s ease;
+        }
+
+        .graph-line.active-scan {
+            stroke: var(--primary);
+            stroke-width: 3;
+            stroke-dasharray: 10;
+            animation: dash 1s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        .node {
+            position: absolute;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .node:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .node-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .node-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .node-type-policy .node-icon {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .node-type-system .node-icon {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .node-type-contract .node-icon {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .node-type-regulation .node-icon {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .node.pulsing .node-icon {
+            animation: pulse-node 2s infinite;
+        }
+
+        @keyframes pulse-node {
+            0% {
+                box-shadow: 0 0 0 0 var(--primary-glow);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(139, 92, 246, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+            }
+        }
+
+        /* Scenario View */
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .doc-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .doc-body {
+            padding: 32px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: rgba(248, 250, 252, 0.9);
+            border-left: 4px solid var(--primary);
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.05), transparent);
+        }
+
+        .action-bar {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        /* Processing View */
+        .processing-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .ai-brain {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 40px;
+        }
+
+        .ai-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            border-radius: 30%;
+            animation: morph 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+        }
+
+        .ai-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px dashed rgba(139, 92, 246, 0.5);
+            border-radius: 50%;
+            animation: spin 8s linear infinite;
+        }
+
+        .ai-ring:nth-child(2) {
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            transform: scale(1.2);
+            animation: spin-reverse 12s linear infinite;
+        }
+
+        @keyframes morph {
+            0% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+
+            25% {
+                border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+            }
+
+            50% {
+                border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+            }
+
+            75% {
+                border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+            }
+
+            100% {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            }
+
+            to {
+                box-shadow: 0 0 50px rgba(59, 130, 246, 0.8), 0 0 100px rgba(139, 92, 246, 0.4);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin-reverse {
+            100% {
+                transform: scale(1.2) rotate(-360deg);
+            }
+        }
+
+        .processing-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--text-main);
+            margin-bottom: 16px;
+        }
+
+        .processing-logs {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            height: 60px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .log-line {
+            animation: slideUp 0.3s ease forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Results View */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: calc(100% - 60px);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-header i {
+            color: var(--primary);
+        }
+
+        .impact-list,
+        .remediation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .impact-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid transparent;
+            position: relative;
+        }
+
+        .impact-item.critical {
+            border-left-color: var(--critical);
+        }
+
+        .impact-item.high {
+            border-left-color: var(--high);
+        }
+
+        .impact-item.medium {
+            border-left-color: var(--medium);
+        }
+
+        .item-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .badge.critical {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--critical);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge.high {
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--high);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .badge.medium {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--medium);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .item-detail {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .item-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .remediation-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .status-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rem-content {
+            flex: 1;
+        }
+
+        .rem-title {
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: rgba(248, 250, 252, 0.9);
+        }
+
+        .rem-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .rem-meta div {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rem-meta i {
+            color: var(--secondary);
+        }
+
+        .rem-meta .deadline i {
+            color: var(--high);
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar glass-panel"
+        style="border-radius: 0; border-top: none; border-bottom: none; border-left: none;">
+        <div class="logo">
+            <i class="fa-solid fa-satellite-dish"></i> Radar Impact
+        </div>
+
+        <div class="nav-section">
+            <h3>Knowledge Graph</h3>
+            <div class="nav-btn active" id="btn-dashboard" onclick="showDashboard()">
+                <i class="fa-solid fa-diagram-project"></i> Enterprise Map
+            </div>
+        </div>
+
+        <div class="nav-section" style="flex: 1;">
+            <h3>Simulate Regulation</h3>
+            <div class="nav-btn" id="btn-scen-1" onclick="loadScenario(1)">
+                <i class="fa-solid fa-file-shield"></i> Data Localization
+            </div>
+            <div class="nav-btn" id="btn-scen-2" onclick="loadScenario(2)">
+                <i class="fa-solid fa-file-signature"></i> Consent Management
+            </div>
+            <div class="nav-btn" id="btn-scen-3" style="opacity: 0.5; cursor: not-allowed;">
+                <i class="fa-solid fa-file-medical"></i> Clinical Data Act (Locked)
+            </div>
+        </div>
+
+        <div class="user-profile"
+            style="display: flex; align-items: center; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border-color);">
+            <img src="https://ui-avatars.com/api/?name=Compliance+Officer&background=8b5cf6&color=fff"
+                style="width: 32px; height: 32px; border-radius: 50%;" alt="User">
+            <div>
+                <div style="font-size: 0.85rem; font-weight: 500;">Compliance Officer</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Enterprise Viewer</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title" id="main-title">Continuous Regulatory Radar</div>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-value">1,248</div>
+                    <div class="metric-label">Active Policies</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">54</div>
+                    <div class="metric-label">Monitored Regs</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-area">
+
+            <!-- VIEW: DASHBOARD (KNOWLEDGE GRAPH) -->
+            <div id="view-dashboard" class="view-section active">
+                <div class="graph-wrapper">
+                    <div class="graph-container" id="graph-container">
+                        <svg class="graph-svg" id="graph-svg">
+                            <!-- Lines generated by JS -->
+                        </svg>
+
+                        <!-- Nodes -->
+                        <!-- Regulations -->
+                        <div class="node node-type-regulation" style="top: 20%; left: 50%;" id="node-r1">
+                            <div class="node-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                            <div class="node-label">DPDPA 2023</div>
+                        </div>
+                        <div class="node node-type-regulation" style="top: 15%; left: 30%;" id="node-r2">
+                            <div class="node-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                            <div class="node-label">RBI Cyber Guidelines</div>
+                        </div>
+
+                        <!-- Policies -->
+                        <div class="node node-type-policy" style="top: 50%; left: 30%;" id="node-p1">
+                            <div class="node-icon"><i class="fa-solid fa-file-shield"></i></div>
+                            <div class="node-label">Global Privacy Policy</div>
+                        </div>
+                        <div class="node node-type-policy" style="top: 45%; left: 70%;" id="node-p2">
+                            <div class="node-icon"><i class="fa-solid fa-file-shield"></i></div>
+                            <div class="node-label">Data Retention SOP</div>
+                        </div>
+                        <div class="node node-type-policy" style="top: 60%; left: 50%;" id="node-p3">
+                            <div class="node-icon"><i class="fa-solid fa-file-shield"></i></div>
+                            <div class="node-label">Data Storage Guidelines</div>
+                        </div>
+
+                        <!-- Systems -->
+                        <div class="node node-type-system" style="top: 85%; left: 40%;" id="node-s1">
+                            <div class="node-icon"><i class="fa-solid fa-server"></i></div>
+                            <div class="node-label">Customer Data Lake</div>
+                        </div>
+                        <div class="node node-type-system" style="top: 80%; left: 20%;" id="node-s2">
+                            <div class="node-icon"><i class="fa-brands fa-salesforce"></i></div>
+                            <div class="node-label">Salesforce CRM</div>
+                        </div>
+
+                        <!-- Contracts -->
+                        <div class="node node-type-contract" style="top: 85%; left: 70%;" id="node-c1">
+                            <div class="node-icon"><i class="fa-solid fa-file-signature"></i></div>
+                            <div class="node-label">AWS APAC Agreement</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SCENARIO DOCUMENT -->
+            <div id="view-scenario" class="view-section">
+                <div class="glass-panel" style="padding: 40px; margin: 0 auto; max-width: 900px; width: 100%;">
+                    <div class="document-container">
+                        <div class="doc-header">
+                            <div>
+                                <h2 style="font-size: 1.8rem; margin-bottom: 8px;" id="scen-title">Title</h2>
+                                <div class="badge critical">New Circular Detected</div>
+                                <div class="doc-meta">
+                                    <span><i class="fa-regular fa-building"></i> <strong
+                                            id="scen-source">Source</strong></span>
+                                    <span><i class="fa-regular fa-calendar"></i> Today</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-file-pdf" style="font-size: 3rem; color: #ef4444; opacity: 0.8;"></i>
+                        </div>
+
+                        <div class="doc-body" id="scen-text">
+                            Text
+                        </div>
+
+                        <div class="action-bar">
+                            <button class="btn-primary" onclick="startAnalysis()">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Assess Impact with Gemini
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: PROCESSING -->
+            <div id="view-processing" class="view-section">
+                <div class="processing-container">
+                    <div class="ai-brain">
+                        <div class="ai-ring"></div>
+                        <div class="ai-ring"></div>
+                        <div class="ai-core"></div>
+                    </div>
+                    <div class="processing-text" id="proc-text">Initializing Gemini 1.5 Pro Context Window...</div>
+                    <div class="processing-logs" id="proc-logs">
+                        <!-- Logs injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: RESULTS -->
+            <div id="view-results" class="view-section">
+                <div style="margin-bottom: 24px;">
+                    <h2 style="font-size: 1.5rem; display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-shield-check" style="color: var(--low);"></i> Impact Assessment Report
+                    </h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;" id="res-subtitle">Generated
+                        based on internal knowledge graph semantic mapping.</p>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Impact Area -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <i class="fa-solid fa-bullseye"></i> Affected Assets
+                        </div>
+                        <div class="impact-list" id="res-impacts">
+                            <!-- Items injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Remediation Area -->
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <i class="fa-solid fa-list-check"></i> Remediation Tracker
+                        </div>
+                        <div class="remediation-list" id="res-remediations">
+                            <!-- Items injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Graph Data Representation
+        const graphEdges = [
+            { source: 'r1', target: 'p1' },
+            { source: 'r2', target: 'p3' },
+            { source: 'p1', target: 's2' },
+            { source: 'p1', target: 'p3' },
+            { source: 'p3', target: 's1' },
+            { source: 'p2', target: 's1' },
+            { source: 'p3', target: 'c1' },
+            { source: 'c1', target: 's1' }
+        ];
+
+        // Scenario Data
+        const scenarios = {
+            1: {
+                title: "Data Localization Mandate",
+                source: "Reserve Bank of India (Synthetic)",
+                text: `<strong>Circular No. RBI/2026-27/45</strong><br><br>Effective immediately, to ensure data sovereignty and security, all primary financial and transaction data processed by regulated entities must be localized and stored exclusively within the geographic boundaries of India.<br><br>Entities are required to ensure compliance within 180 days from the date of this circular. Cross-border replication of primary transaction data for backup purposes requires explicit prior approval and must conform to specific encryption standards. Any vendor contracts allowing data residency outside the jurisdiction must be renegotiated.`,
+                impacts: [
+                    { type: "Vendor Contract", icon: "fa-file-signature", name: "AWS APAC Master Agreement", severity: "critical", detail: "SLA Clause 4.2 allows data residency and backup replication in the Singapore region." },
+                    { type: "IT System", icon: "fa-server", name: "Customer Data Lake", severity: "critical", detail: "Automated disaster recovery replication is currently configured for the EU region." },
+                    { type: "Policy", icon: "fa-file-shield", name: "Data Storage Guidelines v3.0", severity: "high", detail: "Policy lacks an explicit 'India-only' data residency mandate clause." }
+                ],
+                remediations: [
+                    { task: "Renegotiate Cloud Vendor Hosting Region Clause", owner: "Legal & Sourcing", deadline: "60 Days" },
+                    { task: "Re-architect Data Lake DR to Mumbai Region", owner: "IT Infrastructure", deadline: "120 Days" },
+                    { task: "Draft Addendum for Data Storage Guidelines", owner: "Compliance Team", deadline: "30 Days" }
+                ],
+                graphHighlights: ['r2', 'p3', 's1', 'c1']
+            },
+            2: {
+                title: "Consent Management Update",
+                source: "Data Protection Board (DPDPA Synthetic)",
+                text: `<strong>Notification: Amendments to Consent Framework</strong><br><br>Organizations acting as Data Fiduciaries must implement verifiable, explicit opt-in consent mechanisms for all marketing and promotional communications.<br><br>The utilization of 'deemed consent' or pre-ticked opt-in checkboxes is no longer considered valid. All legacy data subjects must be presented with a renewed consent mechanism upon next login. Non-compliance by Q3 2026 will incur structural penalties aligned with Section 11 of the primary Act.`,
+                impacts: [
+                    { type: "Policy", icon: "fa-file-shield", name: "Global Privacy Policy", severity: "critical", detail: "Section 3.1 currently outlines an 'opt-out' model for marketing communications." },
+                    { type: "IT System", icon: "fa-salesforce", name: "Salesforce CRM", severity: "high", detail: "Default 'Marketing Consent' custom field flag is set to 'TRUE' on lead creation." },
+                    { type: "Policy", icon: "fa-file-shield", name: "Data Retention SOP", severity: "medium", detail: "Doesn't explicitly specify deletion protocols upon withdrawal of explicit consent." }
+                ],
+                remediations: [
+                    { task: "Rewrite Section 3.1 of Privacy Policy to Explicit Opt-In", owner: "Legal Counsel", deadline: "15 Days" },
+                    { task: "Reconfigure CRM default flags & Deploy UI Changes", owner: "IT Platforms", deadline: "45 Days" },
+                    { task: "Update Campaign Approval Workflows", owner: "Marketing Ops", deadline: "20 Days" }
+                ],
+                graphHighlights: ['r1', 'p1', 's2', 'p2']
+            }
+        };
+
+        let currentScenario = null;
+
+        // Initialization
+        window.onload = () => {
+            drawGraphEdges();
+            // Handle window resize for graph redrawing
+            window.addEventListener('resize', drawGraphEdges);
+        };
+
+        function drawGraphEdges() {
+            const svg = document.getElementById('graph-svg');
+            const container = document.getElementById('graph-container');
+            if (!svg || !container) return;
+
+            svg.innerHTML = '';
+
+            const containerRect = container.getBoundingClientRect();
+
+            graphEdges.forEach(edge => {
+                const sourceNode = document.getElementById(`node-${edge.source}`);
+                const targetNode = document.getElementById(`node-${edge.target}`);
+
+                if (sourceNode && targetNode) {
+                    const sourceRect = sourceNode.getBoundingClientRect();
+                    const targetRect = targetNode.getBoundingClientRect();
+
+                    // Calculate relative centers
+                    const x1 = (sourceRect.left + sourceRect.width / 2 - containerRect.left);
+                    const y1 = (sourceRect.top + sourceRect.height / 2 - containerRect.top);
+                    const x2 = (targetRect.left + targetRect.width / 2 - containerRect.left);
+                    const y2 = (targetRect.top + targetRect.height / 2 - containerRect.top);
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', x1);
+                    line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2);
+                    line.setAttribute('y2', y2);
+                    line.setAttribute('class', `graph-line edge-${edge.source} edge-${edge.target}`);
+                    svg.appendChild(line);
+                }
+            });
+        }
+
+        // Navigation
+        function updateNav(activeId) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if (activeId) document.getElementById(activeId).classList.add('active');
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function showDashboard() {
+            updateNav('btn-dashboard');
+            document.getElementById('main-title').innerText = "Continuous Regulatory Radar";
+            switchView('view-dashboard');
+            // Reset highlights
+            document.querySelectorAll('.node').forEach(n => n.classList.remove('pulsing'));
+        }
+
+        function loadScenario(id) {
+            currentScenario = scenarios[id];
+            updateNav(`btn-scen-${id}`);
+
+            document.getElementById('scen-title').innerText = currentScenario.title;
+            document.getElementById('scen-source').innerText = currentScenario.source;
+            document.getElementById('scen-text').innerHTML = currentScenario.text;
+
+            document.getElementById('main-title').innerText = "Incoming Regulatory Document";
+            switchView('view-scenario');
+        }
+
+        // Processing Simulation
+        async function startAnalysis() {
+            document.getElementById('main-title').innerText = "Impact Analysis Processing...";
+            switchView('view-processing');
+
+            const logsContainer = document.getElementById('proc-logs');
+            const procText = document.getElementById('proc-text');
+            logsContainer.innerHTML = '';
+
+            const simulateLog = async (text, delay, isStatus = false) => {
+                await new Promise(r => setTimeout(r, delay));
+                const p = document.createElement('div');
+                p.className = 'log-line';
+                p.innerText = `> ${text}`;
+                logsContainer.appendChild(p);
+                if (logsContainer.children.length > 3) logsContainer.firstChild.remove();
+                if (isStatus) procText.innerText = text;
+            };
+
+            await simulateLog("Uploading document to Vertex AI...", 500, true);
+            await simulateLog("Extracting clauses via Gemini 1.5 Pro Context...", 1000, true);
+            await simulateLog("Found 3 actionable regulatory clauses.", 800);
+            await simulateLog("Mapping concepts to Enterprise Knowledge Graph...", 1200, true);
+            await simulateLog("Calculating Semantic similarity scores...", 600);
+            await simulateLog("Identified 3 potential conflicts.", 800);
+            await simulateLog("Generating Remediation Plan...", 1000, true);
+            await simulateLog("Finalizing Report...", 500);
+
+            showResults();
+        }
+
+        // Results Rendering
+        function showResults() {
+            document.getElementById('main-title').innerText = currentScenario.title;
+
+            // Render Impacts
+            const impactsHtml = currentScenario.impacts.map(imp => `
+                <div class="impact-item ${imp.severity}">
+                    <div class="item-head">
+                        <div class="item-title">${imp.name}</div>
+                        <div class="badge ${imp.severity}">${imp.severity}</div>
+                    </div>
+                    <div class="item-type"><i class="fa-solid ${imp.icon}"></i> ${imp.type}</div>
+                    <div class="item-detail">${imp.detail}</div>
+                </div>
+            `).join('');
+            document.getElementById('res-impacts').innerHTML = impactsHtml;
+
+            // Render Remediations
+            const remsHtml = currentScenario.remediations.map(rem => `
+                <div class="remediation-item">
+                    <div class="status-circle"></div>
+                    <div class="rem-content">
+                        <div class="rem-title">${rem.task}</div>
+                        <div class="rem-meta">
+                            <div><i class="fa-solid fa-user-tie"></i> ${rem.owner}</div>
+                            <div class="deadline"><i class="fa-solid fa-clock"></i> ${rem.deadline}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('res-remediations').innerHTML = remsHtml;
+
+            switchView('view-results');
+        }
+
+    </script>
+</body>
+
+</html>

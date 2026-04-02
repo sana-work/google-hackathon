@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Regulatory Change Impact Radar — Supporting Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #4A148C;
+            --accent: #FFB300;
+            --text: #2c3e50;
+            --bg-alt: #f8f9fa;
+            --border: #e0e0e0;
+            --danger: #c62828;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 11pt;
+        }
+
+        .page {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 25mm 20mm;
+            page-break-after: always;
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, #4A148C, #1A237E, #0D47A1);
+            color: white;
+            padding: 40mm 20mm;
+        }
+
+        .cover .badge {
+            background: rgba(255, 179, 0, 0.25);
+            border: 1px solid rgba(255, 179, 0, 0.6);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 12pt;
+            font-weight: 500;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .cover h1 {
+            font-size: 34pt;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .cover .sub {
+            font-size: 15pt;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 520px;
+        }
+
+        .cover .tag {
+            font-size: 13pt;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 30px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .cover .meta {
+            font-size: 10pt;
+            opacity: 0.7;
+        }
+
+        h2 {
+            font-size: 18pt;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 13pt;
+            font-weight: 600;
+            color: #6A1B9A;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 9.5pt;
+        }
+
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-alt);
+        }
+
+        .callout {
+            border-left: 4px solid var(--accent);
+            background: #FFF8E1;
+            padding: 15px 18px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 10.5pt;
+        }
+
+        .callout.danger {
+            border-left-color: var(--danger);
+            background: #ffebee;
+        }
+
+        .callout.info {
+            border-left-color: var(--primary);
+            background: #EDE7F6;
+        }
+
+        .arch-img {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .arch-img img {
+            max-width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            margin: 8px 0 12px 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            font-size: 10.5pt;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--primary), #1A237E);
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-card .value {
+            font-size: 22pt;
+            font-weight: 800;
+        }
+
+        .metric-card .label {
+            font-size: 8.5pt;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .sn {
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13pt;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .ex {
+            background: #EDE7F6;
+            border: 1px solid #CE93D8;
+            border-radius: 8px;
+            padding: 15px 18px;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        .ex .t {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 11pt;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 8pt;
+            color: #546e7a;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        @media print {
+            body {
+                font-size: 10pt;
+            }
+
+            .page {
+                padding: 15mm;
+            }
+
+            .cover {
+                min-height: auto;
+                padding: 30mm 15mm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cover">
+        <div class="badge">♦ Intelligent Search & Gemini Enterprise</div>
+        <h1>Regulatory Change<br>Impact Radar</h1>
+        <p class="sub">AI-Powered Regulatory Intelligence & Automated Impact Assessment</p>
+        <div class="tag">"An automated regulatory nervous system — proactively scanning<br>for changes and instantly
+            mapping impact across the enterprise."</div>
+        <p class="meta">tcs<sup>AI</sup> Google Hackathon 2026 — Ideathon Phase | February 2026</p>
+    </div>
+
+    <div class="page">
+        <h2><span class="sn">1</span> Problem Statement</h2>
+        <p>Regulated industries face a relentless stream of regulatory changes. Compliance teams <strong>manually read
+                hundreds of pages</strong> to assess which internal policies, SOPs, IT systems, and contracts are
+            affected.</p>
+        <div class="callout danger"><strong>⚠ Risk:</strong> Missing a regulatory impact can result in ₹10Cr-₹500Cr+
+            penalties, license revocation, and reputational damage.</div>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Reality</th>
+            </tr>
+            <tr>
+                <td>Regulatory updates/year</td>
+                <td>300-500+ across jurisdictions</td>
+            </tr>
+            <tr>
+                <td>Pages per regulation</td>
+                <td>20-200+ pages</td>
+            </tr>
+            <tr>
+                <td>Time to assess (manual)</td>
+                <td>2-6 weeks per change</td>
+            </tr>
+            <tr>
+                <td>Cost of non-compliance</td>
+                <td>₹10Cr - ₹500Cr+</td>
+            </tr>
+        </table>
+
+        <h2><span class="sn">2</span> Solution</h2>
+        <p>An AI system creating an <strong>automated regulatory nervous system</strong> — scanning, matching, and
+            generating structured impact assessments.</p>
+        <ul>
+            <li><strong>Regulatory Monitoring:</strong> Gemini 1.5 Pro parses complex legal language and extracts
+                actionable clauses</li>
+            <li><strong>Enterprise Knowledge Graph:</strong> Semantic index of policies, SOPs, IT systems, data flows,
+                vendor contracts with mapped dependencies</li>
+            <li><strong>Impact Analysis:</strong> Severity-rated reports (Critical/High/Medium/Low) with affected assets
+                and effort estimates</li>
+            <li><strong>Remediation Tracker:</strong> Auto-generates tasks with owners, deadlines, and dependencies</li>
+            <li><strong>Audit Trail:</strong> Regulation → Impact → Remediation → Completion evidence</li>
+        </ul>
+
+        <h2><span class="sn">3</span> Architecture</h2>
+        <div class="arch-img"><img src="regulatory_radar_architecture.png" alt="Architecture"></div>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Google Service</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Document Understanding</td>
+                <td>Gemini 1.5 Pro</td>
+                <td>Long-context regulatory parsing</td>
+            </tr>
+            <tr>
+                <td>Semantic Search</td>
+                <td>Vertex AI Search</td>
+                <td>RAG over knowledge graph</td>
+            </tr>
+            <tr>
+                <td>Extraction</td>
+                <td>Document AI</td>
+                <td>Structured PDF extraction</td>
+            </tr>
+            <tr>
+                <td>Monitoring</td>
+                <td>Cloud Functions</td>
+                <td>Scheduled source scanning</td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>BigQuery</td>
+                <td>History & assessments</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="page">
+        <h2><span class="sn">4</span> Use Cases</h2>
+        <div class="ex">
+            <div class="t">📋 Example 1: Data Localization Circular</div>
+            <p><strong>Regulation:</strong> All financial data must be stored within India within 180 days.</p>
+            <p><strong>Impact:</strong> Cloud vendor contract (Singapore) — <strong
+                    style="color:#c62828">CRITICAL</strong>. Data Lake EU replication — <strong
+                    style="color:#c62828">CRITICAL</strong>. 3 policies need updates — <strong
+                    style="color:#f57f17">HIGH</strong>.</p>
+            <p><strong>Actions:</strong> Vendor renegotiation (Legal, 60d), Migration (IT, 120d), Policy update
+                (Compliance, 30d)</p>
+        </div>
+        <div class="ex">
+            <div class="t">📋 Example 2: Consent Management Update</div>
+            <p><strong>Regulation:</strong> Explicit opt-in consent required for marketing communications.</p>
+            <p><strong>Impact:</strong> Privacy policy uses opt-out — <strong style="color:#c62828">CRITICAL</strong>.
+                CRM default "opted-in" — <strong style="color:#f57f17">HIGH</strong>. Marketing SOP gap — <strong
+                    style="color:#f57f17">HIGH</strong>.</p>
+            <p><strong>Actions:</strong> Policy rewrite (Legal, 15d), CRM change (IT, 45d), SOP update (Marketing, 20d)
+            </p>
+        </div>
+
+        <h2><span class="sn">5</span> Business Value</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="value">90%</div>
+                <div class="label">Reduction in assessment time</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">95%+</div>
+                <div class="label">Dependency detection coverage</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">₹2-5Cr</div>
+                <div class="label">Annual savings per client</div>
+            </div>
+        </div>
+        <ul>
+            <li><strong>Consulting differentiator:</strong> "Regulatory Intelligence-as-a-Service"</li>
+            <li><strong>Risk mitigation:</strong> Prevent penalty exposure worth hundreds of crores</li>
+            <li><strong>Scalable:</strong> Applicable across BFSI, pharma, healthcare, telecom</li>
+        </ul>
+
+        <h2><span class="sn">6</span> Novelty</h2>
+        <div class="callout info"><strong>💡 Key Insight:</strong> Everyone builds "search over documents." Nobody
+            builds <em>automated cross-system regulatory impact analysis</em> with knowledge graph mapping.</div>
+        <table>
+            <tr>
+                <th>Aspect</th>
+                <th>Existing</th>
+                <th>Impact Radar</th>
+            </tr>
+            <tr>
+                <td>Monitoring</td>
+                <td>Manual</td>
+                <td>Automated, continuous</td>
+            </tr>
+            <tr>
+                <td>Analysis</td>
+                <td>Expert guesses</td>
+                <td>Semantic + knowledge graph</td>
+            </tr>
+            <tr>
+                <td>Speed</td>
+                <td>Weeks</td>
+                <td>Hours</td>
+            </tr>
+            <tr>
+                <td>Output</td>
+                <td>Word doc</td>
+                <td>Structured report + tracker</td>
+            </tr>
+        </table>
+
+        <h2><span class="sn">7</span> Security & Roadmap</h2>
+        <table>
+            <tr>
+                <th>Aspect</th>
+                <th>Implementation</th>
+            </tr>
+            <tr>
+                <td>Access Control</td>
+                <td>Role-based — compliance, legal, IT, auditors</td>
+            </tr>
+            <tr>
+                <td>Privacy</td>
+                <td>Synthetic data only; no real client data</td>
+            </tr>
+            <tr>
+                <td>Human-in-the-Loop</td>
+                <td>AI recommends; humans validate & approve</td>
+            </tr>
+            <tr>
+                <td>Responsible AI</td>
+                <td>Explainable — findings cite specific clauses</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>Timeline</th>
+                <th>Deliverables</th>
+            </tr>
+            <tr>
+                <td>PoC</td>
+                <td>2-3 weeks</td>
+                <td>5-10 regulations + 15 policies, impact demo</td>
+            </tr>
+            <tr>
+                <td>MVP</td>
+                <td>4-6 weeks</td>
+                <td>Monitoring + full graph + dashboard</td>
+            </tr>
+            <tr>
+                <td>Production</td>
+                <td>8-12 weeks</td>
+                <td>Multi-jurisdiction + GRC integration</td>
+            </tr>
+        </table>
+        <div class="footer">
+            <p>tcs<sup>AI</sup> Google Hackathon 2026 | All data is synthetic. No PII or client information included.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

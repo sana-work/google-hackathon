@@ -1,0 +1,66 @@
+DOCUMENT TYPE: Regulatory Amendment
+REGULATION: General Data Protection Regulation (GDPR) — Supplementary Rules on Cross-Border Data Transfers
+ISSUING AUTHORITY: European Data Protection Board (EDPB)
+REFERENCE: Guidelines 05/2025 on Cross-Border Data Transfers under Chapter V GDPR
+DATE OF ADOPTION: October 15, 2025
+EFFECTIVE DATE: January 15, 2026
+JURISDICTION: European Union / European Economic Area (EEA)
+APPLICABILITY: All controllers and processors transferring personal data of EEA residents to third countries
+
+═══════════════════════════════════════════
+SECTION 1 — ENHANCED TRANSFER IMPACT ASSESSMENTS (TIA)
+═══════════════════════════════════════════
+
+1.1 Mandatory TIA: Before any transfer of EEA personal data to a third country, the data exporter MUST conduct a documented Transfer Impact Assessment evaluating:
+    (a) The legal framework of the recipient country regarding government access to data
+    (b) The specific categories of personal data being transferred
+    (c) The technical and organizational measures in place to protect the data
+    (d) Whether the recipient country provides "essentially equivalent" protection to GDPR
+
+1.2 TIA Review Cycle: Transfer Impact Assessments must be reviewed and updated:
+    (a) At least annually
+    (b) Whenever there is a material change in the recipient country's legal framework
+    (c) Whenever the categories of data being transferred change
+
+═══════════════════════════════════════════
+SECTION 2 — STANDARD CONTRACTUAL CLAUSES (SCCs) — UPDATED REQUIREMENTS
+═══════════════════════════════════════════
+
+2.1 New Modular SCCs: All existing data transfer agreements using the 2021 SCCs must be updated to incorporate the new Supplementary Module (Module 5) addressing:
+    (a) Government access notification obligations
+    (b) Enhanced encryption-in-transit requirements (minimum TLS 1.3)
+    (c) Data breach notification to the exporter within 24 hours (reduced from 72 hours)
+
+2.2 Sub-Processor Chain: Data importers must maintain a complete, auditable chain of all sub-processors involved in processing the transferred data. Any sub-processor in a country without an adequacy decision must independently meet TIA requirements.
+
+═══════════════════════════════════════════
+SECTION 3 — SUPPLEMENTARY MEASURES
+═══════════════════════════════════════════
+
+3.1 Technical Measures (mandatory for all transfers):
+    (a) End-to-end encryption with keys controlled exclusively by the data exporter
+    (b) Pseudonymization at the point of export where feasible
+    (c) Access controls ensuring the data importer cannot decrypt data without exporter authorization (where technically possible)
+
+3.2 Organizational Measures (mandatory):
+    (a) Data importer must notify the exporter of any legally binding government access request before complying (unless prohibited by law)
+    (b) Data importer must challenge government access requests that are disproportionate
+    (c) Annual transparency report on government access requests received
+
+═══════════════════════════════════════════
+SECTION 4 — SPECIFIC COUNTRY GUIDANCE
+═══════════════════════════════════════════
+
+4.1 Countries with Adequacy Decision: Transfers proceed under normal GDPR rules. Current list includes: Japan, South Korea, United Kingdom, Canada (commercial organizations), Argentina, Israel, New Zealand, Switzerland, Uruguay.
+
+4.2 Countries WITHOUT Adequacy Decision (requiring SCC + TIA + Supplementary Measures): United States, India, Brazil, China, UAE, South Africa, and all others not listed above.
+
+4.3 Countries where transfer is HIGH RISK (requiring enhanced due diligence): Countries with broad government surveillance powers or without independent data protection authorities.
+
+═══════════════════════════════════════════
+SECTION 5 — ENFORCEMENT
+═══════════════════════════════════════════
+
+5.1 Supervisory authorities will prioritize enforcement actions against transfers lacking proper TIAs.
+5.2 Organizations found transferring data without adequate safeguards face fines up to €20 million or 4% of global annual turnover under GDPR Article 83.
+5.3 Supervisory authorities may issue emergency suspension orders for ongoing transfers deemed to pose immediate risk to data subjects.

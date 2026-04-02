@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Silent Escalation Predictor — Supporting Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #1B5E20;
+            --accent: #43A047;
+            --dark: #0D3311;
+            --text: #2c3e50;
+            --bg-alt: #f8f9fa;
+            --border: #e0e0e0;
+            --danger: #c62828;
+            --warn: #f57f17;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 11pt;
+        }
+
+        .page {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 25mm 20mm;
+            page-break-after: always;
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, #1B5E20, #004D40, #0D3311);
+            color: white;
+            padding: 40mm 20mm;
+        }
+
+        .cover .badge {
+            background: rgba(67, 160, 71, 0.3);
+            border: 1px solid rgba(67, 160, 71, 0.6);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 12pt;
+            font-weight: 500;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            color: #A5D6A7;
+        }
+
+        .cover h1 {
+            font-size: 34pt;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .cover .sub {
+            font-size: 15pt;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 520px;
+        }
+
+        .cover .tag {
+            font-size: 13pt;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 30px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .cover .meta {
+            font-size: 10pt;
+            opacity: 0.7;
+        }
+
+        h2 {
+            font-size: 18pt;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 13pt;
+            font-weight: 600;
+            color: #2E7D32;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 9.5pt;
+        }
+
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-alt);
+        }
+
+        .callout {
+            border-left: 4px solid var(--accent);
+            background: #E8F5E9;
+            padding: 15px 18px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 10.5pt;
+        }
+
+        .callout.danger {
+            border-left-color: var(--danger);
+            background: #ffebee;
+        }
+
+        .callout.info {
+            border-left-color: var(--primary);
+            background: #E8F5E9;
+        }
+
+        .arch-img {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .arch-img img {
+            max-width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            margin: 8px 0 12px 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            font-size: 10.5pt;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--primary), #004D40);
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-card .value {
+            font-size: 22pt;
+            font-weight: 800;
+        }
+
+        .metric-card .label {
+            font-size: 8.5pt;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .sn {
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13pt;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .risk-example {
+            background: #E8F5E9;
+            border: 1px solid #81C784;
+            border-radius: 8px;
+            padding: 15px 18px;
+            margin: 15px 0;
+            font-size: 10pt;
+        }
+
+        .risk-example .t {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 11pt;
+        }
+
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tier {
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+            color: white;
+            font-size: 9.5pt;
+        }
+
+        .tier .name {
+            font-weight: 700;
+            font-size: 12pt;
+            margin-bottom: 4px;
+        }
+
+        .tier.low {
+            background: #43A047;
+        }
+
+        .tier.med {
+            background: #F57F17;
+        }
+
+        .tier.high {
+            background: #C62828;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 8pt;
+            color: #546e7a;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        @media print {
+            body {
+                font-size: 10pt;
+            }
+
+            .page {
+                padding: 15mm;
+            }
+
+            .cover {
+                min-height: auto;
+                padding: 30mm 15mm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cover">
+        <div class="badge">♦ Customer Engagement Suite</div>
+        <h1>Silent Escalation<br>Predictor</h1>
+        <p class="sub">AI-Driven Predictive Retention Through Behavioral Silence Detection</p>
+        <div class="tag">"Your most dangerous churn isn't from complaints —<br>it's from the customers who simply go
+            quiet."</div>
+        <p class="meta">tcs<sup>AI</sup> Google Hackathon 2026 — Ideathon Phase | February 2026</p>
+    </div>
+
+    <div class="page">
+        <h2><span class="sn">1</span> Problem Statement</h2>
+        <p>The most dangerous customer attrition is <strong>silent disengagement</strong>. These customers don't
+            complain, don't leave reviews, don't respond to surveys. They simply fade away.</p>
+        <div class="callout danger">
+            <strong>⚠ Blind Spot:</strong> Only 4% of unhappy customers complain. Survey response rates are 5-15%. That
+            means 60-70% of churning customers show <em>none</em> of the traditional churn signals. By the time you
+            notice, they're gone.
+        </div>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Impact</th>
+            </tr>
+            <tr>
+                <td>Acquisition vs retention cost</td>
+                <td>Acquiring is 5-7x more expensive</td>
+            </tr>
+            <tr>
+                <td>Impact of 5% churn reduction</td>
+                <td>25-95% profit increase (HBR)</td>
+            </tr>
+            <tr>
+                <td>Silent churn proportion</td>
+                <td>60-70% of total churn</td>
+            </tr>
+            <tr>
+                <td>Detection with current tools</td>
+                <td>&lt;30% of silent churners found in time</td>
+            </tr>
+        </table>
+
+        <h2><span class="sn">2</span> Solution</h2>
+        <p>The <strong>Silent Escalation Predictor</strong> treats the <em>absence</em> of engagement as the most
+            powerful signal — fusing multi-channel behavioral data into a composite risk score and triggering
+            personalized interventions.</p>
+
+        <h3>Multi-Channel Behavioral Fusion</h3>
+        <table>
+            <tr>
+                <th>Channel</th>
+                <th>Signals</th>
+                <th>Silence Indicators</th>
+            </tr>
+            <tr>
+                <td>📱 Platform Usage</td>
+                <td>Logins, feature depth, sessions</td>
+                <td>Declining logins, shallow sessions</td>
+            </tr>
+            <tr>
+                <td>📧 Communication</td>
+                <td>Email opens, notifications, newsletters</td>
+                <td>Ignored emails, unopened content</td>
+            </tr>
+            <tr>
+                <td>🎫 Support</td>
+                <td>Tickets, surveys, FAQ visits</td>
+                <td>No tickets (disengaged, not happy)</td>
+            </tr>
+            <tr>
+                <td>💳 Transactions</td>
+                <td>Purchases, payments, plan changes</td>
+                <td>Declining frequency, late payments</td>
+            </tr>
+        </table>
+
+        <h3>Intervention Tiers</h3>
+        <div class="tier-grid">
+            <div class="tier low">
+                <div class="name">LOW RISK (0-40)</div>Auto email<br>Nurture campaign
+            </div>
+            <div class="tier med">
+                <div class="name">MEDIUM (41-70)</div>Agent outreach<br>Priority support
+            </div>
+            <div class="tier high">
+                <div class="name">HIGH RISK (71-100)</div>Manager escalation<br>Retention strategy
+            </div>
+        </div>
+
+        <h2><span class="sn">3</span> Architecture</h2>
+        <div class="arch-img"><img src="silent_predictor_architecture.png" alt="Architecture"></div>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Google Service</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Prediction</td>
+                <td>Vertex AI AutoML (Tabular)</td>
+                <td>Churn prediction on behavioral features</td>
+            </tr>
+            <tr>
+                <td>Orchestration</td>
+                <td>Vertex AI Pipelines</td>
+                <td>Data → Features → Predict → Act</td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td>Gemini API</td>
+                <td>Personalized re-engagement messages</td>
+            </tr>
+            <tr>
+                <td>Storage</td>
+                <td>BigQuery</td>
+                <td>Behavioral signals & tracking</td>
+            </tr>
+            <tr>
+                <td>Dashboard</td>
+                <td>Looker</td>
+                <td>Cohort analysis & effectiveness</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="page">
+        <h2><span class="sn">4</span> Explainable Prediction</h2>
+        <div class="risk-example">
+            <div class="t">🔴 Customer #A-7842 — Silent Risk Score: 87/100</div>
+            <table>
+                <tr>
+                    <th>Signal</th>
+                    <th>Detail</th>
+                    <th>Change</th>
+                </tr>
+                <tr>
+                    <td>Platform usage</td>
+                    <td>Logins: 12/week → 2/week</td>
+                    <td>↓ 83% over 30 days</td>
+                </tr>
+                <tr>
+                    <td>Email engagement</td>
+                    <td>Last 6 newsletters unopened</td>
+                    <td>↓ from 70% open rate</td>
+                </tr>
+                <tr>
+                    <td>Support</td>
+                    <td>2 tickets unresolved 14+ days</td>
+                    <td>No follow-up from customer</td>
+                </tr>
+                <tr>
+                    <td>Payments</td>
+                    <td>Last invoice 8 days late</td>
+                    <td>First late in 18 months</td>
+                </tr>
+            </table>
+            <p><strong>Prediction:</strong> 89% churn probability within 15-30 days<br>
+                <strong>Action:</strong> Manager escalation with priority ticket resolution + personalized outreach
+            </p>
+        </div>
+
+        <h2><span class="sn">5</span> Business Value</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="value">40-60%</div>
+                <div class="label">More churners caught<br>vs traditional models</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">15-25%</div>
+                <div class="label">Improvement in net<br>revenue retention</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">3-5x</div>
+                <div class="label">ROI on retention<br>interventions</div>
+            </div>
+        </div>
+        <ul>
+            <li><strong>Cross-industry:</strong> SaaS, telecom, banking, insurance, e-commerce</li>
+            <li><strong>Self-improving:</strong> Feedback loop makes predictions smarter over time</li>
+            <li><strong>Consulting upsell:</strong> "Customer Intelligence-as-a-Service" offering</li>
+            <li><strong>Measurable ROI:</strong> Clear metrics justify engagement expansion</li>
+        </ul>
+
+        <h2><span class="sn">6</span> Novelty</h2>
+        <div class="callout info"><strong>💡 Key Insight:</strong> Most systems look for complaints. This looks for the
+            <em>absence</em> of engagement — the silence before the storm. Counter-intuitive, but far more predictive.
+        </div>
+        <table>
+            <tr>
+                <th>Aspect</th>
+                <th>Traditional Models</th>
+                <th>Silent Predictor</th>
+            </tr>
+            <tr>
+                <td>Signals</td>
+                <td>Explicit (complaints)</td>
+                <td>Implicit (silence, decline)</td>
+            </tr>
+            <tr>
+                <td>Detection</td>
+                <td>Days before churn</td>
+                <td>30-60 days before</td>
+            </tr>
+            <tr>
+                <td>Explainability</td>
+                <td>"Will churn (70%)"</td>
+                <td>4-channel evidence breakdown</td>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <td>Manual follow-up</td>
+                <td>Auto-triggered, personalized</td>
+            </tr>
+            <tr>
+                <td>Learning</td>
+                <td>Static retraining</td>
+                <td>Continuous feedback loop</td>
+            </tr>
+        </table>
+
+        <h2><span class="sn">7</span> Security & Roadmap</h2>
+        <table>
+            <tr>
+                <th>Aspect</th>
+                <th>Implementation</th>
+            </tr>
+            <tr>
+                <td>Data Anonymization</td>
+                <td>No PII in model; aggregated behavioral metrics only</td>
+            </tr>
+            <tr>
+                <td>Consent</td>
+                <td>Interventions respect communication preferences</td>
+            </tr>
+            <tr>
+                <td>Human-in-the-Loop</td>
+                <td>High-risk escalations require human approval</td>
+            </tr>
+            <tr>
+                <td>Bias Monitoring</td>
+                <td>Regular fairness audits across demographics</td>
+            </tr>
+            <tr>
+                <td>Explainability</td>
+                <td>Every prediction includes specific evidence</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>Phase</th>
+                <th>Timeline</th>
+                <th>Deliverables</th>
+            </tr>
+            <tr>
+                <td>PoC</td>
+                <td>2-3 weeks</td>
+                <td>1000 synthetic profiles, prediction dashboard, Gemini outreach</td>
+            </tr>
+            <tr>
+                <td>MVP</td>
+                <td>4-6 weeks</td>
+                <td>All 4 channels, intervention tiers, feedback loop</td>
+            </tr>
+            <tr>
+                <td>Production</td>
+                <td>8-12 weeks</td>
+                <td>Real-time scoring, CRM integration, A/B testing</td>
+            </tr>
+        </table>
+        <div class="footer">
+            <p>tcs<sup>AI</sup> Google Hackathon 2026 | All data is synthetic. No PII or client information included.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

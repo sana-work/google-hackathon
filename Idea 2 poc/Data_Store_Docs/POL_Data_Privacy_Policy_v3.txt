@@ -1,0 +1,61 @@
+DOCUMENT TYPE: Internal Enterprise Policy
+POLICY: Data Privacy Policy
+VERSION: 3.2
+EFFECTIVE DATE: 2024-09-01
+LAST REVIEWED: 2025-06-15
+OWNER: Chief Privacy Officer (CPO) / Data Protection Officer (DPO)
+APPLICABILITY: All business units, IT systems, and third-party processors handling personal data
+
+═══════════════════════════════════════════
+SECTION 1 — DATA COLLECTION PRINCIPLES
+═══════════════════════════════════════════
+
+1.1 Purpose Limitation: Personal data shall be collected only for specific, documented business purposes. Each data collection point must have an approved Data Processing Impact Assessment (DPIA) on file.
+
+1.2 Consent Model: The organization currently operates an OPT-OUT consent model for non-sensitive personal data used in marketing and analytics. Customers are informed at sign-up and may opt out at any time via the preference center.
+    — NOTE: Sensitive personal data (health, biometric, financial) requires explicit opt-in consent.
+
+1.3 Data Minimization: Systems should collect only the data fields strictly necessary for the stated purpose. Unnecessary fields (e.g., collecting date of birth for a newsletter subscription) are prohibited.
+
+═══════════════════════════════════════════
+SECTION 2 — DATA RETENTION SCHEDULE
+═══════════════════════════════════════════
+
+2.1 Customer Profile Data: Retained for the duration of the customer relationship plus 5 years after account closure/last interaction.
+
+2.2 Transaction Data: Retained for 7 years per tax and financial regulatory requirements.
+
+2.3 Marketing and Analytics Data: Retained for 3 years from the date of collection. Must be anonymized if retained beyond this period.
+
+2.4 Employee Data: Retained for the duration of employment plus 7 years post-separation.
+
+2.5 System Logs (non-financial): Retained for 1 year, then purged automatically.
+
+2.6 Deletion Process: Data deletion is currently performed via QUARTERLY manual purge cycles managed by the IT Operations team. Automated deletion is planned but not yet implemented.
+
+═══════════════════════════════════════════
+SECTION 3 — CROSS-BORDER DATA HANDLING
+═══════════════════════════════════════════
+
+3.1 EU Customer Data: Processed in the EU-West (Frankfurt) data center. Standard Contractual Clauses (2021 version) are in place for any transfers outside the EU.
+
+3.2 Indian Customer Data: Processed in the India-Mumbai data center for general data. Financial data may be replicated to Singapore for disaster recovery purposes under the current vendor agreement.
+
+3.3 US Customer Data: Processed in the US-East (Virginia) data center. No cross-border restrictions currently enforced beyond contractual obligations.
+
+═══════════════════════════════════════════
+SECTION 4 — DATA SUBJECT RIGHTS
+═══════════════════════════════════════════
+
+4.1 Access Requests: Fulfilled within 30 days of receipt.
+4.2 Deletion Requests: Fulfilled within 30 days, subject to legal retention requirements.
+4.3 Portability Requests: Data export provided in CSV format within 15 business days.
+
+═══════════════════════════════════════════
+SECTION 5 — THIRD-PARTY DATA SHARING
+═══════════════════════════════════════════
+
+5.1 All third-party data sharing requires an approved Data Processing Agreement (DPA).
+5.2 Third-party processors must demonstrate compliance with applicable data protection regulations.
+5.3 Annual vendor privacy assessments are conducted by the CPO office.
+5.4 Current approved third-party processors: CloudVault Storage (India + Singapore), AnalyticsPro (Singapore), PaySecure (India), MarketReach (US).

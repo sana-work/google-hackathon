@@ -1,0 +1,80 @@
+DOCUMENT TYPE: Global Security Policy
+VERSION: 4.0
+EFFECTIVE DATE: 2025-01-15
+LAST REVIEWED: 2025-09-01
+OWNER: Enterprise CISO Office
+CLASSIFICATION: INTERNAL — MANDATORY COMPLIANCE
+
+═══════════════════════════════════════════
+SECTION 1 — DATA RESIDENCY AND SOVEREIGNTY
+═══════════════════════════════════════════
+
+1.1 All customer Personally Identifiable Information (PII) must be processed and stored exclusively within the US-East (Virginia) or EU-West (Frankfurt) regions depending on customer origin. Storage in Asia-Pacific regions is strictly forbidden for EU/US citizens.
+
+1.2 Data residency requirements apply to ALL copies of data including: primary storage, backups, disaster recovery replicas, analytics copies, and ML training datasets.
+
+1.3 Any new cloud region deployment MUST be pre-approved by the CISO and DPO. Unapproved region usage is a SEV-1 security incident.
+
+═══════════════════════════════════════════
+SECTION 2 — DATA RETENTION AND LIFECYCLE
+═══════════════════════════════════════════
+
+2.1 Audit logs for all financial and authentication transactions MUST be retained in cold storage for a minimum of 90 days to comply with SOC2 requirements.
+
+2.2 Production database backups MUST be retained for 30 days with point-in-time recovery capability.
+
+2.3 Data deletion requests (GDPR right to erasure, CCPA) must be processed within 30 days AND must cascade to ALL data stores including backups, analytics pipelines, and ML training datasets.
+
+═══════════════════════════════════════════
+SECTION 3 — ENCRYPTION
+═══════════════════════════════════════════
+
+3.1 All data at rest must use AES-256 encryption with customer-managed encryption keys (CMEK) stored in Cloud KMS.
+
+3.2 All data in transit must use TLS 1.2 or higher. TLS 1.0 and 1.1 are prohibited.
+
+3.3 Encryption keys must be rotated every 90 days. Key rotation must be automated — manual key rotation is not acceptable.
+
+3.4 Secrets, API keys, and service account credentials MUST be stored in Google Secret Manager. Hardcoding secrets in code, config files, or environment variable definitions in source control is a CRITICAL security violation.
+
+═══════════════════════════════════════════
+SECTION 4 — IDENTITY AND ACCESS MANAGEMENT
+═══════════════════════════════════════════
+
+4.1 All production access must follow the principle of least privilege. No service or human user should have broader permissions than strictly necessary.
+
+4.2 Service accounts MUST use dedicated IAM roles scoped to the specific resources they need. Use of Owner or Editor roles on service accounts is PROHIBITED.
+
+4.3 Human access to production systems requires MFA and is granted through Just-In-Time (JIT) access provisioning with a maximum duration of 4 hours. Standing production access is prohibited.
+
+4.4 All IAM policy changes in production must be logged and reviewed weekly by the Security Operations team.
+
+═══════════════════════════════════════════
+SECTION 5 — NETWORK AND INFRASTRUCTURE SECURITY
+═══════════════════════════════════════════
+
+5.1 All production workloads MUST run within a dedicated VPC with Private Google Access enabled. Public IP addresses on production instances are PROHIBITED unless explicitly approved by the CISO for edge/CDN use cases.
+
+5.2 Inter-service communication within the cluster must use private networking. Services MUST NOT communicate over the public internet.
+
+5.3 All external traffic MUST pass through a Web Application Firewall (WAF) and DDoS protection layer before reaching application services.
+
+5.4 Container images MUST use distroless or minimal base images. Full OS base images (Ubuntu, Debian, CentOS) are prohibited in production.
+
+5.5 Container images must be scanned for CVEs before deployment. Any image with CRITICAL or HIGH CVEs is automatically blocked from deployment.
+
+═══════════════════════════════════════════
+SECTION 6 — ZERO TRUST ARCHITECTURE
+═══════════════════════════════════════════
+
+6.1 All service-to-service communication MUST be authenticated using mutual TLS (mTLS) or service account tokens. Unauthenticated internal traffic is prohibited.
+
+6.2 API endpoints MUST NOT trust requests based solely on network location. Every request must be authenticated and authorized regardless of origin.
+
+═══════════════════════════════════════════
+ENFORCEMENT
+═══════════════════════════════════════════
+
+Failure to comply with these rules will result in immediate deployment blockage. Repeated violations will be escalated to the VP of Engineering and CTO.
+
+Non-compliance discovered during audits will be classified as a SEV-2 security incident with mandatory remediation within 14 days.

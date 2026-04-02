@@ -1,0 +1,54 @@
+DOCUMENT TYPE: Internal Enterprise Policy
+POLICY: Third-Party Vendor Management Policy
+VERSION: 1.4
+EFFECTIVE DATE: 2024-07-01
+LAST REVIEWED: 2025-05-10
+OWNER: Chief Procurement Officer (CPO) / Vendor Risk Management Team
+APPLICABILITY: All third-party vendors, contractors, sub-processors, and technology partners
+
+═══════════════════════════════════════════
+SECTION 1 — VENDOR ONBOARDING AND ASSESSMENT
+═══════════════════════════════════════════
+
+1.1 Vendor Risk Assessment: All new vendors handling company or customer data must undergo a risk assessment covering: data handling practices, security certifications (SOC2, ISO27001), financial stability, and jurisdictional risk.
+
+1.2 Data Processing Agreement (DPA): A signed DPA is mandatory before any vendor receives access to personal data. The DPA must include: data processing purposes, data categories, retention limits, breach notification obligations, and audit rights.
+
+1.3 Vendor Classification:
+    (a) CRITICAL: Vendors processing sensitive personal data or operating critical infrastructure (e.g., cloud providers, payment processors)
+    (b) HIGH: Vendors with access to business-sensitive data (e.g., analytics providers, CRM platforms)
+    (c) STANDARD: Vendors with limited data access (e.g., office supplies, facility management)
+
+═══════════════════════════════════════════
+SECTION 2 — ONGOING MONITORING
+═══════════════════════════════════════════
+
+2.1 Annual Reviews: CRITICAL vendors undergo annual security assessments including SOC2 report review and questionnaire-based assessment.
+
+2.2 Audit Rights: The organization reserves the right to audit CRITICAL vendors with 30 days advance notice.
+
+2.3 Sub-Processor Notification: Vendors must notify us of any new sub-processors 30 days in advance of engagement. The organization has right to object.
+
+═══════════════════════════════════════════
+SECTION 3 — DATA LOCATION AND SOVEREIGNTY
+═══════════════════════════════════════════
+
+3.1 Vendors must process data only in regions explicitly approved in the contract.
+3.2 Any vendor infrastructure relocation requires 60 days advance notice and written approval.
+3.3 Current approved vendor data locations: India (Mumbai, Chennai), EU (Frankfurt), US (Virginia), Singapore (for DR only).
+    — NOTE: Singapore is currently approved for disaster recovery for non-financial data only.
+
+═══════════════════════════════════════════
+SECTION 4 — BREACH AND INCIDENT REQUIREMENTS
+═══════════════════════════════════════════
+
+4.1 Vendors must report any data breach or security incident to the organization's CISO within 48 hours of detection.
+4.2 Vendors must cooperate fully in incident investigations and provide all requested logs and access within 72 hours.
+
+═══════════════════════════════════════════
+SECTION 5 — CONTRACT TERMINATION
+═══════════════════════════════════════════
+
+5.1 Upon termination, vendors must return all data in a portable format within 30 days.
+5.2 Vendors must certify complete data deletion within 60 days of termination.
+5.3 Post-termination audit rights extend for 12 months.

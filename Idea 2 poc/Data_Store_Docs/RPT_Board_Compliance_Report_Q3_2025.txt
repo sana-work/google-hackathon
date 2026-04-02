@@ -1,0 +1,100 @@
+DOCUMENT TYPE: Board Compliance Report
+TITLE: Quarterly Compliance Status Report — Q3 2025
+REPORTING PERIOD: July 1 — September 30, 2025
+PREPARED BY: Chief Compliance Officer (CCO)
+PRESENTED TO: Board Risk and Compliance Committee
+DATE: October 15, 2025
+CLASSIFICATION: CONFIDENTIAL — BOARD DISTRIBUTION ONLY
+
+═══════════════════════════════════════════
+EXECUTIVE SUMMARY
+═══════════════════════════════════════════
+
+Overall Compliance Health: AMBER (⚠️ Medium Risk)
+
+Key Metrics:
+- Regulations tracked: 5 (DPDPA, GDPR, RBI Data Localization, SEBI Cyber Security, EU AI Act)
+- Total compliance requirements mapped: 47
+- Compliant: 28 (60%)
+- Partially compliant: 12 (25%)
+- Non-compliant: 7 (15%)
+- Open remediation actions: 14
+- Overdue remediation actions: 3
+
+═══════════════════════════════════════════
+REGULATION-WISE COMPLIANCE STATUS
+═══════════════════════════════════════════
+
+1. DPDPA (India Digital Personal Data Protection Act)
+   Status: AMBER ⚠️
+   Compliant: 6/10 requirements
+   Key Gaps:
+   - Data retention period (5 years vs upcoming 3-year rule) — remediation planned
+   - Consent model (opt-out vs expected opt-in) — remediation in progress
+   - Automated deletion (manual purge only) — budget approved, vendor selection underway
+   Risk: HIGH — Amendment expected to be notified in Q1 2026
+
+2. GDPR (General Data Protection Regulation)
+   Status: GREEN ✅ (with caveats)
+   Compliant: 8/9 requirements
+   Key Gaps:
+   - Cross-border TIA (Transfer Impact Assessment) documentation incomplete for 2 vendors
+   Risk: LOW — TIA completion expected by end of Q4 2025
+
+3. RBI Data Localization
+   Status: GREEN ✅
+   Compliant: 4/4 requirements
+   Notes: Following COMP-2024-007 incident, CRM DR replication was fixed. Payment data fully localized.
+   Risk: LOW — Monitoring for new circulars
+
+4. SEBI Cyber Security Framework
+   Status: RED 🔴
+   Compliant: 5/12 requirements
+   Key Gaps:
+   - Incident reporting timeline (72 hours vs 6 hours required) — CRITICAL
+   - SOC operates business hours only, SEBI requires 24x7 — CRITICAL
+   - MFA not enforced on application admin dashboards — HIGH
+   - Privileged access management lacks JIT provisioning — HIGH
+   - VAPT frequency (annual vs semi-annual external + quarterly internal) — MEDIUM
+   Risk: CRITICAL — SEBI audit expected in Q2 2026
+
+5. EU AI Act
+   Status: AMBER ⚠️
+   Compliant: 5/12 requirements
+   Key Gaps:
+   - High-risk AI models (Credit Risk, Fraud Detection) require conformity assessment — not started
+   - Transparency notices required for all customer-facing AI — partially implemented (post COMP-2025-002)
+   - Fundamental Rights Impact Assessment (FRIA) not conducted — not started
+   Risk: HIGH — Key provisions enforceable from August 2026
+
+═══════════════════════════════════════════
+TOP 3 COMPLIANCE RISKS
+═══════════════════════════════════════════
+
+1. 🔴 SEBI CYBER SECURITY: 7 of 12 requirements non-compliant. Audit expected Q2 2026. Estimated remediation cost: 45 lakhs. Requires 24x7 SOC investment.
+
+2. 🟡 EU AI ACT: High-risk AI models serving EU customers require conformity assessment and registration. 6-month lead time needed. Must begin Q4 2025.
+
+3. 🟡 DPDPA AMENDMENT: If notified in Q1 2026, consent model overhaul and automated deletion system must be operational within 6-12 months. Budget pre-approval recommended.
+
+═══════════════════════════════════════════
+OVERDUE REMEDIATION ACTIONS
+═══════════════════════════════════════════
+
+1. [OVERDUE by 30 days] SEBI-003: Implement 24x7 SOC monitoring capability.
+   Owner: CISO. Original deadline: Sept 15, 2025. Revised: Dec 31, 2025.
+
+2. [OVERDUE by 15 days] GDPR-007: Complete Transfer Impact Assessment for AnalyticsPro vendor.
+   Owner: DPO. Original deadline: Oct 1, 2025. Revised: Nov 15, 2025.
+
+3. [OVERDUE by 45 days] AI-001: Begin EU AI Act conformity assessment for Credit Risk Scoring Model.
+   Owner: Head of Data Science. Original deadline: Sept 1, 2025. Revised: Nov 30, 2025.
+
+═══════════════════════════════════════════
+RECOMMENDATIONS TO THE BOARD
+═══════════════════════════════════════════
+
+1. Approve budget for 24x7 SOC (estimated 45 lakhs annually) before SEBI audit in Q2 2026.
+2. Fast-track EU AI Act conformity assessment — engage external AI audit firm by Q4 2025.
+3. Pre-approve DPDPA automated deletion system budget (estimated 30 lakhs) to avoid rush implementation.
+4. Consider engaging AnalyticsPro alternative with India data center to eliminate cross-border risks across DPDPA, GDPR, and RBI simultaneously.

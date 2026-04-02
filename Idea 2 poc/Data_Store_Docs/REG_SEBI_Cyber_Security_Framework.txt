@@ -1,0 +1,75 @@
+DOCUMENT TYPE: Regulatory Framework
+REGULATION: SEBI Cyber Security and Cyber Resilience Framework for Market Infrastructure Institutions and Regulated Entities
+CIRCULAR NUMBER: SEBI/HO/ITD/ITD-SEC-1/P/CIR/2025/198
+DATE OF ISSUANCE: December 10, 2025
+EFFECTIVE DATE: March 10, 2026 (90-day compliance window)
+JURISDICTION: Republic of India
+APPLICABILITY: Stock Exchanges, Depositories, Clearing Corporations, Mutual Fund AMCs, Brokerage Firms, Portfolio Managers, and their technology service providers
+
+═══════════════════════════════════════════
+SECTION 1 — INCIDENT REPORTING
+═══════════════════════════════════════════
+
+1.1 Mandatory Reporting: All cyber security incidents — including attempted breaches, successful breaches, data leaks, ransomware attacks, DDoS attacks, and insider threat events — MUST be reported to SEBI within 6 hours of detection.
+    — PREVIOUS RULE: 48-hour reporting window.
+    — CHANGE: Reduced to 6 hours. This applies to ALL incidents regardless of severity.
+
+1.2 Incident Classification: Entities must classify incidents as:
+    (a) CRITICAL: Data breach involving investor PII, trade data, or financial records
+    (b) HIGH: System unavailability exceeding 30 minutes during market hours
+    (c) MEDIUM: Attempted breach blocked by security controls
+    (d) LOW: Policy violation without external impact
+
+1.3 Root Cause Analysis: A detailed Root Cause Analysis (RCA) must be submitted to SEBI within 14 days of any CRITICAL or HIGH incident.
+
+═══════════════════════════════════════════
+SECTION 2 — VULNERABILITY MANAGEMENT
+═══════════════════════════════════════════
+
+2.1 Patching Timelines: 
+    (a) CRITICAL vulnerabilities (CVSS ≥ 9.0): Patch within 72 hours
+    (b) HIGH vulnerabilities (CVSS 7.0-8.9): Patch within 7 days
+    (c) MEDIUM vulnerabilities (CVSS 4.0-6.9): Patch within 30 days
+    (d) LOW vulnerabilities (CVSS < 4.0): Patch within 90 days
+
+2.2 Vulnerability Assessment and Penetration Testing (VAPT): 
+    (a) Internal VAPT: Quarterly
+    (b) External VAPT by CERT-IN empanelled auditor: Semi-annually
+    (c) Red team exercises: Annually
+
+2.3 Zero-Day Response: For zero-day vulnerabilities affecting market-critical systems, entities must implement compensating controls within 24 hours even if a patch is not yet available.
+
+═══════════════════════════════════════════
+SECTION 3 — ACCESS CONTROL AND IDENTITY MANAGEMENT
+═══════════════════════════════════════════
+
+3.1 Multi-Factor Authentication (MFA): MFA is MANDATORY for:
+    (a) All administrative access to production systems
+    (b) All remote access (VPN, remote desktop)
+    (c) All access to systems handling investor data or trade data
+    (d) All privileged user accounts
+
+3.2 Privileged Access Management (PAM): Entities must implement a PAM solution for all privileged accounts with:
+    (a) Just-in-time access provisioning (no standing privileges)
+    (b) Session recording for all privileged sessions
+    (c) Quarterly access reviews with documented evidence
+
+3.3 Service Account Controls: All service accounts must be inventoried, have defined owners, and undergo annual credential rotation.
+
+═══════════════════════════════════════════
+SECTION 4 — SOC (SECURITY OPERATIONS CENTER)
+═══════════════════════════════════════════
+
+4.1 24x7 SOC: All Market Infrastructure Institutions (MIIs) and Category I entities MUST operate a 24x7 Security Operations Center.
+
+4.2 SOC Capabilities: The SOC must include real-time monitoring, SIEM correlation, threat intelligence feeds, automated alerting, and documented escalation procedures.
+
+4.3 SOC Staffing: SOC must be staffed by certified professionals (CISSP, CISM, or equivalent) at all times.
+
+═══════════════════════════════════════════
+SECTION 5 — PENALTIES
+═══════════════════════════════════════════
+
+5.1 Failure to report incidents within 6 hours: ₹1 Crore per incident + potential trading suspension.
+5.2 Failure to meet patching timelines: ₹25 Lakh per unpatched critical vulnerability per day.
+5.3 Non-implementation of MFA: ₹5 Crore + mandatory third-party audit at entity's expense.
