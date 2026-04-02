@@ -1,0 +1,8 @@
+Vertex AI Setup/guardrail_factory.db
+Vertex AI Setup/guardrail_factory.db-*
+Vertex AI Setup/test_report.json
+Vertex AI Setup/test_server.log
+Vertex AI Setup/api_key.txt
+Vertex AI Setup/key.json
+Vertex AI Setup/__pycache__/
+Vertex AI Setup/tests/__pycache__/

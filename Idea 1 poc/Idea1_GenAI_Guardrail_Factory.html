@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenAI Guardrail Factory — Supporting Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --primary: #0D47A1;
+    --primary-light: #1565C0;
+    --accent: #00897B;
+    --accent-light: #26A69A;
+    --dark: #1a1a2e;
+    --text: #2c3e50;
+    --text-light: #546e7a;
+    --bg: #ffffff;
+    --bg-alt: #f8f9fa;
+    --border: #e0e0e0;
+    --success: #2e7d32;
+    --warning: #f57f17;
+    --danger: #c62828;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 11pt;
+  }
+
+  .page {
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 25mm 20mm;
+    page-break-after: always;
+  }
+
+  .page:last-child { page-break-after: avoid; }
+
+  /* Cover Page */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background: linear-gradient(135deg, #0D47A1 0%, #00897B 100%);
+    color: white;
+    padding: 40mm 20mm;
+  }
+
+  .cover .track-badge {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 12pt;
+    font-weight: 500;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .cover h1 {
+    font-size: 36pt;
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+  }
+
+  .cover .subtitle {
+    font-size: 16pt;
+    font-weight: 300;
+    opacity: 0.9;
+    margin-bottom: 40px;
+    max-width: 500px;
+  }
+
+  .cover .tagline {
+    font-size: 13pt;
+    font-weight: 500;
+    background: rgba(255,255,255,0.15);
+    padding: 12px 30px;
+    border-radius: 8px;
+    margin-bottom: 50px;
+    border-left: 4px solid rgba(255,255,255,0.6);
+  }
+
+  .cover .meta {
+    font-size: 10pt;
+    opacity: 0.7;
+  }
+
+  /* Section Headers */
+  h2 {
+    font-size: 18pt;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 30px 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-weight: 600;
+    color: var(--primary-light);
+    margin: 20px 0 10px 0;
+  }
+
+  h4 {
+    font-size: 11pt;
+    font-weight: 600;
+    color: var(--text);
+    margin: 15px 0 8px 0;
+  }
+
+  p { margin-bottom: 10px; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 10pt;
+  }
+
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 9.5pt;
+  }
+
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tr:nth-child(even) { background: var(--bg-alt); }
+
+  /* Callout Boxes */
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: #e0f2f1;
+    padding: 15px 18px;
+    margin: 15px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 10.5pt;
+  }
+
+  .callout.warning {
+    border-left-color: var(--warning);
+    background: #fff8e1;
+  }
+
+  .callout.danger {
+    border-left-color: var(--danger);
+    background: #ffebee;
+  }
+
+  .callout.info {
+    border-left-color: var(--primary);
+    background: #e3f2fd;
+  }
+
+  .callout strong { color: var(--dark); }
+
+  /* Architecture Image */
+  .arch-img {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .arch-img img {
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Flow Diagram */
+  .flow-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: var(--primary);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 9pt;
+    font-weight: 600;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .flow-arrow { font-size: 18pt; color: var(--accent); font-weight: bold; }
+
+  /* Lists */
+  ul, ol {
+    margin: 8px 0 12px 20px;
+  }
+
+  li {
+    margin-bottom: 5px;
+    font-size: 10.5pt;
+  }
+
+  /* Highlight Metrics */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 15px 0;
+  }
+
+  .metric-card {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .metric-card .value {
+    font-size: 22pt;
+    font-weight: 800;
+  }
+
+  .metric-card .label {
+    font-size: 8.5pt;
+    opacity: 0.85;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* Section numbering */
+  .section-num {
+    background: var(--primary);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13pt;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    font-size: 8pt;
+    color: var(--text-light);
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 30px;
+  }
+
+  @media print {
+    body { font-size: 10pt; }
+    .page { padding: 15mm; }
+    .cover { min-height: auto; padding: 30mm 15mm; }
+    .no-break { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <div class="track-badge">♦ Build with Vertex AI</div>
+  <h1>GenAI Guardrail Factory</h1>
+  <p class="subtitle">Automated Red-Teaming & Evaluation Pipeline for Responsible AI</p>
+  <div class="tagline">"We treat Responsible AI like CI/CD — unit tests for GenAI.<br>No enterprise deploys code without tests; why deploy AI without them?"</div>
+  <p class="meta">tcs<sup>AI</sup> Google Hackathon 2026 — Ideathon Phase<br>February 2026</p>
+</div>
+
+<!-- PAGE 1: PROBLEM -->
+<div class="page">
+  <h2><span class="section-num">1</span> Problem Statement</h2>
+
+  <p>Enterprises are rapidly deploying GenAI applications — chatbots, RAG systems, AI-powered agents, and copilots. However, <strong>there is no standardized, automated framework to test these systems for safety, accuracy, and compliance</strong> before they reach production.</p>
+
+  <div class="callout danger">
+    <strong>⚠ The Risk:</strong> Every unguarded GenAI deployment is a ticking time bomb — hallucinated responses damage trust, PII leaks trigger compliance violations, and jailbreaks expose enterprise systems.
+  </div>
+
+  <h3>Current State of GenAI Testing</h3>
+  <table>
+    <tr><th>Aspect</th><th>Today's Reality</th><th>Consequence</th></tr>
+    <tr><td>Testing approach</td><td>Manual, ad-hoc, inconsistent</td><td>Critical failure modes missed</td></tr>
+    <tr><td>Coverage</td><td>"Happy path" testing only</td><td>Adversarial attacks succeed</td></tr>
+    <tr><td>Frequency</td><td>One-time before launch</td><td>Regression goes undetected</td></tr>
+    <tr><td>Standards</td><td>No unified criteria across teams</td><td>Inconsistent safety posture</td></tr>
+    <tr><td>Governance</td><td>No auditable evidence</td><td>Cannot demonstrate compliance</td></tr>
+  </table>
+
+  <h3>Who Faces This Problem?</h3>
+  <p>Every enterprise deploying GenAI — across BFSI, healthcare, telecom, manufacturing, and government. Especially critical for TCS, deploying AI solutions across <strong>hundreds of client accounts</strong>, each with unique compliance requirements.</p>
+
+  <h2><span class="section-num">2</span> Proposed Solution</h2>
+
+  <p>The <strong>GenAI Guardrail Factory</strong> is a reusable, automated evaluation pipeline built on Vertex AI that acts as a <strong>quality gate for any GenAI application</strong>. It systematically generates adversarial tests, evaluates responses across multiple safety dimensions, and produces a pass/fail release gate with full auditability.</p>
+
+  <div class="flow-box">
+    <div class="flow-step">🎯 Adversarial<br>Test Generator</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">🤖 Target<br>GenAI App</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">📊 Multi-Dimension<br>Evaluator</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">🚦 Release<br>Gate</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">📈 Dashboard<br>& Reports</div>
+  </div>
+</div>
+
+<!-- PAGE 2: CAPABILITIES & ARCHITECTURE -->
+<div class="page">
+  <h2><span class="section-num">3</span> Core Capabilities</h2>
+
+  <h3>3.1 Adversarial Test Suite Generator</h3>
+  <p>Uses <strong>Gemini API</strong> to automatically generate diverse, contextually relevant test cases targeting known failure modes:</p>
+  <ul>
+    <li><strong>Hallucination triggers</strong> — questions with no answer in the knowledge base</li>
+    <li><strong>Jailbreak prompts</strong> — role-play attacks, instruction override attempts</li>
+    <li><strong>PII extraction probes</strong> — attempts to extract sensitive data from context</li>
+    <li><strong>Policy boundary tests</strong> — requests that push against organizational guardrails</li>
+    <li><strong>Bias-inducing inputs</strong> — prompts designed to elicit unfair responses</li>
+  </ul>
+
+  <h3>3.2 Multi-Dimensional Evaluation Engine</h3>
+  <p>Each test case is scored across <strong>6 safety dimensions:</strong></p>
+  <table>
+    <tr><th>Dimension</th><th>What It Measures</th><th>Method</th></tr>
+    <tr><td>🎯 Groundedness</td><td>Response supported by source documents?</td><td>Vertex AI Evaluation SDK</td></tr>
+    <tr><td>🛡️ Toxicity & Safety</td><td>Harmful, offensive, or inappropriate content?</td><td>Binary flag + severity score</td></tr>
+    <tr><td>🔒 PII/Data Leakage</td><td>Exposes sensitive information?</td><td>Pattern matching + semantic detection</td></tr>
+    <tr><td>📎 Citation Accuracy</td><td>Sources correctly referenced?</td><td>Automated verification</td></tr>
+    <tr><td>📋 Policy Compliance</td><td>Follows org-specific rules?</td><td>Custom policy checklist</td></tr>
+    <tr><td>🔓 Jailbreak Resistance</td><td>Tricked into bypassing instructions?</td><td>Adversarial success rate</td></tr>
+  </table>
+
+  <h3>3.3 Release Gate & Continuous Monitoring</h3>
+  <ul>
+    <li>Configurable pass/fail thresholds per dimension (e.g., Groundedness ≥ 0.85)</li>
+    <li>Visual dashboard with trend lines across evaluation runs</li>
+    <li>Post-deployment scheduled evaluations to detect regression</li>
+    <li>Automated alerting when scores drop below thresholds</li>
+  </ul>
+
+  <h2><span class="section-num">4</span> Architecture</h2>
+  <div class="arch-img">
+    <img src="guardrail_factory_architecture.png" alt="GenAI Guardrail Factory Architecture">
+  </div>
+
+  <h3>Google AI Technology Stack</h3>
+  <table>
+    <tr><th>Component</th><th>Google Service</th><th>Purpose</th></tr>
+    <tr><td>Orchestration</td><td>Vertex AI Pipelines</td><td>End-to-end workflow management</td></tr>
+    <tr><td>Test Generation</td><td>Gemini API</td><td>Generate adversarial test cases</td></tr>
+    <tr><td>Evaluation</td><td>Vertex AI Evaluation SDK</td><td>Score groundedness, safety, coherence</td></tr>
+    <tr><td>Data Storage</td><td>BigQuery</td><td>Evaluation history & trend analysis</td></tr>
+    <tr><td>Visualization</td><td>Looker</td><td>Pass/fail gates & dashboards</td></tr>
+    <tr><td>Scheduling</td><td>Cloud Functions</td><td>Continuous automated evaluation</td></tr>
+  </table>
+</div>
+
+<!-- PAGE 3: VALUE & SECURITY -->
+<div class="page">
+  <h2><span class="section-num">5</span> Business Value</h2>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">80%</div>
+      <div class="label">Reduction in manual<br>safety testing time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">90%+</div>
+      <div class="label">Coverage of known<br>adversarial attack vectors</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">$50K-$500K</div>
+      <div class="label">Cost avoided per<br>prevented production incident</div>
+    </div>
+  </div>
+
+  <h3>Strategic Value for TCS</h3>
+  <ul>
+    <li><strong>Differentiator:</strong> Offer clients a "Responsible AI Certification" for GenAI deployments</li>
+    <li><strong>Scalable:</strong> One platform serves hundreds of client GenAI projects</li>
+    <li><strong>Revenue:</strong> Can be offered as "Guardrails-as-a-Service" managed offering</li>
+    <li><strong>Regulatory readiness:</strong> Positions TCS ahead of EU AI Act compliance requirements</li>
+  </ul>
+
+  <h2><span class="section-num">6</span> Novelty & Differentiation</h2>
+
+  <div class="callout info">
+    <strong>💡 Key Insight:</strong> Everyone is building AI applications. Almost nobody is building systems to <em>test</em> AI applications. This is the meta-layer — AI that tests AI — and it's the foundation of enterprise AI governance.
+  </div>
+
+  <table>
+    <tr><th>Aspect</th><th>Existing Approach</th><th>GenAI Guardrail Factory</th></tr>
+    <tr><td>Testing</td><td>Manual, by developers</td><td>Automated, systematic, repeatable</td></tr>
+    <tr><td>Coverage</td><td>Ad-hoc test cases</td><td>6 structured safety dimensions</td></tr>
+    <tr><td>Frequency</td><td>One-time pre-launch</td><td>Continuous monitoring</td></tr>
+    <tr><td>Output</td><td>Informal feedback</td><td>Auditable pass/fail + reports</td></tr>
+    <tr><td>Scope</td><td>Single application</td><td>Platform for all GenAI projects</td></tr>
+  </table>
+
+  <h2><span class="section-num">7</span> Security & Compliance</h2>
+  <table>
+    <tr><th>Aspect</th><th>Implementation</th></tr>
+    <tr><td>Access Control</td><td>Cloud IAM role-based access; team-level isolation</td></tr>
+    <tr><td>Audit Trail</td><td>Every eval logged: who tested, what version, when, results</td></tr>
+    <tr><td>Data Privacy</td><td>No production/client data; synthetic adversarial inputs only</td></tr>
+    <tr><td>Model Tracking</td><td>Model + prompt version tracked for reproducibility</td></tr>
+    <tr><td>Compliance</td><td>Google Responsible AI Principles, EU AI Act, NIST AI RMF</td></tr>
+  </table>
+
+  <h2><span class="section-num">8</span> Implementation Roadmap</h2>
+  <table>
+    <tr><th>Phase</th><th>Timeline</th><th>Deliverables</th></tr>
+    <tr><td><strong>PoC</strong></td><td>2-3 weeks</td><td>Core pipeline + 3 eval dimensions + 50 test cases + dashboard</td></tr>
+    <tr><td><strong>MVP</strong></td><td>4-6 weeks</td><td>All 6 dimensions + release gates + trend analysis + CI/CD integration</td></tr>
+    <tr><td><strong>Production</strong></td><td>8-12 weeks</td><td>Multi-tenant + continuous monitoring + enterprise governance</td></tr>
+  </table>
+
+  <div class="footer">
+    <p>tcs<sup>AI</sup> Google Hackathon 2026 — Ideathon Phase | All data is synthetic. No real client names, PII, or confidential information is included.</p>
+  </div>
+</div>
+
+</body>
+</html>

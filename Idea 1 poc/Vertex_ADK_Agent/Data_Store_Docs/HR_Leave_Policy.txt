@@ -1,0 +1,61 @@
+═══════════════════════════════════════════════════════════
+GLOBEX CORPORATION — HUMAN RESOURCES LEAVE POLICY v3.2
+Document ID: HR-POL-003 | Effective: January 1, 2026
+Classification: Internal | Owner: VP Human Resources
+═══════════════════════════════════════════════════════════
+
+1. PRIVILEGE LEAVE (PL)
+────────────────────────
+1.1 All full-time employees are entitled to a maximum of 30 days Privilege Leave per calendar year.
+1.2 PL is credited on January 1st each year. Unused PL can be carried forward up to a maximum of 15 days.
+1.3 Any PL carried forward beyond 15 days will be automatically encashed at the employee's basic salary rate.
+1.4 PL requests of 5 or more consecutive days require manager approval at least 14 days in advance.
+1.5 PL requests during Q4 (October-December) are subject to business-critical project review and may be denied if the employee is on a client-deliverable project.
+
+2. SICK LEAVE (SL)
+────────────────────
+2.1 Employees are entitled to 12 days of Sick Leave per year.
+2.2 Sick Leave exceeding 3 consecutive days requires a medical certificate from a registered medical practitioner.
+2.3 Sick Leave cannot be encashed and lapses on December 31st each year.
+2.4 Employees on Long-Term Disability (LTD) must apply through the HR Benefits Portal within 7 days of the medical event.
+
+3. MATERNITY & PATERNITY LEAVE
+──────────────────────────────
+3.1 Maternity Leave: 26 weeks (for first two children), 12 weeks (for third child onwards), as per the Maternity Benefit Act 2017.
+3.2 Paternity Leave: 15 working days, to be availed within 6 months of the child's birth or adoption.
+3.3 Adoption Leave: 12 weeks for primary caregiver, 15 days for secondary caregiver.
+
+4. BEREAVEMENT LEAVE
+─────────────────────
+4.1 Up to 5 working days for immediate family (spouse, children, parents, siblings).
+4.2 Up to 3 working days for extended family (grandparents, in-laws, uncles, aunts).
+4.3 Must be availed within 30 days of the event.
+
+5. COMPENSATORY OFF
+────────────────────
+5.1 Employees working on holidays or weekends are entitled to Compensatory Off (CO) on a 1:1 basis.
+5.2 CO must be availed within 30 days of accrual.
+5.3 CO requests require prior approval from the reporting manager and must be logged in the HRMS system within 48 hours of the extra work day.
+
+6. LEAVE WITHOUT PAY (LWP)
+───────────────────────────
+6.1 LWP may be granted when all other leave balances are exhausted.
+6.2 LWP exceeding 30 days in a calendar year triggers a review of employment status by the HR Governance Committee.
+6.3 LWP days are deducted from the employee's tenure for the purpose of annual increment and promotion eligibility calculations.
+
+7. LEAVE APPROVAL HIERARCHY
+────────────────────────────
+7.1 Up to 3 days: Reporting Manager
+7.2 4-10 days: Reporting Manager + Department Head
+7.3 11+ days: Reporting Manager + Department Head + HR Business Partner
+7.4 All leave requests must be submitted through the Globex HRMS Portal (hrms.globex-internal.com).
+
+8. HOLIDAY CALENDAR 2026
+─────────────────────────
+Globex Corporation observes 12 public holidays per year. The list is published in the HRMS Portal by November 30th of the preceding year. Employees may additionally select 2 Restricted Holidays from a list of 8 options.
+
+═══════════════════════════════════════════════════════════
+Last Revised: November 15, 2025
+Next Review: November 15, 2026
+Approved by: Priya Mehta, VP Human Resources
+═══════════════════════════════════════════════════════════

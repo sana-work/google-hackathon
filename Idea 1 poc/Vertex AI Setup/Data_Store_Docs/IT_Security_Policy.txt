@@ -1,0 +1,70 @@
+═══════════════════════════════════════════════════════════
+GLOBEX CORPORATION — IT SECURITY POLICY v4.1
+Document ID: IT-SEC-001 | Effective: March 1, 2026
+Classification: Confidential | Owner: Chief Information Security Officer
+═══════════════════════════════════════════════════════════
+
+1. ACCESS CONTROL
+──────────────────
+1.1 All employees must authenticate using Multi-Factor Authentication (MFA) for accessing corporate systems.
+1.2 Passwords must meet the following criteria:
+    - Minimum 14 characters
+    - At least 1 uppercase, 1 lowercase, 1 number, 1 special character
+    - Must not contain the employee's name, employee ID, or date of birth
+    - Must be rotated every 90 days
+    - Last 12 passwords cannot be reused
+1.3 Service accounts must use API keys managed through the Globex Secrets Vault (vault.globex-internal.com). Hardcoded credentials in source code are strictly prohibited.
+1.4 Access to production systems requires Just-In-Time (JIT) access approval through the ITSM Portal. Maximum JIT window: 4 hours.
+
+2. DATA CLASSIFICATION
+───────────────────────
+2.1 All data must be classified into one of four tiers:
+    - TIER 1 (PUBLIC): Marketing materials, public blog posts
+    - TIER 2 (INTERNAL): Internal memos, non-sensitive business data
+    - TIER 3 (CONFIDENTIAL): Employee records, financial reports, client contracts
+    - TIER 4 (RESTRICTED): PII, PHI, payment card data, authentication credentials
+2.2 TIER 3 and TIER 4 data must be encrypted at rest (AES-256) and in transit (TLS 1.3).
+2.3 TIER 4 data must never be stored in development or staging environments. Anonymized or synthetic data must be used instead.
+
+3. NETWORK SECURITY
+────────────────────
+3.1 All corporate network access requires VPN connection when working remotely.
+3.2 VPN client: GlobalProtect v6.x or later. Split-tunneling is disabled.
+3.3 Guest Wi-Fi networks must be isolated from the corporate network with no shared subnet access.
+3.4 All internet egress traffic is routed through the Secure Web Gateway (SWG) for URL filtering and DLP inspection.
+
+4. ENDPOINT SECURITY
+─────────────────────
+4.1 All corporate devices must run the approved EDR agent (CrowdStrike Falcon).
+4.2 Operating system patches must be applied within 7 days of release for Critical/High severity CVEs.
+4.3 Personal devices (BYOD) are permitted for email and calendar access only, through the Globex Mobile Device Management (MDM) solution.
+4.4 USB storage devices are disabled on all corporate laptops via Group Policy.
+
+5. INCIDENT RESPONSE
+─────────────────────
+5.1 All security incidents must be reported to the Security Operations Center (SOC) within 1 hour of discovery.
+5.2 SOC Contact: soc@globex-corp.com | Hotline: +91-80-4455-7700 (24x7)
+5.3 Incident Severity Levels:
+    - SEV-1 (CRITICAL): Active data breach, ransomware, compromised production systems. Response: Immediate war room, CISO notification within 15 minutes.
+    - SEV-2 (HIGH): Unauthorized access attempt, malware detection, phishing campaign. Response: SOC triage within 30 minutes.
+    - SEV-3 (MEDIUM): Policy violation, suspicious activity, failed login threshold exceeded. Response: Investigation within 4 hours.
+    - SEV-4 (LOW): Informational, audit finding, minor configuration drift. Response: Next business day.
+
+6. CLOUD SECURITY
+──────────────────
+6.1 All cloud resources must be deployed in approved regions only: asia-south1 (Mumbai), europe-west1 (Belgium), us-east4 (Virginia).
+6.2 Cloud storage buckets must have public access prevention enabled. No publicly accessible buckets in any environment.
+6.3 All cloud workloads must use Workload Identity Federation. Service account key creation is prohibited.
+6.4 Cloud Armor WAF must be enabled on all internet-facing endpoints.
+
+7. VENDOR & THIRD-PARTY ACCESS
+────────────────────────────────
+7.1 Third-party vendors must complete a security assessment questionnaire before access is granted.
+7.2 Vendor access is restricted to a dedicated VDI environment with session recording enabled.
+7.3 All vendor service accounts expire automatically after 90 days and require re-approval.
+
+═══════════════════════════════════════════════════════════
+Last Revised: February 10, 2026
+Next Review: February 10, 2027
+Approved by: Rajesh Kumar, Chief Information Security Officer
+═══════════════════════════════════════════════════════════

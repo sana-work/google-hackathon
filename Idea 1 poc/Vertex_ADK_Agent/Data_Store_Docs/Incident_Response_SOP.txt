@@ -1,0 +1,105 @@
+═══════════════════════════════════════════════════════════
+GLOBEX CORPORATION — SECURITY INCIDENT RESPONSE SOP v2.1
+Document ID: IT-SOP-009 | Effective: February 1, 2026
+Classification: Confidential | Owner: Security Operations Center
+═══════════════════════════════════════════════════════════
+
+1. PURPOSE
+──────────
+This Standard Operating Procedure defines the step-by-step process for identifying, containing, eradicating, and recovering from security incidents at Globex Corporation.
+
+2. INCIDENT RESPONSE TEAM — CONTACT MATRIX
+────────────────────────────────────────────
+Role                    | Name                  | Email                          | Phone
+─────────────────────────────────────────────────────────────────────────────────────────
+SOC Manager             | Vikram Patel          | vikram.patel@globex-corp.com   | +91-98765-43210
+CISO                    | Rajesh Kumar          | rajesh.kumar@globex-corp.com   | +91-98765-43211
+DPO                     | Dr. Sanjay Iyer       | dpo@globex-corp.com            | +91-80-4455-7800
+VP Engineering          | Arjun Nair            | arjun.nair@globex-corp.com     | +91-98765-43212
+Legal Counsel           | Meera Sharma          | meera.sharma@globex-corp.com   | +91-98765-43213
+PR/Communications       | Nisha Agarwal         | nisha.agarwal@globex-corp.com  | +91-98765-43214
+HR Business Partner     | Deepa Venkatesh       | deepa.venkatesh@globex-corp.com| +91-98765-43215
+Cloud Infrastructure    | Suresh Reddy          | suresh.reddy@globex-corp.com   | +91-98765-43216
+External Forensics      | CyberShield India Pvt | forensics@cybershield.in       | +91-80-2233-4455
+
+3. INCIDENT CLASSIFICATION
+────────────────────────────
+3.1 SEV-1 (CRITICAL): Active data breach, ransomware attack, total system compromise.
+    - Response Time: Immediate (within 15 minutes)
+    - War Room: Auto-convened on Zoom bridge: https://globex.zoom.us/j/sev1-warroom
+    - Escalation: CISO → CEO → Board within 1 hour
+    - External: Law enforcement notification within 4 hours if criminal activity suspected
+
+3.2 SEV-2 (HIGH): Unauthorized access, malware outbreak, targeted phishing, partial data exposure.
+    - Response Time: 30 minutes
+    - Team: SOC Manager + relevant infrastructure lead
+    - Escalation: CISO within 2 hours
+
+3.3 SEV-3 (MEDIUM): Account compromise, policy violation, suspicious network activity.
+    - Response Time: 4 hours
+    - Team: SOC Analyst
+    - Escalation: SOC Manager if not resolved in 8 hours
+
+3.4 SEV-4 (LOW): Failed login threshold, minor config drift, audit finding.
+    - Response Time: Next business day
+    - Team: SOC Analyst
+    - Escalation: Weekly SOC review meeting
+
+4. PHASE 1: DETECTION & TRIAGE
+───────────────────────────────
+4.1 Detection sources: SIEM alerts, EDR alerts, employee reports, threat intelligence feeds, automated vulnerability scans.
+4.2 Triage checklist:
+    □ Confirm the alert is not a false positive
+    □ Determine scope: How many systems/users affected?
+    □ Classify severity per Section 3
+    □ Assign incident ID: INC-YYYY-MMDD-XXXX
+    □ Log in ServiceNow ITSM
+
+5. PHASE 2: CONTAINMENT
+─────────────────────────
+5.1 SHORT-TERM (Immediate):
+    - Isolate affected systems from the network
+    - Disable compromised accounts
+    - Block malicious IPs/domains at the firewall
+    - Preserve forensic evidence (snapshot VMs, capture memory dumps)
+5.2 LONG-TERM:
+    - Apply emergency patches
+    - Re-image compromised endpoints
+    - Rotate all credentials associated with affected systems
+
+6. PHASE 3: ERADICATION
+─────────────────────────
+6.1 Identify root cause using forensic analysis
+6.2 Remove all malicious artifacts (malware, backdoors, unauthorized scripts)
+6.3 Verify eradication through full system scan
+6.4 Document all findings in the Incident Report
+
+7. PHASE 4: RECOVERY
+──────────────────────
+7.1 Restore systems from verified clean backups
+7.2 Monitor restored systems intensively for 72 hours
+7.3 Gradually re-enable user access with enhanced monitoring
+7.4 Conduct user awareness communication if the incident involved social engineering
+
+8. PHASE 5: POST-INCIDENT REVIEW
+──────────────────────────────────
+8.1 Post-Mortem meeting within 5 business days of incident closure
+8.2 Blameless review focused on systemic improvements
+8.3 Deliverables:
+    - Root Cause Analysis (RCA) document
+    - Updated runbooks if gaps identified
+    - Policy updates if warranted
+    - Training recommendations
+8.4 Post-mortem must be shared with: CISO, VP Engineering, relevant Department Heads
+
+9. COMMUNICATION PROTOCOLS
+───────────────────────────
+9.1 INTERNAL: All incident communications use the #security-incidents Slack channel (private).
+9.2 EXTERNAL (if required): PR/Communications lead drafts all external statements. No employee may speak to media without PR clearance.
+9.3 REGULATORY: DPO handles all Data Protection Authority notifications per Data Privacy Policy Section 8.
+
+═══════════════════════════════════════════════════════════
+Last Revised: January 20, 2026
+Next Review: July 20, 2026
+Approved by: Vikram Patel, SOC Manager & Rajesh Kumar, CISO
+═══════════════════════════════════════════════════════════

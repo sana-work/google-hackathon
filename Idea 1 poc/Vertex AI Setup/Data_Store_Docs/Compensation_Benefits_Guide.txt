@@ -1,0 +1,74 @@
+═══════════════════════════════════════════════════════════
+GLOBEX CORPORATION — COMPENSATION & BENEFITS GUIDE 2026
+Document ID: HR-COMP-002 | Effective: April 1, 2026
+Classification: Restricted (TIER 4) | Owner: VP Compensation & Benefits
+═══════════════════════════════════════════════════════════
+
+1. COMPENSATION STRUCTURE
+──────────────────────────
+1.1 Globex follows a Total Rewards approach comprising: Base Salary, Variable Pay, Benefits, and ESOPs.
+1.2 Salary Bands (Annual CTC, INR):
+    - Band 1 (Associate): ₹4,00,000 - ₹8,00,000
+    - Band 2 (Senior Associate): ₹8,00,001 - ₹15,00,000
+    - Band 3 (Lead): ₹15,00,001 - ₹25,00,000
+    - Band 4 (Manager): ₹25,00,001 - ₹40,00,000
+    - Band 5 (Senior Manager): ₹40,00,001 - ₹65,00,000
+    - Band 6 (Director): ₹65,00,001 - ₹1,00,00,000
+    - Band 7 (VP & above): ₹1,00,00,001+
+1.3 Salary composition: 50% Basic, 20% HRA, 15% Special Allowance, 10% Flexible Benefits, 5% Retirals (PF + Gratuity).
+
+2. VARIABLE PAY
+────────────────
+2.1 Variable Pay is performance-linked and paid annually in April.
+2.2 Target Variable Pay by Band:
+    - Band 1-2: 10% of annual base
+    - Band 3-4: 15% of annual base
+    - Band 5-6: 20% of annual base
+    - Band 7+: 25-35% of annual base
+2.3 Variable Pay multipliers: Exceptional (150%), Exceeds (120%), Meets (100%), Developing (50%), Below (0%).
+2.4 Business performance modifier: ±20% based on company revenue and profit targets.
+
+3. EMPLOYEE STOCK OPTION PLAN (ESOP)
+──────────────────────────────────────
+3.1 ESOPs are offered to employees at Band 4 and above.
+3.2 Vesting schedule: 25% per year over 4 years, with a 1-year cliff.
+3.3 Exercise price: Fair Market Value at the date of grant, as determined by an independent valuer.
+3.4 Employees must exercise vested options within 90 days of separation.
+
+4. HEALTH & INSURANCE BENEFITS
+────────────────────────────────
+4.1 Group Medical Insurance: ₹10,00,000 coverage for employee + spouse + 2 children + parents.
+4.2 Group Term Life Insurance: 3x annual CTC (max ₹2,00,00,000).
+4.3 Group Personal Accident Insurance: ₹50,00,000 coverage.
+4.4 Dental & Vision: ₹25,000 annual reimbursement.
+4.5 Mental Health Support: 12 free counseling sessions per year through the Employee Assistance Program (EAP). Contact: eap@globex-wellness.com or call 1800-200-3344.
+
+5. RETIREMENT BENEFITS
+───────────────────────
+5.1 Provident Fund (PF): 12% employer contribution on basic salary.
+5.2 Gratuity: Payable after 5 years of continuous service. Formula: (Basic × 15/26) × Years of Service.
+5.3 National Pension Scheme (NPS): Voluntary, with Globex matching up to ₹50,000/year.
+
+6. RELOCATION BENEFITS
+───────────────────────
+6.1 Domestic Relocation: ₹1,50,000 lump sum + 30 days temporary accommodation.
+6.2 International Relocation: Per the Globex Global Mobility Policy — typically covers shipping, visa, tax equalization, and 60 days temporary accommodation.
+6.3 Relocation benefits are subject to a 2-year clawback if the employee resigns within the period.
+
+7. PAYROLL PROCESSING
+──────────────────────
+7.1 Salaries are credited on the last working day of each month.
+7.2 Payslips are available on the HRMS Portal (hrms.globex-internal.com) by the 1st of each month.
+7.3 Tax declarations must be submitted by January 15th each year. Proof of investment must be submitted by February 28th.
+7.4 Payroll queries: payroll-support@globex-corp.com.
+
+═══════════════════════════════════════════════════════════
+CONFIDENTIALITY NOTICE: This document contains TIER 4 RESTRICTED
+information including salary bands and compensation structures.
+Unauthorized sharing is a terminable offense per IT Security Policy
+Section 2 (Data Classification).
+
+Last Revised: March 1, 2026
+Next Review: March 1, 2027
+Approved by: Kavitha Ranganathan, VP Compensation & Benefits
+═══════════════════════════════════════════════════════════

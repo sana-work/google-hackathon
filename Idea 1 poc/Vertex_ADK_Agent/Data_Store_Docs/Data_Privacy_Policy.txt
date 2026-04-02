@@ -1,0 +1,82 @@
+═══════════════════════════════════════════════════════════
+GLOBEX CORPORATION — DATA PRIVACY POLICY v2.4
+Document ID: DP-POL-001 | Effective: January 15, 2026
+Classification: Confidential | Owner: Data Protection Officer
+═══════════════════════════════════════════════════════════
+
+1. PURPOSE & SCOPE
+───────────────────
+1.1 This policy governs the collection, processing, storage, and disposal of personal data by Globex Corporation and its subsidiaries.
+1.2 Applies to all employees, contractors, vendors, and third parties who handle personal data on behalf of Globex.
+1.3 Compliance with GDPR (EU), DPDPA 2023 (India), CCPA (California), and PDPA (Singapore) is mandatory.
+
+2. DEFINITIONS
+───────────────
+2.1 Personal Data: Any information relating to an identified or identifiable natural person — name, email, phone number, employee ID, IP address, location data, biometric data.
+2.2 Sensitive Personal Data: Financial information, health records, sexual orientation, political opinions, religious beliefs, biometric data, genetic data.
+2.3 Data Subject: The individual whose personal data is being processed.
+2.4 Data Controller: Globex Corporation (determines purpose and means of processing).
+2.5 Data Processor: Any third party processing data on behalf of Globex.
+
+3. DATA COLLECTION PRINCIPLES
+──────────────────────────────
+3.1 LAWFUL BASIS: Personal data must only be collected with a valid legal basis — consent, contractual necessity, legal obligation, or legitimate interest.
+3.2 PURPOSE LIMITATION: Data collected for one purpose must not be repurposed without additional consent.
+3.3 DATA MINIMIZATION: Only the minimum necessary data should be collected. Over-collection is prohibited.
+3.4 ACCURACY: Data must be kept accurate and up-to-date. Mechanisms for data subjects to request corrections must be provided.
+
+4. CONSENT MANAGEMENT
+──────────────────────
+4.1 Consent must be freely given, specific, informed, and unambiguous.
+4.2 Pre-ticked consent boxes are prohibited. Consent must be an affirmative action.
+4.3 Consent withdrawal must be as easy as providing consent. Processing must cease within 72 hours of withdrawal.
+4.4 Records of consent (who, when, what, how) must be maintained for the full retention period plus 2 years.
+
+5. DATA RETENTION & DISPOSAL
+─────────────────────────────
+5.1 Retention Periods:
+    - Employee records: 7 years after separation
+    - Client project data: 5 years after project closure
+    - Marketing consent data: Duration of consent + 2 years
+    - Financial transactions: 10 years (regulatory requirement)
+    - Website analytics: 26 months (GDPR standard)
+5.2 Data past its retention period must be securely deleted within 30 days.
+5.3 Deletion Methods:
+    - Digital: Cryptographic erasure or NIST 800-88 compliant wiping
+    - Physical: Cross-cut shredding (DIN 66399 Level P-4 or higher)
+
+6. CROSS-BORDER DATA TRANSFER
+──────────────────────────────
+6.1 Personal data of EU residents must not be transferred outside the EEA without Standard Contractual Clauses (SCCs) or an adequacy decision.
+6.2 Personal data of Indian citizens must be stored within India (mirror copy), per DPDPA 2023 requirements.
+6.3 Transfer Impact Assessments (TIA) must be completed before any new cross-border data flow.
+6.4 Approved transfer mechanisms: SCCs, Binding Corporate Rules (BCRs), or adequacy decisions.
+
+7. DATA SUBJECT RIGHTS
+───────────────────────
+7.1 Right to Access: Data subjects can request a copy of their personal data. Response within 30 days.
+7.2 Right to Rectification: Corrections must be made within 15 business days.
+7.3 Right to Erasure ("Right to be Forgotten"): Erasure requests must be fulfilled within 30 days, unless legal retention obligations override.
+7.4 Right to Portability: Data must be provided in a machine-readable format (JSON or CSV).
+7.5 Right to Object: Data subjects may object to processing based on legitimate interest. Processing must cease pending review.
+
+8. BREACH NOTIFICATION
+───────────────────────
+8.1 Data breaches must be reported to the Data Protection Officer within 24 hours of discovery.
+8.2 DPO Contact: dpo@globex-corp.com | Direct: +91-80-4455-7800
+8.3 Regulatory notification (to relevant Data Protection Authority) must occur within 72 hours per GDPR Article 33.
+8.4 Affected data subjects must be notified "without undue delay" if the breach is likely to result in high risk to their rights.
+
+9. AI & AUTOMATED DECISION-MAKING
+───────────────────────────────────
+9.1 Automated decisions that significantly affect individuals (credit scoring, hiring recommendations, performance ratings) must include human oversight.
+9.2 Data subjects have the right to request human review of automated decisions per GDPR Article 22.
+9.3 AI models trained on personal data must document: data sources, training methodology, bias testing results, and accuracy metrics.
+9.4 Profiling for marketing purposes requires explicit opt-in consent.
+
+═══════════════════════════════════════════════════════════
+Last Revised: January 5, 2026
+Next Review: January 5, 2027
+Approved by: Dr. Sanjay Iyer, Data Protection Officer
+DPO Contact: dpo@globex-corp.com | +91-80-4455-7800
+═══════════════════════════════════════════════════════════
