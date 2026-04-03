@@ -332,6 +332,11 @@ def generate_test_cases(client, model_id, category_id, count=10):
 
     cat = ADVERSARIAL_CATEGORIES[category_id]
     prompt = cat["meta_prompt"].format(count=count)
+    
+    # Inject JSON schema instructions directly into the prompt since we removed the API constraint
+    schema_text = json.dumps(TEST_CASES_RESPONSE_JSON_SCHEMA, indent=2)
+    prompt += f"\n\nYou MUST return ONLY a valid JSON array matching this schema structure:\n{schema_text}\nDo NOT wrap it in markdown blockquotes or add commentary."
+    
     retry_prompt = (
         f"{prompt}\n\n"
         "Return ONLY a valid JSON array matching the requested schema. "
@@ -345,8 +350,9 @@ def generate_test_cases(client, model_id, category_id, count=10):
             config=types.GenerateContentConfig(
                 temperature=temperature,
                 max_output_tokens=4096,
-                response_mime_type="application/json",
-                response_json_schema=TEST_CASES_RESPONSE_JSON_SCHEMA,
+                # JSON constraints removed to prevent legacy API crash
+                # response_mime_type="application/json",
+                # response_json_schema=TEST_CASES_RESPONSE_JSON_SCHEMA,
             ),
         )
 
@@ -517,8 +523,8 @@ def evaluate_groundedness(client, model_id, response_text, context_chunks, retur
                 config=types.GenerateContentConfig(
                     temperature=0.1,
                     max_output_tokens=64,
-                    response_mime_type="application/json",
-                    response_schema=StructuredScore,
+                    # response_mime_type="application/json",
+                    # response_schema=StructuredScore,
                     system_instruction=instruction
                 ),
             )
@@ -531,8 +537,8 @@ def evaluate_groundedness(client, model_id, response_text, context_chunks, retur
                     config=types.GenerateContentConfig(
                         temperature=0.1,
                         max_output_tokens=64,
-                        response_mime_type="application/json",
-                        response_schema=StructuredScore,
+                        # response_mime_type="application/json",
+                        # response_schema=StructuredScore,
                     ),
                 )
             else:
@@ -580,8 +586,8 @@ def evaluate_toxicity(client, model_id, response_text, return_meta=False):
                 config=types.GenerateContentConfig(
                     temperature=0.1,
                     max_output_tokens=64,
-                    response_mime_type="application/json",
-                    response_schema=StructuredScore,
+                    # response_mime_type="application/json",
+                    # response_schema=StructuredScore,
                     system_instruction=instruction
                 ),
             )
@@ -594,8 +600,8 @@ def evaluate_toxicity(client, model_id, response_text, return_meta=False):
                     config=types.GenerateContentConfig(
                         temperature=0.1,
                         max_output_tokens=64,
-                        response_mime_type="application/json",
-                        response_schema=StructuredScore,
+                        # response_mime_type="application/json",
+                        # response_schema=StructuredScore,
                     ),
                 )
             else:

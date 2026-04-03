@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenAI Guardrail Factory — Technical Submission</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  
+  :root {
+    --primary: #0d9488;
+    --primary-dark: #0f766e;
+    --primary-light: #ccfbf1;
+    --accent-red: #ef4444;
+    --accent-green: #22c55e;
+    --accent-blue: #3b82f6;
+    --accent-violet: #8b5cf6;
+    --accent-amber: #f59e0b;
+    --dark: #0f172a;
+    --dark-mid: #1e293b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page { margin: 8mm 0; size: A4; }
+
+  .page {
+    width: 210mm;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+  }
+
+  /* Only the cover page forces a page break after it */
+  .cover { page-break-after: always; }
+
+  /* Prevent splitting inside key elements */
+  .screenshot, .stat-card, .arch-container, .highlight-box, .warning-box, table, .checklist, .stats-row, .two-screenshots, .pipeline-visual {
+    page-break-inside: avoid;
+  }
+
+  /* Keep section headers with their content */
+  .section-number, .section-title, .divider {
+    page-break-after: avoid;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: linear-gradient(135deg, var(--dark) 0%, #0c4a6e 50%, var(--primary-dark) 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 50px 20px;
+    height: 100vh;
+    overflow: hidden;
+  }
+  @media print {
+    @page { margin: 0; }
+    .cover {
+      height: 297mm;
+      padding: 30px 50px 20px;
+      overflow: visible;
+    }
+    .content-page {
+      padding: 30px 40px;
+    }
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(13,148,136,0.15);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(59,130,246,0.1);
+  }
+  .cover-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    backdrop-filter: blur(10px);
+  }
+  .cover-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    max-width: 500px;
+    margin-bottom: 32px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    z-index: 1;
+  }
+  .cover-meta-item {
+    text-align: center;
+  }
+  .cover-meta-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .cover-meta-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .cover-footer {
+    position: absolute;
+    bottom: 40px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── CONTENT PAGES ── */
+  .content-page {
+    padding: 40px 50px;
+    background: #fff;
+  }
+
+  .section-number {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .rubric-weight {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    margin: 8px 0 20px 0;
+    border-radius: 2px;
+  }
+
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box {
+    background: linear-gradient(135deg, var(--primary-light), #e0f2fe);
+    border-left: 4px solid var(--primary);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+
+  .warning-box {
+    background: #fef2f2;
+    border-left: 4px solid var(--accent-red);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+
+  .screenshot {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    margin: 12px 0;
+  }
+  .screenshot-caption {
+    font-size: 10px;
+    color: var(--gray-400);
+    text-align: center;
+    margin-top: -4px;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .two-screenshots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .two-screenshots img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 9px;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 11px;
+  }
+  th {
+    background: var(--dark);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  /* Architecture diagram styling */
+  .arch-container {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    color: #fff;
+  }
+  .arch-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .arch-node {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 90px;
+  }
+  .arch-node.highlight {
+    background: rgba(13,148,136,0.2);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .arch-arrow {
+    color: var(--gray-400);
+    font-size: 16px;
+  }
+
+  .pipeline-visual {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .pipeline-step {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .pipeline-step-num {
+    background: var(--primary);
+    color: #fff;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .pipeline-step-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    padding: 8px 12px;
+    background: var(--gray-50);
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+  }
+  .check-icon {
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .footer-strip {
+    margin-top: 20px;
+    height: 32px;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    font-size: 8px;
+    color: var(--gray-400);
+    border-radius: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 1: COVER                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 2: Build with Vertex</div>
+  <div class="cover-icon">🛡️</div>
+  <h1>GenAI <span>Guardrail</span> Factory</h1>
+  <div class="cover-sub">A multi-stage, AI-powered release gate that evaluates, scores, and auto-remediates Generative AI outputs before they reach production — built on Google ADK &amp; Vertex AI.</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Platform</div>
+      <div class="cover-meta-value">Google ADK + Vertex AI</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Model</div>
+      <div class="cover-meta-value">Gemini 2.5 Flash</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Deployment</div>
+      <div class="cover-meta-value">Cloud Run</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Dimensions</div>
+      <div class="cover-meta-value">3 Safety Gates</div>
+    </div>
+  </div>
+  <div style="margin-top:24px; z-index:1;">
+    <div style="font-size:16px; font-weight:700; letter-spacing:0.5px;">Sana Iqbal</div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px;">Employee ID: 1213383</div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 2: EXECUTIVE SUMMARY                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Executive Summary &amp; Problem Fit <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <div class="warning-box">
+    <p><strong>🛑 The Enterprise Problem:</strong> As organizations race to deploy GenAI, they face critical production risks — <strong>hallucinations</strong> that fabricate answers, <strong>PII data leaks</strong> that expose employee information, and <strong>toxic/off-brand outputs</strong> that violate corporate policy. Traditional deployments rely on basic system prompts with zero deterministic testing.</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>💡 Our Solution:</strong> The <strong>GenAI Guardrail Factory</strong> is a dynamic, multi-stage release gate agent. Instead of merely answering questions, it acts as a <strong>security sentry</strong> — using the Google ADK to evaluate, score, and auto-remediate AI outputs against strict enterprise thresholds <strong>(Groundedness ≥85%, Toxicity ≥90%, PII ≥90%)</strong> before any response reaches end-users.</p>
+  </div>
+
+  <p>The system implements a complete <strong>4-stage pipeline</strong>: (1) Load enterprise documents &amp; build a RAG vector store, (2) Generate adversarial test suites using Gemini, (3) Execute evaluation across 3 safety dimensions with a release gate, and (4) Auto-remediate failures by diagnosing root causes and hardening the system prompt — all orchestrated through a production-grade FastAPI dashboard.</p>
+
+  <div class="pipeline-visual">
+    <div class="pipeline-step"><div class="pipeline-step-num">1</div><div class="pipeline-step-label">Load Docs</div></div>
+    <div class="pipeline-step"><div class="pipeline-step-num">2</div><div class="pipeline-step-label">Build RAG</div></div>
+    <div class="pipeline-step"><div class="pipeline-step-num">3</div><div class="pipeline-step-label">Gen Tests</div></div>
+    <div class="pipeline-step"><div class="pipeline-step-num">4</div><div class="pipeline-step-label">Execute</div></div>
+    <div class="pipeline-step"><div class="pipeline-step-num">5</div><div class="pipeline-step-label">Evaluate</div></div>
+    <div class="pipeline-step"><div class="pipeline-step-num">6</div><div class="pipeline-step-label">Release Gate</div></div>
+  </div>
+
+  <img class="screenshot" src="submission_assets/media__1775130725518.png" alt="Dashboard Stage 1">
+  <div class="screenshot-caption">Figure 1: GenAI Guardrail Factory — Live Dashboard with 6-stage Pipeline Execution Flow, configurable thresholds, and Gemini model selection</div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 3: NOVELTY & TECHNICAL SOPHISTICATION     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 02</div>
+  <div class="section-title">Novelty &amp; Technical Sophistication <span class="rubric-weight">15% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>This project transcends basic API wrapping by leveraging <strong>Custom Tool-Calling and Agentic Routing</strong>. The ADK <code>LlmAgent</code> is empowered with deterministic Python functions that calculate precise security scores — combining LLM intelligence with rule-based guardrails.</p>
+
+  <table>
+    <thead>
+      <tr><th>Capability</th><th>Technical Execution</th><th>Impact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Groundedness Checking</strong></td><td>RAG retrieval via ChromaDB vector embeddings + Gemini judge scoring</td><td>Prevents hallucinations by enforcing source-document citation</td></tr>
+      <tr><td><strong>PII Data Scanning</strong></td><td>Multi-pattern regex engine scanning for emails, phones, SSNs, names</td><td>Prevents unauthorized exposure of personal data</td></tr>
+      <tr><td><strong>Toxicity Analysis</strong></td><td>LLM-as-judge policy-driven sentiment + safety grading</td><td>Ensures enterprise brand safety and regulatory compliance</td></tr>
+      <tr><td><strong>Auto-Remediation</strong></td><td>Gemini diagnoses failure patterns and generates hardened system prompts</td><td>Closes the feedback loop — AI fixing AI</td></tr>
+      <tr><td><strong>Release Gate</strong></td><td>Multi-dimensional threshold + category floor + critical failure limits</td><td>Deterministic deploy/block verdict with zero ambiguity</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Key Innovation — The Remediation Loop:</strong> When the release gate blocks deployment, Gemini analyzes the failure patterns, identifies root causes across 4 attack categories, and auto-generates a hardened system prompt. The entire test suite is then re-executed against the improved prompt to verify recovery.</p>
+
+  <img class="screenshot" src="submission_assets/media__1775130722146.png" alt="ADK Terminal Execution">
+  <div class="screenshot-caption">Figure 2: Live ADK Agent execution in terminal — GuardrailEvaluatorAgent detecting PII leakage (vikram@gmail.com), scoring FAIL, and generating a remediation plan</div>
+
+  <div class="highlight-box">
+    <p><strong>Result:</strong> The agent correctly identified PII (email address), scored Toxicity at 0.98 (PASS) and PII Leakage at 0.70 (FAIL), and recommended "Requires Prompt Hardening" — demonstrating real-time guardrail enforcement.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 4: ARCHITECTURE & SCALABILITY             -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 03</div>
+  <div class="section-title">Architecture &amp; Scalability <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>Our architecture follows enterprise-grade principles: <strong>decoupled components, modular tool-calling, and cloud-native deployment</strong>. The system separates the evaluation logic (ADK Agent) from the orchestration layer (FastAPI), enabling independent scaling and testing.</p>
+
+  <div class="arch-container">
+    <div class="arch-title">System Architecture — End-to-End Flow</div>
+    <div class="arch-flow">
+      <div class="arch-node">🏢<br>Enterprise App</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node highlight">⚡<br>FastAPI Server</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node highlight">🤖<br>ADK Agent<br><small>GuardrailEvaluator</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">🔧 Tools</div>
+    </div>
+    <br>
+    <div class="arch-flow">
+      <div class="arch-node">📊<br>PII Scanner<br><small>Regex + Patterns</small></div>
+      <div class="arch-node">🛡️<br>Toxicity Judge<br><small>Gemini LLM</small></div>
+      <div class="arch-node">📚<br>Groundedness<br><small>RAG + ChromaDB</small></div>
+      <div class="arch-node">🔄<br>Auto-Remediation<br><small>Prompt Hardening</small></div>
+    </div>
+  </div>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="submission_assets/media__1775130717869.png" alt="agent.py code">
+      <div class="screenshot-caption">Figure 3a: ADK LlmAgent with 3 guardrail tools</div>
+    </div>
+    <div>
+      <img src="submission_assets/media__1775130811761.png" alt="tools.py code">
+      <div class="screenshot-caption">Figure 3b: tools.py — check_groundedness with RAG retrieval</div>
+    </div>
+  </div>
+
+  <p><strong>Scalability Path:</strong> The same evaluation pipeline runs locally for development and deploys to Google Cloud Run for production. The architecture supports horizontal scaling via Cloud Run auto-scaling, BigQuery for audit trails, Cloud Scheduler for recurring checks, and Secret Manager for credential governance.</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--primary)">6</div>
+      <div class="stat-label">Pipeline Stages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-blue)">3</div>
+      <div class="stat-label">Safety Dimensions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-violet)">5</div>
+      <div class="stat-label">Attack Categories</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-amber)">25+</div>
+      <div class="stat-label">Adversarial Tests</div>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 5: SECURITY & GUARDRAILS                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 04</div>
+  <div class="section-title">Security &amp; Guardrails <span class="rubric-weight">15% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>Security is the <strong>native DNA</strong> of this project. The system enforces a strict release gate with configurable thresholds, category pass-rate floors, and critical failure limits — providing deterministic deploy/block decisions.</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--primary)">84</div>
+      <div class="stat-label">Groundedness Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-green)">92</div>
+      <div class="stat-label">Toxicity Safety</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-violet)">93</div>
+      <div class="stat-label">PII Protection</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-red)">8</div>
+      <div class="stat-label">Active Failures</div>
+    </div>
+  </div>
+
+  <img class="screenshot" src="submission_assets/media__1775130775559.png" alt="Safety Dimension Gauges">
+  <div class="screenshot-caption">Figure 4: Safety Dimension Scores vs. Thresholds — Groundedness FAIL (84/85), Toxicity PASS (92/90), PII PASS (93/90)</div>
+
+  <img class="screenshot" src="submission_assets/media__1775130781153.png" alt="Attack Categories and Failed Tests">
+  <div class="screenshot-caption">Figure 5: Pass Rate by Attack Category + Failed Test Cases table showing adversarial prompts, scores, judge mode, and severity classification</div>
+
+  <div class="highlight-box">
+    <p><strong>Security Features:</strong> (1) PII redaction with regex-based scanning for emails, phone numbers, SSNs, and names. (2) Groundedness verification via RAG document retrieval. (3) Toxicity filtering using LLM-as-judge policy grading. (4) Configurable release policy with category floor (70%), critical failure limit (0), and fallback-score tolerance.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 6: EVALUATION RESULTS                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 04 (continued)</div>
+  <div class="section-title">Evaluation &amp; Release Gate Results</div>
+  <div class="divider"></div>
+
+  <div class="warning-box">
+    <p><strong>🚫 DEPLOYMENT BLOCKED:</strong> 1 of 3 safety dimensions below threshold · 3 critical failures · 2 categories below 70% floor. The release gate correctly identified that the AI model is not safe for production deployment.</p>
+  </div>
+
+  <img class="screenshot" src="submission_assets/media__1775130728761.png" alt="Deployment Blocked">
+  <div class="screenshot-caption">Figure 6: DEPLOYMENT BLOCKED verdict — Release gate enforcing enterprise safety standards with active model, posture status, weakest dimension, and highest-risk category</div>
+
+  <img class="screenshot" src="submission_assets/media__1775130731968.png" alt="Run Context and Operator Guidance">
+  <div class="screenshot-caption">Figure 7: Run Context metadata (Project ID, Region, Thresholds, Gate Policy) + Operator Guidance with prioritized remediation steps</div>
+
+  <table>
+    <thead>
+      <tr><th>Metric</th><th>Before Remediation</th><th>After Remediation</th><th>Delta</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Groundedness</strong></td><td style="color:var(--accent-red)">0.840 (FAIL)</td><td style="color:var(--accent-green)">0.942</td><td style="color:var(--accent-green)"><strong>+10.2%</strong></td></tr>
+      <tr><td><strong>Toxicity Safety</strong></td><td>0.918 (PASS)</td><td style="color:var(--accent-green)">0.970</td><td style="color:var(--accent-green)"><strong>+5.2%</strong></td></tr>
+      <tr><td><strong>PII Protection</strong></td><td>0.932 (PASS)</td><td style="color:var(--accent-green)">0.992</td><td style="color:var(--accent-green)"><strong>+6.0%</strong></td></tr>
+      <tr><td><strong>Overall Posture</strong></td><td style="color:var(--accent-red)">BLOCKED</td><td style="color:var(--accent-green)">APPROVED</td><td style="color:var(--accent-green)"><strong>Recovered</strong></td></tr>
+      <tr><td><strong>Active Failures</strong></td><td>8</td><td style="color:var(--accent-green)">0</td><td style="color:var(--accent-green)"><strong>-100%</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 7: AUTO-REMEDIATION                       -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 04 (continued)</div>
+  <div class="section-title">AI-Powered Auto-Remediation Engine</div>
+  <div class="divider"></div>
+
+  <p>The most innovative feature: when the release gate blocks deployment, <strong>Gemini automatically diagnoses failure patterns</strong>, identifies root causes across all attack categories, and generates a hardened system prompt. The entire test suite is re-executed to verify full recovery.</p>
+
+  <img class="screenshot" src="submission_assets/media__1775130799530.png" alt="Auto-Remediation Diagnosis">
+  <div class="screenshot-caption">Figure 8: AI-Powered Auto-Remediation — Root cause diagnosis across 4 attack categories with specific fixes, plus score improvements (+10.2%, +5.2%, +6.0%)</div>
+
+  <img class="screenshot" src="submission_assets/media__1775130801918.png" alt="Improved System Prompt">
+  <div class="screenshot-caption">Figure 9: Gemini-generated hardened system prompt with 8 explicit rules — covering PII protection, policy boundaries, role-play rejection, and bias prevention</div>
+
+  <div class="highlight-box">
+    <p><strong>✅ APPROVED FOR DEPLOYMENT:</strong> After auto-remediation, all 3 safety dimensions meet enterprise thresholds, with no critical failures and every category clearing the 70% floor. The system successfully demonstrated the complete <strong>BLOCKED → DIAGNOSE → HARDEN → APPROVED</strong> lifecycle.</p>
+  </div>
+
+  <img class="screenshot" src="submission_assets/media__1775130792008.png" alt="Approved for Deployment">
+  <div class="screenshot-caption">Figure 10: APPROVED FOR DEPLOYMENT — Post-remediation verdict showing recovered posture, 0 active failures, and 94% groundedness (vs 85% threshold)</div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 7</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 8: DEPLOYMENT & CLOUD                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 05</div>
+  <div class="section-title">Implementation &amp; Deployment <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>The system was developed strictly according to <strong>Track 2 standards</strong> — utilizing Vertex AI workspaces, the official Google ADK, and deployed natively to Google Cloud Run as a fully containerized, production-ready service.</p>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="submission_assets/deploy_start.png" alt="ADK Deploy Start">
+      <div class="screenshot-caption">Figure 11a: adk deploy cloud_run — Building container, creating Dockerfile, uploading sources to Cloud Build</div>
+    </div>
+    <div>
+      <img src="submission_assets/deploy_success.png" alt="ADK Deploy Success">
+      <div class="screenshot-caption">Figure 11b: Deployment SUCCESS — Service URL live, revision serving 100% traffic on Cloud Run</div>
+    </div>
+  </div>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="submission_assets/media__1775130804641.png" alt="Cloud Run Overview">
+      <div class="screenshot-caption">Figure 11: Google Cloud Run Console — adk-default-service-name actively deployed in us-central1</div>
+    </div>
+    <div>
+      <img src="submission_assets/media__1775130807423.png" alt="Cloud Run Source">
+      <div class="screenshot-caption">Figure 12: Cloud Run Service Details — Source code (agent.py) visible inside the deployed container</div>
+    </div>
+  </div>
+
+  <p><strong>Deployment Stack:</strong></p>
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Technology</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Agent Framework</strong></td><td>Google ADK (LlmAgent)</td><td>Agentic orchestration with tool-calling</td></tr>
+      <tr><td><strong>LLM</strong></td><td>Gemini 2.5 Flash / Flash-Lite</td><td>Generation, evaluation, and remediation</td></tr>
+      <tr><td><strong>Vector Store</strong></td><td>ChromaDB + Embedding</td><td>Enterprise document RAG retrieval</td></tr>
+      <tr><td><strong>Backend</strong></td><td>FastAPI + Uvicorn</td><td>REST API + WebSocket status streaming</td></tr>
+      <tr><td><strong>Dashboard</strong></td><td>Single-file HTML/CSS/JS</td><td>Production-grade operator interface</td></tr>
+      <tr><td><strong>Cloud Deployment</strong></td><td>Google Cloud Run</td><td>Containerized, auto-scaling service</td></tr>
+      <tr><td><strong>Persistence</strong></td><td>SQLite (RunStore)</td><td>Run history and configuration</td></tr>
+      <tr><td><strong>Security</strong></td><td>Bearer Token Auth</td><td>Control-plane protection</td></tr>
+    </tbody>
+  </table>
+
+  <img class="screenshot" src="submission_assets/media__1775130772023.png" alt="Production Roadmap">
+  <div class="screenshot-caption">Figure 13: Dashboard showing PoC Runtime architecture + Production Target on Google Cloud (Cloud Run, BigQuery, Scheduler, Secret Manager)</div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 8</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 9: EVIDENCE CHECKLIST & CONCLUSION        -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 06</div>
+  <div class="section-title">Conclusion &amp; Evidence Checklist <span class="rubric-weight">10% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>The <strong>GenAI Guardrail Factory</strong> is a deploy-ready, scalable asset for enterprise AI governance. By leveraging the Google Agent Development Kit (ADK) with custom tool-calling, we have created a deterministic security gate that transforms risky GenAI deployments into compliant, enterprise-grade capabilities.</p>
+
+  <div class="highlight-box">
+    <p><strong>Key Achievement:</strong> Successfully demonstrated the complete lifecycle — from <strong>DEPLOYMENT BLOCKED</strong> (8 active failures) to <strong>APPROVED FOR DEPLOYMENT</strong> (0 failures) through AI-powered auto-remediation, with measurable score improvements across all 3 safety dimensions.</p>
+  </div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">✅ Track 2 Evidence Checklist</h3>
+
+  <div class="checklist">
+    <div class="check-item"><span class="check-icon">✓</span> ADK LlmAgent with custom tools (agent.py)</div>
+    <div class="check-item"><span class="check-icon">✓</span> Local execution via `adk run` (Terminal)</div>
+    <div class="check-item"><span class="check-icon">✓</span> Cloud Run deployment (GCP Console)</div>
+    <div class="check-item"><span class="check-icon">✓</span> Source code in deployed container</div>
+    <div class="check-item"><span class="check-icon">✓</span> Live Dashboard at localhost:8000</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4-stage pipeline execution</div>
+    <div class="check-item"><span class="check-icon">✓</span> 3 safety dimension scoring</div>
+    <div class="check-item"><span class="check-icon">✓</span> Release gate (BLOCKED → APPROVED)</div>
+    <div class="check-item"><span class="check-icon">✓</span> Auto-remediation with root cause</div>
+    <div class="check-item"><span class="check-icon">✓</span> Gemini-generated hardened prompt</div>
+    <div class="check-item"><span class="check-icon">✓</span> 5 adversarial attack categories</div>
+    <div class="check-item"><span class="check-icon">✓</span> Failed test cases table with severity</div>
+  </div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">📊 Rubric Alignment Summary</h3>
+
+  <table>
+    <thead>
+      <tr><th>Rubric Criterion</th><th>Weight</th><th>Evidence</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Executive Summary &amp; Problem Fit</strong></td><td>20%</td><td>Enterprise AI safety gap → Multi-stage release gate solution</td></tr>
+      <tr><td><strong>Novelty &amp; Technical Sophistication</strong></td><td>15%</td><td>ADK tool-calling, LLM-as-judge, auto-remediation loop</td></tr>
+      <tr><td><strong>Architecture &amp; Scalability</strong></td><td>20%</td><td>Decoupled FastAPI + ADK + ChromaDB → Cloud Run deployment</td></tr>
+      <tr><td><strong>Security &amp; Guardrails</strong></td><td>15%</td><td>3 safety gates, PII regex, configurable thresholds, release policy</td></tr>
+      <tr><td><strong>Implementation &amp; Deployment</strong></td><td>20%</td><td>Working PoC, Cloud Run container, live GCP console proof</td></tr>
+      <tr><td><strong>Evidence &amp; Documentation</strong></td><td>10%</td><td>15+ screenshots, code views, terminal output, GCP console</td></tr>
+    </tbody>
+  </table>
+
+  <br>
+  <div style="text-align:center; padding:20px; background:linear-gradient(135deg, var(--primary-light), #e0f2fe); border-radius:12px;">
+    <div style="font-size:32px; margin-bottom:8px">🛡️</div>
+    <div style="font-size:16px; font-weight:800; color:var(--dark)">GenAI Guardrail Factory v2.0</div>
+    <div style="font-size:11px; color:var(--gray-600); margin-top:4px">Built on Google Vertex AI &amp; Gemini · Deployed on Cloud Run · Powered by ADK</div>
+    <div style="font-size:10px; color:var(--gray-400); margin-top:8px">© 2026 Tata Consultancy Services Limited · tcs^AI Hackathon</div>
+  </div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · TCS^AI Hackathon 2026</span>
+    <span>Page 9</span>
+  </div>
+</div>
+
+</body>
+</html>

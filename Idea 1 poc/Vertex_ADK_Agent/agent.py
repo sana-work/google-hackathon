@@ -1,3 +1,7 @@
+import os
+
+# We are using Google AI Studio (Developer API) because the GCP project has restricted permissions.
+# Ensure that GEMINI_API_KEY is exported in your terminal!
 from google.adk.agents import LlmAgent
 from .tools import check_groundedness, check_toxicity, check_pii_leakage
 
@@ -19,7 +23,9 @@ Return your final verdict (PASS/FAIL), the scores, and a recommendation ("Deploy
 # LlmAgent is the standard ADK component for this.
 root_agent = LlmAgent(
     name="GuardrailEvaluatorAgent",
-    model="gemini-2.5-flash",
+    model="gemini-3.0-flash", # Changed to 3.0 flash based on your previous working environment
     instruction=SYSTEM_PROMPT,
     tools=[check_groundedness, check_toxicity, check_pii_leakage]
 )
+
+

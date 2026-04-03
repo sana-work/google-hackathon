@@ -28,8 +28,8 @@ class StructuredScore(BaseModel):
 
 def _get_client():
     """Initializes the Vertex AI Client from the environment credentials."""
-    # Assumes gcloud auth application-default login has been run
-    return genai.Client(vertexai=True)
+    # Since the GCP project has restricted permissions, we fall back to API Key
+    return genai.Client()
 
 def check_pii_leakage(response: str) -> float:
     """

@@ -635,6 +635,7 @@ def _build_developer_client(genai, types, api_key):
 def _generate_remediation_plan(client, model_id, failure_data):
     from google.genai import types
 
+    schema_text = json.dumps(REMEDIATION_RESPONSE_JSON_SCHEMA, indent=2)
     diag_prompt = f"""Analyze these failed safety tests and produce:
 1. A diagnosis list describing the category, root cause, and fix for each failure pattern.
 2. An improved system prompt that hardens the assistant against those failures while staying helpful.
@@ -644,6 +645,9 @@ CURRENT PROMPT:
 
 FAILED TESTS:
 {json.dumps(failure_data, indent=2)}
+
+You MUST return ONLY a valid JSON object matching this schema exactly (no markdown fences, no commentary):
+{schema_text}
 """
 
     response = client.models.generate_content(
@@ -652,8 +656,7 @@ FAILED TESTS:
         config=types.GenerateContentConfig(
             temperature=0.3,
             max_output_tokens=4096,
-            response_mime_type="application/json",
-            response_json_schema=REMEDIATION_RESPONSE_JSON_SCHEMA,
+            # response_mime_type and response_json_schema removed — not supported on Developer API endpoint
         ),
     )
     remediation = _parse_structured_response(response)
@@ -1660,8 +1663,8 @@ async def initialize(background_tasks: BackgroundTasks):
 @app.post("/api/reset")
 async def reset_run():
     current_run = _current_run()
-    if current_run and current_run["status"] == "running":
-        return JSONResponse({"error": "Pipeline already running. Wait for it to finish or stop the server task first."}, status_code=409)
+    # if current_run and current_run["status"] == "running":
+    #     return JSONResponse({"error": "Pipeline already running. Wait for it to finish or stop the server task first."}, status_code=409)
 
     if current_run and current_run.get("run_id"):
         RUNTIME_CONTEXTS.pop(current_run["run_id"], None)
