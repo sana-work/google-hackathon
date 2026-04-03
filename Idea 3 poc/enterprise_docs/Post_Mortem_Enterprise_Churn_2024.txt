@@ -1,0 +1,74 @@
+================================================================================
+DOCUMENT: POST-MORTEM — ENTERPRISE CUSTOMER CHURN EVENT 2024
+CLASSIFICATION: INTERNAL — LESSONS LEARNED
+DATE: November 15, 2024
+PREPARED BY: Customer Intelligence Task Force
+================================================================================
+
+1. INCIDENT SUMMARY
+   In Q3 2024, the organization lost 23 enterprise accounts (combined ACV
+   ₹8.7 Cr) with ZERO advance warning from traditional monitoring systems.
+   Post-exit surveys revealed these customers had been disengaging for
+   3-6 months before final departure.
+
+2. TIMELINE OF EVENTS — CASE STUDY: ACME FINTECH (ACV ₹42L)
+
+   Month 1 (April 2024):
+   - Login frequency: 15/week (normal)
+   - Email engagement: 68% open rate (normal)
+   - Support tickets: 2 tickets, resolved in 3 days
+   - Payments: On time
+
+   Month 2 (May 2024):
+   - Login frequency: 12/week (↓20% — FIRST SIGNAL, MISSED)
+   - Email engagement: 45% open rate (↓34%)
+   - Support tickets: 1 ticket, resolved in 5 days
+   - Payments: On time
+
+   Month 3 (June 2024):
+   - Login frequency: 6/week (↓60% — CRITICAL SIGNAL, MISSED)
+   - Email engagement: 20% open rate (↓71%)
+   - Support tickets: 0 — customer stopped engaging
+   - Payments: On time but auto-debit
+
+   Month 4 (July 2024):
+   - Login frequency: 2/week (↓87%)
+   - Email engagement: 0% — all emails ignored
+   - Support tickets: 0
+   - Payments: Auto-renewal cancelled (FIRST DETECTED SIGNAL)
+
+   Month 5 (August 2024):
+   - Customer departed. No response to retention outreach.
+   - Exit survey: "We didn't feel supported. We found an alternative
+     that better fits our needs. Nobody reached out proactively."
+
+3. ROOT CAUSE ANALYSIS
+   3.1 No multi-channel behavioral monitoring in place
+   3.2 Support team only tracked ticket volume, not absence patterns
+   3.3 CSM team relied on quarterly check-ins (too infrequent)
+   3.4 Payment cancellation was the ONLY signal detected — too late
+   3.5 No system to calculate composite risk from combined decline signals
+
+4. KEY LEARNINGS
+   L1: Silence is the loudest signal — zero complaints doesn't mean happy
+   L2: Multi-channel fusion would have detected risk at Month 2 (SRS ~55)
+   L3: Proactive outreach at Month 2 had estimated 44% save probability
+   L4: By Month 4, save probability dropped to <10%
+   L5: The 30-60 day intervention window is critical and non-negotiable
+
+5. IMPACT
+   - Total enterprise churn in Q3: ₹8.7 Cr ACV
+   - Estimated saveable with early detection: ₹3.5-5.2 Cr (40-60%)
+   - Competitive displacement identified in 15 of 23 cases
+   - Brand reputation impact: 3 negative Gartner Peer Insights reviews
+
+6. CORRECTIVE ACTIONS
+   CA-1: Build and deploy Silent Escalation Predictor (this project)
+   CA-2: Implement daily multi-channel behavioral scoring
+   CA-3: Reduce CSM check-in cadence to monthly for enterprise accounts
+   CA-4: Establish proactive support protocol for silent customers
+   CA-5: Executive-sponsored retention review board (monthly)
+
+================================================================================
+END OF DOCUMENT
+================================================================================

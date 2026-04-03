@@ -1,0 +1,81 @@
+================================================================================
+DOCUMENT: CUSTOMER RETENTION POLICY 2025
+CLASSIFICATION: INTERNAL — CONFIDENTIAL
+EFFECTIVE DATE: January 1, 2025
+OWNER: Chief Customer Officer, Enterprise Division
+LAST REVIEWED: December 15, 2024
+================================================================================
+
+1. PURPOSE & SCOPE
+   This policy establishes the enterprise-wide framework for proactive customer
+   retention, early churn detection, and structured intervention protocols.
+   It applies to all customer-facing teams across SaaS, Telecom, Banking,
+   Insurance, and E-commerce verticals.
+
+2. STRATEGIC CONTEXT
+   Customer acquisition costs 5-7x more than retention. A 5% improvement in
+   retention rates can increase profits by 25-95% (Harvard Business Review).
+   The organization must shift from reactive (responding to cancellations) to
+   proactive (detecting disengagement before churn occurs).
+
+3. SILENT CHURN FRAMEWORK
+   3.1 Definition: "Silent churn" occurs when a customer disengages without
+       filing complaints, responding to surveys, or making explicit cancellation
+       requests. Research shows 60-70% of total churn is silent.
+   3.2 Detection Window: All retention interventions must target a 30-60 day
+       window BEFORE predicted churn date. Interventions within 7 days of
+       churn have <15% success rate.
+   3.3 Multi-Channel Signal Monitoring: Teams must monitor FOUR behavioral
+       channels simultaneously:
+       - Platform Usage (login frequency, feature depth, session duration)
+       - Communication (email opens, notification responses, newsletter clicks)
+       - Support (ticket creation, survey response, FAQ visits)
+       - Transactions (purchase frequency, payment timeliness, plan changes)
+
+4. SILENT RISK SCORE (SRS)
+   4.1 Every customer account must have a computed Silent Risk Score (0-100):
+       - 0-40: LOW RISK — Normal engagement, monitor only
+       - 41-70: MEDIUM RISK — Declining engagement, proactive outreach required
+       - 71-100: HIGH RISK — Critical disengagement, immediate escalation
+   4.2 The SRS is calculated using weighted behavioral signals:
+       SRS = w1(Usage_Decline) + w2(Communication_Silence) +
+             w3(Support_Absence) + w4(Transaction_Decay)
+       Where weights are calibrated quarterly based on historical churn outcomes.
+   4.3 Score refresh frequency: Daily for HIGH RISK, Weekly for MEDIUM, Monthly
+       for LOW RISK accounts.
+
+5. MANDATORY INTERVENTION PROTOCOL
+   5.1 LOW RISK (SRS 0-40):
+       - Automated personalized re-engagement email within 48 hours
+       - Content must highlight features the customer hasn't explored
+       - No human intervention required unless score increases
+   5.2 MEDIUM RISK (SRS 41-70):
+       - Customer Success Manager (CSM) must initiate proactive outreach
+         within 24 hours of score breach
+       - Outreach script must reference specific behavioral changes observed
+       - Offer priority support queue access
+       - Document intervention in CRM within 4 hours of contact
+   5.3 HIGH RISK (SRS 71-100):
+       - Immediate escalation to Relationship Manager / Account Director
+       - Full context brief auto-generated including: behavioral timeline,
+         open tickets, payment history, and recommended retention offer
+       - Manager must make personal contact within 12 hours
+       - Retention budget authorization: up to 20% of annual contract value
+       - HUMAN-IN-THE-LOOP REQUIRED: All high-risk interventions must have
+         human approval before customer contact
+
+6. REPORTING & ACCOUNTABILITY
+   6.1 Weekly Retention Dashboard: All teams must review cohort churn metrics
+   6.2 Monthly Retention Board: Executive review of intervention effectiveness
+   6.3 KPIs: Net Revenue Retention (NRR), Intervention Success Rate,
+       Time-to-Intervention, Customer Health Score trend
+
+7. DATA GOVERNANCE
+   7.1 All behavioral data used for churn prediction must be anonymized
+   7.2 No PII shall be included in prediction models
+   7.3 Customer communication preferences and opt-outs must be respected
+   7.4 Data retention: Behavioral signals retained for 24 months, then purged
+
+================================================================================
+END OF DOCUMENT
+================================================================================

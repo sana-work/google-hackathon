@@ -1,0 +1,67 @@
+================================================================================
+DOCUMENT: GDPR & DPDPA CUSTOMER DATA COMPLIANCE POLICY
+CLASSIFICATION: INTERNAL — LEGAL/COMPLIANCE
+EFFECTIVE DATE: January 1, 2025
+OWNER: Chief Privacy Officer & Data Protection Officer
+================================================================================
+
+1. PURPOSE
+   Ensures all customer behavioral data collection, processing, and
+   retention for the Silent Escalation Predictor complies with GDPR
+   (EU), DPDPA (India), and other applicable data protection regulations.
+
+2. LAWFUL BASIS FOR PROCESSING
+   2.1 Behavioral data processing for churn prediction is conducted under
+       LEGITIMATE INTEREST basis (GDPR Art. 6(1)(f)) with documented
+       Legitimate Interest Assessment (LIA) on file.
+   2.2 Customers are informed about behavioral analytics in the Privacy
+       Policy and Terms of Service (Section 4.3: "Service Improvement
+       and Customer Experience Analytics").
+
+3. DATA MINIMIZATION PRINCIPLES
+   3.1 Only AGGREGATED behavioral metrics are used — never raw activity logs
+   3.2 No personally identifiable information (PII) enters the prediction model
+   3.3 Customer data is pseudonymized using internal customer IDs
+   3.4 Sensitive categories (religion, health, political) are NEVER collected
+
+4. DATA SUBJECT RIGHTS (GDPR/DPDPA)
+   4.1 RIGHT TO ACCESS: Customers can request their behavioral profile
+       and risk score through the Customer Portal within 30 days
+   4.2 RIGHT TO RECTIFICATION: Incorrect data corrected within 72 hours
+   4.3 RIGHT TO ERASURE: Customer data deleted from prediction system
+       within 30 days of valid request (except legal retention requirements)
+   4.4 RIGHT TO OBJECT: Customers may opt out of predictive analytics;
+       their data will be excluded from future scoring cycles
+   4.5 RIGHT TO PORTABILITY: Behavioral data exportable in CSV format
+
+5. DATA RETENTION SCHEDULE
+   - Active customer behavioral signals: Retained for duration of contract
+   - Post-churn behavioral data: Anonymized and retained for 24 months
+     (for model training purposes only)
+   - Intervention logs: Retained for 36 months (audit requirements)
+   - After retention period: Data permanently deleted or fully anonymized
+
+6. CROSS-BORDER DATA TRANSFERS
+   6.1 Customer behavioral data stored in regional data centers:
+       - EU customers: europe-west1 (Belgium)
+       - India customers: asia-south1 (Mumbai)
+       - US customers: us-central1 (Iowa)
+   6.2 No cross-border transfer without Standard Contractual Clauses (SCCs)
+
+7. AI-SPECIFIC COMPLIANCE
+   7.1 The Silent Escalation Predictor does NOT make automated decisions
+       that produce legal effects. It provides recommendations only.
+   7.2 HIGH RISK interventions ALWAYS require human-in-the-loop approval
+   7.3 The system provides explainable predictions with evidence — never
+       opaque scoring
+   7.4 Regular bias audits conducted quarterly across customer demographics
+   7.5 Model cards and fairness reports maintained and available for audit
+
+8. BREACH RESPONSE
+   - Any data breach affecting behavioral data: Notify DPO within 4 hours
+   - Regulatory notification (GDPR): Within 72 hours if customer data affected
+   - Customer notification: Within 7 days if high risk to rights and freedoms
+
+================================================================================
+END OF DOCUMENT
+================================================================================

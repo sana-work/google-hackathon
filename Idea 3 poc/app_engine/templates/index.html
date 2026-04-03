@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Escalation Predictor — Customer Intelligence Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">🔇</div>
+                <div class="logo-text">
+                    <span class="logo-title">Silent Escalation Predictor</span>
+                    <span class="logo-sub">Customer Engagement Suite</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-badge">Track 3 · CES</div>
+            <div class="header-badge accent">tcs<sup>AI</sup> Hackathon 2026</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-accent">Silence</span> is the loudest signal.
+                </h1>
+                <p class="hero-sub">
+                    Detect silently disengaging customers 30-60 days before they churn. 
+                    Powered by multi-channel behavioral fusion and Gemini-generated interventions.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-pill">
+                        <span class="stat-value">67%</span>
+                        <span class="stat-label">of churn is silent</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-value">4</span>
+                        <span class="stat-label">behavioral channels</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-value">30-60d</span>
+                        <span class="stat-label">early detection</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-value">54%</span>
+                        <span class="stat-label">save rate (high-touch)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard">
+            <div class="dashboard-grid">
+                <!-- Risk Overview Card -->
+                <div class="card risk-overview">
+                    <div class="card-header">
+                        <h3>📊 Risk Portfolio</h3>
+                        <span class="card-badge live">Live</span>
+                    </div>
+                    <div class="risk-bars">
+                        <div class="risk-bar">
+                            <div class="risk-bar-label">
+                                <span class="risk-dot red"></span>
+                                <span>High Risk</span>
+                            </div>
+                            <div class="risk-bar-track">
+                                <div class="risk-bar-fill red" style="width: 40%"></div>
+                            </div>
+                            <span class="risk-count">2</span>
+                        </div>
+                        <div class="risk-bar">
+                            <div class="risk-bar-label">
+                                <span class="risk-dot amber"></span>
+                                <span>Medium Risk</span>
+                            </div>
+                            <div class="risk-bar-track">
+                                <div class="risk-bar-fill amber" style="width: 20%"></div>
+                            </div>
+                            <span class="risk-count">1</span>
+                        </div>
+                        <div class="risk-bar">
+                            <div class="risk-bar-label">
+                                <span class="risk-dot green"></span>
+                                <span>Low Risk</span>
+                            </div>
+                            <div class="risk-bar-track">
+                                <div class="risk-bar-fill green" style="width: 40%"></div>
+                            </div>
+                            <span class="risk-count">2</span>
+                        </div>
+                    </div>
+                    <div class="risk-summary">
+                        <span>At-risk ACV: <strong>₹1.73 Cr</strong></span>
+                        <span>5 accounts monitored</span>
+                    </div>
+                </div>
+
+                <!-- Channel Signals Card -->
+                <div class="card channel-signals">
+                    <div class="card-header">
+                        <h3>📡 Behavioral Channels</h3>
+                    </div>
+                    <div class="channels">
+                        <div class="channel">
+                            <div class="channel-icon">📱</div>
+                            <div class="channel-info">
+                                <span class="channel-name">Usage</span>
+                                <span class="channel-weight">30%</span>
+                            </div>
+                            <div class="channel-desc">Logins, features, sessions</div>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-icon">📧</div>
+                            <div class="channel-info">
+                                <span class="channel-name">Communication</span>
+                                <span class="channel-weight">25%</span>
+                            </div>
+                            <div class="channel-desc">Emails, notifications</div>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-icon">🎫</div>
+                            <div class="channel-info">
+                                <span class="channel-name">Support</span>
+                                <span class="channel-weight">20%</span>
+                            </div>
+                            <div class="channel-desc">Tickets, surveys, FAQs</div>
+                        </div>
+                        <div class="channel">
+                            <div class="channel-icon">💳</div>
+                            <div class="channel-info">
+                                <span class="channel-name">Transactions</span>
+                                <span class="channel-weight">25%</span>
+                            </div>
+                            <div class="channel-desc">Payments, plan changes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top At-Risk Card -->
+                <div class="card at-risk-table">
+                    <div class="card-header">
+                        <h3>🚨 Top At-Risk Customers</h3>
+                        <span class="card-badge urgent">Action Required</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Company</th>
+                                <th>SRS</th>
+                                <th>Tier</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>E-6723</strong> Kavitha N.</td>
+                                <td>TelcoVista</td>
+                                <td><span class="srs-badge red">94</span></td>
+                                <td><span class="tier-badge red">HIGH</span></td>
+                                <td>Exec Escalation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>A-7842</strong> Priya S.</td>
+                                <td>FinEdge Solutions</td>
+                                <td><span class="srs-badge red">87</span></td>
+                                <td><span class="tier-badge red">HIGH</span></td>
+                                <td>Manager Call</td>
+                            </tr>
+                            <tr>
+                                <td><strong>C-9281</strong> Ananya R.</td>
+                                <td>MedSecure Health</td>
+                                <td><span class="srs-badge amber">72</span></td>
+                                <td><span class="tier-badge amber">MED</span></td>
+                                <td>CSM Outreach</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Quick Actions Card -->
+                <div class="card quick-actions">
+                    <div class="card-header">
+                        <h3>⚡ Quick Actions</h3>
+                    </div>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="openChat('Analyze risk for customer A-7842')">
+                            <span class="action-icon">🔍</span>
+                            <span class="action-text">Analyze Customer</span>
+                        </button>
+                        <button class="action-btn" onclick="openChat('Generate intervention for customer E-6723')">
+                            <span class="action-icon">📨</span>
+                            <span class="action-text">Generate Intervention</span>
+                        </button>
+                        <button class="action-btn" onclick="openChat('Show cohort insights for SaaS')">
+                            <span class="action-icon">📊</span>
+                            <span class="action-text">Cohort Insights</span>
+                        </button>
+                        <button class="action-btn" onclick="openChat('Show portfolio overview')">
+                            <span class="action-icon">📋</span>
+                            <span class="action-text">Portfolio Overview</span>
+                        </button>
+                    </div>
+                    <div class="demo-hint">
+                        <span>💡 Demo IDs: A-7842, B-3156, C-9281, D-4510, E-6723</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>🔇 Silent Escalation Predictor · Track 3: Customer Engagement Suite</span>
+            <span>tcs<sup>AI</sup> Hackathon 2026 · Sana Iqbal · Emp ID: 1213383</span>
+        </div>
+    </footer>
+
+    <!-- Dialogflow CX Messenger Widget -->
+    <!-- IMPORTANT: Replace AGENT_ID and PROJECT_ID with your actual values after creating the CX agent -->
+    <df-messenger
+        project-id="tcs-1771309562917"
+        agent-id="YOUR_AGENT_ID_HERE"
+        language-code="en"
+        max-query-length="-1">
+        <df-messenger-chat-bubble chat-title="Silent Escalation Predictor">
+        </df-messenger-chat-bubble>
+    </df-messenger>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+
+    <style>
+        df-messenger {
+            z-index: 999;
+            position: fixed;
+            --df-messenger-font-color: #e2e8f0;
+            --df-messenger-font-family: 'Inter', sans-serif;
+            --df-messenger-chat-background: #0f172a;
+            --df-messenger-message-user-background: #1d4ed8;
+            --df-messenger-message-bot-background: #1e293b;
+            --df-messenger-input-box-color: #1e293b;
+            --df-messenger-input-font-color: #e2e8f0;
+            --df-messenger-input-placeholder-font-color: #64748b;
+            --df-messenger-minimized-chat-close-icon-color: #fff;
+            --df-messenger-send-icon: #3b82f6;
+            --df-messenger-chat-border-radius: 16px;
+            bottom: 16px;
+            right: 16px;
+        }
+    </style>
+
+    <script>
+        function openChat(message) {
+            const dfMessenger = document.querySelector('df-messenger');
+            if (dfMessenger) {
+                dfMessenger.renderCustomText(message, true);
+            }
+        }
+    </script>
+</body>
+</html>

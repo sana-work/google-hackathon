@@ -1,0 +1,69 @@
+================================================================================
+DOCUMENT: INTERVENTION SUCCESS METRICS & BENCHMARKS 2025
+CLASSIFICATION: INTERNAL — ANALYTICS
+EFFECTIVE DATE: January 2025  
+OWNER: Director, Customer Analytics
+================================================================================
+
+1. PURPOSE
+   Defines the KPIs, benchmarks, and measurement methodology for
+   evaluating the effectiveness of retention interventions triggered
+   by the Silent Escalation Predictor.
+
+2. PRIMARY KPIs
+
+   KPI                          | Definition                         | Target
+   -----------------------------|------------------------------------|---------  
+   Intervention Success Rate    | % of at-risk customers retained    | >40%
+   Time-to-Intervention (TTI)   | Hours from risk detection to first | <24h
+                                | customer contact                   |
+   Net Revenue Retention (NRR)  | Revenue retained vs. expected      | >110%
+   Customer Health Score (CHS)  | Post-intervention engagement level | >60/100
+   Save Cost Efficiency         | Cost of intervention / saved ACV   | <10%
+
+3. INTERVENTION EFFECTIVENESS BY TYPE (Benchmark Data)
+
+   Type                     | Success Rate | Avg Cost | Time to Effect
+   -------------------------|-------------|----------|----------------
+   Automated Email          | 33%         | ₹200     | 7-14 days
+   In-App Notification      | 28%         | ₹50      | 3-7 days
+   CSM Phone Outreach       | 44%         | ₹2,500   | 1-3 days
+   Manager Video Call       | 54%         | ₹8,000   | 1-2 days
+   Executive Intervention   | 75%         | ₹25,000  | Same day
+   Loyalty Discount Offer   | 38%         | Variable | 7-14 days
+   Feature Demo/Training    | 42%         | ₹5,000   | 3-7 days
+
+4. MEASUREMENT WINDOWS
+   4.1 Immediate Effect: Customer engagement within 7 days of intervention
+   4.2 Short-term Retention: Customer active at 30-day mark
+   4.3 Sustained Retention: Customer active at 90-day mark (primary KPI)
+   4.4 Long-term Health: Customer engagement level at 180-day mark
+   4.5 Renewal Outcome: Did customer renew at next renewal cycle?
+
+5. FEEDBACK LOOP METRICS
+   5.1 Model Accuracy: % of HIGH RISK customers who actually churned
+       (without intervention) — measured via holdout group
+       Current accuracy: 78% (target: >85%)
+   5.2 False Positive Rate: % flagged as HIGH RISK who were actually fine
+       Current rate: 12% (target: <10%)
+   5.3 False Negative Rate: % who churned without being flagged
+       Current rate: 22% (target: <15%)
+
+6. A/B TESTING FRAMEWORK
+   6.1 All new intervention strategies must be A/B tested before rollout
+   6.2 Minimum sample: 100 customers per variant
+   6.3 Minimum duration: 30 days
+   6.4 Statistical significance: p < 0.05
+   6.5 Primary metric: 90-day retention rate
+   6.6 Guard rails: Monitor for adverse effects on customer satisfaction
+
+7. REPORTING CADENCE
+   - Daily: Intervention pipeline dashboard (automated)
+   - Weekly: CSM team performance review
+   - Monthly: Executive retention board
+   - Quarterly: Model retraining and calibration report
+   - Annually: Strategic retention program review
+
+================================================================================
+END OF DOCUMENT
+================================================================================

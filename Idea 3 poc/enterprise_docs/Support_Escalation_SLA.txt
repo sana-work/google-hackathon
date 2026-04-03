@@ -1,0 +1,50 @@
+================================================================================
+DOCUMENT: SUPPORT ESCALATION SLA — RETENTION PRIORITY
+CLASSIFICATION: INTERNAL — OPERATIONS
+EFFECTIVE DATE: February 1, 2025
+OWNER: VP Customer Support
+================================================================================
+
+1. PURPOSE
+   Defines the Service Level Agreements for support tickets involving
+   customers flagged by the Silent Escalation Predictor as at-risk.
+
+2. PRIORITY CLASSIFICATION
+   When the Silent Escalation Predictor flags a customer as MEDIUM or
+   HIGH RISK, all their open and future support tickets automatically
+   receive elevated priority.
+
+   | Customer Risk | Ticket Priority | First Response SLA | Resolution SLA  |
+   |---------------|-----------------|--------------------|-----------------| 
+   | LOW (0-40)    | Standard (P3)   | 24 hours           | 5 business days |
+   | MEDIUM (41-70)| Elevated (P2)   | 4 hours            | 2 business days |
+   | HIGH (71-100) | Critical (P1)   | 1 hour             | 4 hours         |
+
+3. ESCALATION WORKFLOW FOR AT-RISK CUSTOMERS
+   3.1 When a HIGH RISK customer creates a ticket:
+       - Auto-assign to senior support engineer
+       - Notify Customer Success Manager immediately
+       - Add "RETENTION_PRIORITY" tag to ticket
+       - Include behavioral context in ticket notes
+   3.2 When a HIGH RISK customer has an open ticket >48 hours:
+       - Auto-escalate to Support Director
+       - Trigger proactive outreach: "We're working on your issue"
+       - Offer interim workaround or credit
+
+4. PROACTIVE SUPPORT FOR SILENT CUSTOMERS
+   4.1 Customers with SRS >60 AND zero tickets in 90 days:
+       - Support team must initiate "Health Check" outreach
+       - Template: "We noticed you might be experiencing [known issue].
+         We'd like to proactively help resolve any concerns."
+   4.2 This proactive outreach counts as an intervention and must be
+       logged in the retention tracking system.
+
+5. METRICS & REPORTING
+   - Track SLA compliance for at-risk vs. standard customers
+   - Measure correlation between support resolution speed and churn
+   - Report to Retention Board monthly
+   - Target: 95% SLA compliance for P1/P2 tickets
+
+================================================================================
+END OF DOCUMENT
+================================================================================

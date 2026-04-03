@@ -1,0 +1,50 @@
+================================================================================
+DOCUMENT: LOYALTY PROGRAM GUIDELINES — RETENTION INTEGRATION
+CLASSIFICATION: INTERNAL — MARKETING
+EFFECTIVE DATE: February 2025
+OWNER: VP Marketing & Customer Engagement
+================================================================================
+
+1. PURPOSE
+   Defines how the loyalty program interfaces with the Silent Escalation
+   Predictor to deliver targeted retention offers to at-risk customers.
+
+2. LOYALTY TIERS & RETENTION PRIVILEGES
+
+   Tier       | Qualification     | Retention Offer Cap | Exclusive Benefits
+   -----------|-------------------|---------------------|-------------------------
+   Bronze     | 0-12 months       | 5% discount         | Priority email support
+   Silver     | 12-24 months      | 10% discount        | Free feature upgrade (30d)
+   Gold       | 24-36 months      | 15% discount        | Dedicated CSM + training
+   Platinum   | 36+ months        | 20% discount        | Executive sponsor + roadmap input
+
+3. AUTOMATED LOYALTY INTERVENTIONS
+
+   3.1 Milestone Recognition (Proactive):
+       - Auto-send celebration at 6, 12, 24, 36 month anniversaries
+       - Include usage statistics and value delivered
+       - Personalized thank-you from account executive
+
+   3.2 At-Risk Loyalty Activation:
+       When SRS exceeds 40, the loyalty system auto-generates:
+       - Tier-appropriate discount offer
+       - Exclusive early access to upcoming features
+       - Invitation to customer advisory board (Gold/Platinum only)
+       - Personalized ROI report showing delivered value
+
+4. LOYALTY POINTS FOR RE-ENGAGEMENT
+   - Complete a product survey: 500 points
+   - Attend a webinar: 300 points
+   - Try a new feature: 200 points
+   - Provide a testimonial: 1000 points
+   - Refer another customer: 2000 points
+
+5. RESTRICTIONS
+   - Loyalty offers cannot stack with existing contractual discounts
+   - Maximum 1 retention loyalty offer per 90-day period
+   - Platinum customers with SRS >80 bypass loyalty system → direct
+     executive intervention required
+
+================================================================================
+END OF DOCUMENT
+================================================================================

@@ -1,0 +1,48 @@
+================================================================================
+DOCUMENT: COMMUNICATION PREFERENCES & OPT-OUT GUIDELINES
+CLASSIFICATION: INTERNAL — COMPLIANCE
+EFFECTIVE DATE: March 1, 2025
+OWNER: Chief Privacy Officer
+================================================================================
+
+1. PURPOSE
+   Defines the rules governing all outbound customer communications,
+   including retention interventions, ensuring compliance with GDPR,
+   DPDPA, CAN-SPAM, and internal privacy standards.
+
+2. COMMUNICATION CHANNEL HIERARCHY
+   Priority order for retention outreach (use highest available):
+   1. In-app notification (least intrusive, highest engagement)
+   2. Email (standard channel, requires opt-in)
+   3. SMS (requires explicit consent, use for HIGH RISK only)
+   4. Phone call (requires prior relationship, manager-level only)
+
+3. OPT-OUT RULES
+   3.1 Customers who have opted out of marketing emails MAY still receive
+       transactional/service communications, but NOT retention campaigns.
+   3.2 Customers who have opted out of ALL communications must be flagged
+       as "Contact Restricted". Only billing/legal notices permitted.
+   3.3 Opt-out requests must be processed within 24 hours.
+   3.4 Retention interventions MUST check opt-out status before triggering.
+
+4. FREQUENCY CAPS
+   - LOW RISK: Maximum 2 retention emails per 30 days
+   - MEDIUM RISK: Maximum 1 email + 1 in-app per 14 days
+   - HIGH RISK: Maximum 1 phone + 1 email per 7 days
+   - POST-INTERVENTION: 14-day cooling period before next outreach
+
+5. PERSONALIZATION REQUIREMENTS
+   5.1 All retention messages MUST reference specific behavioral context
+   5.2 Generic bulk templates are PROHIBITED for retention interventions
+   5.3 Messages must include easy opt-out link
+   5.4 Tone must be empathetic, not aggressive or guilt-inducing
+
+6. DOCUMENTATION
+   Every outbound retention communication must be logged in CRM with:
+   - Customer ID, channel, timestamp, message content, trigger reason
+   - Customer response (if any) within 7 days
+   - Intervention outcome classification at 30-day mark
+
+================================================================================
+END OF DOCUMENT
+================================================================================

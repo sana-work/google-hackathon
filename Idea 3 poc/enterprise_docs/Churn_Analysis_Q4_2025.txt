@@ -1,0 +1,81 @@
+================================================================================
+DOCUMENT: QUARTERLY CHURN ANALYSIS REPORT — Q4 2025
+CLASSIFICATION: INTERNAL — CONFIDENTIAL
+PREPARED BY: Customer Intelligence Team
+DATE: January 5, 2026
+================================================================================
+
+1. EXECUTIVE SUMMARY
+   Q4 2025 saw total customer churn of 8.2% across all verticals, up from
+   7.1% in Q3 2025. Critically, 67% of churned customers exhibited NO
+   traditional warning signals (complaints, escalations, negative surveys)
+   before departure — reinforcing the urgency of the Silent Escalation
+   Predictor initiative.
+
+2. CHURN BREAKDOWN BY VERTICAL
+
+   | Vertical      | Q4 Churn | Silent % | Avg Days to Detect | Revenue Lost     |
+   |---------------|----------|----------|--------------------|------------------|
+   | SaaS          | 9.1%     | 72%      | 45 days            | ₹2.3 Cr          |
+   | Telecom       | 7.8%     | 63%      | 38 days            | ₹4.1 Cr          |
+   | Banking       | 6.5%     | 58%      | 52 days            | ₹1.8 Cr          |
+   | Insurance     | 8.9%     | 71%      | 60 days            | ₹3.2 Cr          |
+   | E-commerce    | 10.2%    | 69%      | 30 days            | ₹5.7 Cr          |
+   | TOTAL         | 8.2%     | 67%      | 43 days avg        | ₹17.1 Cr         |
+
+3. ROOT CAUSE ANALYSIS — TOP 5 SILENT CHURN DRIVERS
+
+   3.1 Feature Abandonment (28% of cases)
+       Customers who stopped using 3+ features within 30 days had 4.2x
+       higher churn probability. Most common in SaaS (reporting, integrations).
+
+   3.2 Communication Fatigue (22% of cases)
+       Customers receiving >8 emails/week showed 3.1x higher email ignore
+       rates, correlating with 2.8x churn probability increase.
+
+   3.3 Unresolved Support Debt (18% of cases)
+       Customers with tickets open >14 days who STOPPED following up
+       (rather than escalating) churned at 5.1x the baseline rate.
+
+   3.4 Payment Pattern Shift (17% of cases)
+       First-time late payment in accounts with 12+ months tenure was the
+       strongest single predictor of churn within 60 days (OR = 6.3).
+
+   3.5 Competitor Evaluation (15% of cases)
+       Detected via reduced feature depth + login pattern changes (short,
+       targeted sessions vs. broad exploration). Hard to detect without
+       multi-channel fusion.
+
+4. INTERVENTION EFFECTIVENESS (Q4 PILOT DATA)
+
+   | Intervention Type        | Attempts | Re-engaged | Success Rate | Avg Days to Act |
+   |--------------------------|----------|------------|--------------|-----------------|
+   | Automated email          | 1,247    | 412        | 33%          | 2.1 days        |
+   | CSM proactive outreach   | 423      | 185        | 44%          | 3.4 days        |
+   | Manager escalation       | 89       | 48         | 54%          | 1.2 days        |
+   | Executive intervention   | 12       | 9          | 75%          | 0.5 days        |
+
+   Key Finding: Speed of intervention is the #1 predictor of success.
+   Interventions made within 48 hours of risk score breach had 2.3x
+   higher success rate than those delayed beyond 7 days.
+
+5. COHORT INSIGHTS
+
+   5.1 Enterprise SaaS: Customers show 3x higher silent churn risk after
+       onboarding month 4 — the "feature discovery cliff"
+   5.2 Telecom: Weekend-only users who shift to zero weekend usage churn
+       within 21 days (92% accuracy)
+   5.3 Banking: Transaction frequency dropping below 2x/month after
+       averaging 8x/month signals imminent account closure
+   5.4 E-commerce: Cart abandonment rate increasing from <20% to >60%
+       over 30 days predicts churn with 78% accuracy
+
+6. RECOMMENDATIONS
+   - Deploy Silent Escalation Predictor across all verticals by Q2 2026
+   - Reduce intervention response time target from 48h to 24h
+   - Implement real-time scoring (currently batch-daily)
+   - Add in-app behavioral triggers alongside email/phone channels
+
+================================================================================
+END OF DOCUMENT
+================================================================================

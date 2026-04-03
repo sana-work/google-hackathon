@@ -1,0 +1,70 @@
+================================================================================
+DOCUMENT: CUSTOMER SEGMENTATION STRATEGY
+CLASSIFICATION: INTERNAL — STRATEGIC
+EFFECTIVE DATE: January 1, 2025
+OWNER: VP Strategy & Analytics
+================================================================================
+
+1. PURPOSE
+   Defines the customer segmentation model used for tailored retention
+   strategies and cohort-level churn analysis.
+
+2. TIER SEGMENTATION BY ACV
+
+   Tier         | ACV Range       | Account Count | CSM Ratio  | Check-in Cadence
+   -------------|-----------------|---------------|------------|------------------
+   Enterprise   | >₹50L/year      | 45            | 1:5        | Monthly
+   Mid-Market   | ₹10L-50L/year   | 280           | 1:15       | Quarterly
+   SMB          | ₹1L-10L/year    | 1,850         | 1:50       | Automated
+   Self-Serve   | <₹1L/year       | 12,400        | Digital    | Automated
+
+3. INDUSTRY VERTICAL SEGMENTS
+
+   Segment         | Churn Profile                    | Key Retention Levers
+   ----------------|----------------------------------|----------------------------
+   BFSI            | Low churn, high value per exit   | Compliance assurance, security
+   Telecom         | High volume churn, price-sensitive| Loyalty rewards, bundle offers
+   SaaS/Tech       | Feature-driven, competitive      | Product roadmap, integrations
+   Retail/E-comm   | Seasonal patterns, impulse-driven | Personalization, recommendations
+   Insurance       | Renewal-cycle driven             | Pre-renewal engagement
+   Healthcare      | Compliance-locked, sticky        | Data migration complexity
+
+4. BEHAVIORAL SEGMENTS (Cross-cutting)
+
+   4.1 Power Users (15% of base)
+       - High engagement across all channels
+       - Low churn risk BUT high impact if lost
+       - Retention focus: Feature exclusivity, advisory board membership
+
+   4.2 Steady State (55% of base)
+       - Consistent, moderate engagement
+       - Baseline churn risk
+       - Retention focus: Value reinforcement, ROI reports
+
+   4.3 Declining Engagers (20% of base)
+       - Visible decline in 1-2 channels
+       - Medium churn risk (SRS 41-70)
+       - Retention focus: Proactive CSM outreach, feature education
+
+   4.4 Silent Faders (10% of base)
+       - Multi-channel decline, no complaints
+       - HIGH churn risk (SRS 71-100)
+       - Retention focus: Immediate escalation, executive intervention
+       - THIS IS THE PRIMARY TARGET SEGMENT FOR THE PREDICTOR
+
+5. COHORT ANALYSIS INSIGHTS (Q4 2025)
+
+   5.1 Enterprise SaaS customers show 3x higher silent churn risk after
+       onboarding month 4 ("feature discovery cliff")
+   5.2 Telecom customers with weekend-only usage who shift to zero weekend
+       usage churn within 21 days (92% accuracy)
+   5.3 Banking customers: Transaction frequency below 2x/month after
+       averaging 8x/month signals closure within 30 days
+   5.4 E-commerce: Cart abandonment increasing from <20% to >60% over
+       30 days predicts churn with 78% accuracy
+   5.5 Insurance: Customers not opening renewal reminder emails 60 days
+       before expiry have 5.8x higher lapse rate
+
+================================================================================
+END OF DOCUMENT
+================================================================================

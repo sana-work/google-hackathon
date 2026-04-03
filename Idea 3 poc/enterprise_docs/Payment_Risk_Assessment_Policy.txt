@@ -1,0 +1,55 @@
+================================================================================
+DOCUMENT: PAYMENT RISK ASSESSMENT POLICY
+CLASSIFICATION: INTERNAL — FINANCE
+EFFECTIVE DATE: January 1, 2025
+OWNER: CFO, Revenue Operations
+================================================================================
+
+1. PURPOSE
+   Defines how payment behavior signals are interpreted for churn risk
+   assessment and the appropriate financial interventions available.
+
+2. PAYMENT RISK SIGNALS
+
+   Signal                          | Risk Weight | Interpretation
+   --------------------------------|-------------|-------------------------------------
+   First late payment (>5 days)    | CRITICAL    | Strongest single churn predictor
+   Payment method removal          | HIGH        | Customer preparing to leave
+   Auto-renewal cancellation       | HIGH        | Explicit intent signal
+   Downgrade request               | MEDIUM      | Budget pressure or value mismatch
+   Invoice dispute filed           | MEDIUM      | Dissatisfaction with pricing/value
+   Reduced purchase frequency      | MEDIUM      | Declining engagement
+   Smaller order values            | LOW-MED     | Testing alternatives
+
+3. FINANCIAL INTERVENTION OPTIONS (By Approval Level)
+
+   3.1 CSM Authority (up to 10% of ACV):
+       - Payment extension: up to 30 additional days
+       - Monthly billing option (if currently annual)
+       - One-time credit: up to 10% of last invoice
+
+   3.2 Director Authority (up to 15% of ACV):
+       - Loyalty discount: 15% off next renewal
+       - Free add-on features for 90 days
+       - Payment plan: split outstanding into 3 installments
+
+   3.3 VP Authority (up to 20% of ACV):
+       - Custom retention pricing for 12 months
+       - Free tier upgrade for 6 months
+       - Dedicated success engineer allocation
+
+4. CONSTRAINTS
+   4.1 Financial interventions MUST be documented with business justification
+   4.2 Same customer cannot receive discounts in consecutive renewal cycles
+   4.3 All offers above 10% ACV require written approval in CRM
+   4.4 Lifetime discount cap: 25% of total contract value across all offers
+
+5. PAYMENT MONITORING AUTOMATION
+   - Daily scan of all accounts for payment delay signals
+   - Auto-flag accounts with first-time late payment to retention system
+   - Weekly report: Accounts with downgrade requests in pipeline
+   - Alert: Any account >30 days past due auto-escalated to Collections + CSM
+
+================================================================================
+END OF DOCUMENT
+================================================================================

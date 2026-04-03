@@ -1,0 +1,92 @@
+================================================================================
+DOCUMENT: BEHAVIORAL SIGNAL DEFINITIONS & SCORING METHODOLOGY
+CLASSIFICATION: INTERNAL — TECHNICAL REFERENCE
+EFFECTIVE DATE: January 1, 2025
+OWNER: Data Science Team, Customer Intelligence Division
+================================================================================
+
+1. PURPOSE
+   This document defines the exact behavioral signals monitored across
+   four channels, their measurement methodology, and their contribution
+   to the Silent Risk Score (SRS) calculation.
+
+2. CHANNEL 1: PLATFORM USAGE (Weight: 30%)
+
+   Signal ID   | Signal Name              | Measurement          | Risk Threshold
+   ------------|--------------------------|----------------------|------------------
+   USG-001     | Login Frequency (30d)    | Logins per month     | >50% decline
+   USG-002     | Session Duration (avg)   | Minutes per session  | >40% decline
+   USG-003     | Feature Depth Score      | Features used / total| <30% utilization
+   USG-004     | Peak Day Activity        | Actions on busiest day| >60% decline
+   USG-005     | Feature Adoption Rate    | New features tried   | 0 in last 30 days
+   USG-006     | API Call Volume          | API calls per week   | >70% decline
+
+   Composite Usage Score = Σ(signal_decline_% × signal_weight) / normalization_factor
+   Usage decline >50% → adds 30 points to SRS
+
+3. CHANNEL 2: COMMUNICATION (Weight: 25%)
+
+   Signal ID   | Signal Name              | Measurement          | Risk Threshold
+   ------------|--------------------------|----------------------|------------------
+   COM-001     | Email Open Rate (30d)    | Opens / emails sent  | <15% open rate
+   COM-002     | Newsletter Engagement    | Clicks in newsletter | 0 clicks, 3+ issues
+   COM-003     | Notification Response    | Responded / sent     | <5% response rate
+   COM-004     | Last Active Email        | Days since last open | >21 days
+   COM-005     | Unsubscribe Signals      | Unsubscribe clicks   | Any unsubscribe
+   COM-006     | In-App Message Response  | Responses / prompts  | <10% response rate
+
+   Communication Silence Score = weighted_average(all COM signals)
+   Silence >60% → adds 25 points to SRS
+
+4. CHANNEL 3: SUPPORT (Weight: 20%)
+
+   Signal ID   | Signal Name              | Measurement          | Risk Threshold
+   ------------|--------------------------|----------------------|------------------
+   SUP-001     | Ticket Creation Rate     | Tickets per month    | Zero tickets, 3+ months
+   SUP-002     | Open Ticket Age (max)    | Days oldest open     | >14 days unresolved
+   SUP-003     | Survey Response Rate     | Responses / surveys  | 0% in last 90 days
+   SUP-004     | FAQ/Help Center Visits   | Visits per month     | >60% decline
+   SUP-005     | CSAT Score Trend         | Last 3 CSAT scores   | Declining trend
+
+   IMPORTANT: Zero ticket creation is NOT a positive signal if accompanied
+   by usage decline. It indicates customer has mentally checked out.
+   Support Absence Score = f(ticket_gap, survey_silence, help_decline)
+   Absence pattern detected → adds 20 points to SRS
+
+5. CHANNEL 4: TRANSACTIONS (Weight: 25%)
+
+   Signal ID   | Signal Name              | Measurement          | Risk Threshold
+   ------------|--------------------------|----------------------|------------------
+   TXN-001     | Purchase Frequency (30d) | Purchases per month  | >40% decline
+   TXN-002     | Average Order Value      | Avg transaction ₹    | >30% decline
+   TXN-003     | Payment Timeliness       | Days past due        | First late payment
+   TXN-004     | Plan/Tier Changes        | Upgrades/downgrades  | Any downgrade
+   TXN-005     | Cart Abandonment Rate    | Abandoned / started  | >60% abandonment
+   TXN-006     | Renewal Engagement       | Days to renewal      | <30 days, no engagement
+
+   Transaction Decay Score = weighted_sum(TXN signals)
+   Decay >45% → adds 25 points to SRS
+
+6. COMPOSITE SILENT RISK SCORE FORMULA
+
+   SRS = (0.30 × Usage_Score) + (0.25 × Communication_Score) +
+         (0.20 × Support_Score) + (0.25 × Transaction_Score)
+
+   Final SRS is normalized to 0-100 range.
+
+   Tier Assignment:
+   - SRS 0-40:   LOW RISK    (Green)
+   - SRS 41-70:  MEDIUM RISK (Amber)
+   - SRS 71-100: HIGH RISK   (Red)
+
+7. SPECIAL TRIGGERING CONDITIONS
+   7.1 CRITICAL TRIGGER: If ANY single channel scores >90%, immediately
+       classify as HIGH RISK regardless of composite SRS.
+   7.2 VELOCITY TRIGGER: If SRS increases by >20 points in 7 days,
+       escalate to next intervention tier immediately.
+   7.3 TENURE TRIGGER: Customers with tenure >24 months showing first-time
+       medium risk get automatic upgrade to HIGH RISK tier.
+
+================================================================================
+END OF DOCUMENT
+================================================================================
