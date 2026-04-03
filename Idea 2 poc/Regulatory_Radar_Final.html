@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulatory Radar — Technical Submission</title>
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  
+  :root {
+    --primary: #4A148C;
+    --primary-dark: #311b92;
+    --primary-light: #ede7f6;
+    --accent-red: #ef4444;
+    --accent-green: #22c55e;
+    --accent-blue: #3b82f6;
+    --accent-violet: #8b5cf6;
+    --accent-amber: #f59e0b;
+    --dark: #0f172a;
+    --dark-mid: #1e293b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page { margin: 8mm 0; size: A4; }
+
+  .page {
+    width: 210mm;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+  }
+
+  /* Only the cover page forces a page break after it */
+  .cover { page-break-after: always; }
+
+  /* Prevent splitting inside key elements */
+  .screenshot, .stat-card, .arch-container, .highlight-box, .warning-box, table, .checklist, .stats-row, .two-screenshots, .pipeline-visual {
+    page-break-inside: avoid;
+  }
+
+  /* Keep section headers with their content */
+  .section-number, .section-title, .divider {
+    page-break-after: avoid;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: linear-gradient(135deg, #020617 0%, #1A237E 50%, #4A148C 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 50px 20px;
+    height: 100vh;
+    overflow: hidden;
+  }
+  @media print {
+    @page { margin: 0; }
+    .cover {
+      height: 297mm;
+      padding: 30px 50px 20px;
+      overflow: visible;
+    }
+    .content-page {
+      padding: 30px 40px;
+    }
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(106, 27, 154, 0.15);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(49, 27, 146, 0.1);
+  }
+  .cover-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    backdrop-filter: blur(10px);
+  }
+  .cover-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover h1 span { color: #FFB300; }
+  .cover-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    max-width: 500px;
+    margin-bottom: 32px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    z-index: 1;
+  }
+  .cover-meta-item {
+    text-align: center;
+  }
+  .cover-meta-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .cover-meta-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .cover-footer {
+    position: absolute;
+    bottom: 40px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── CONTENT PAGES ── */
+  .content-page {
+    padding: 40px 50px;
+    background: #fff;
+  }
+
+  .section-number {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .rubric-weight {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    margin: 8px 0 20px 0;
+    border-radius: 2px;
+  }
+
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box {
+    background: linear-gradient(135deg, var(--primary-light), #e0f2fe);
+    border-left: 4px solid var(--primary);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+
+  .warning-box {
+    background: #FFF8E1;
+    border-left: 4px solid #FFCA28;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .warning-box p { margin: 0; font-size: 12px; color: #b08d00; }
+
+  .screenshot {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    margin: 12px 0;
+  }
+  .screenshot-caption {
+    font-size: 10px;
+    color: var(--gray-400);
+    text-align: center;
+    margin-top: -4px;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .two-screenshots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .two-screenshots img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* Architecture diagram styling */
+  .arch-container {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    color: #fff;
+  }
+  .arch-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .arch-node {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 90px;
+  }
+  .arch-node.highlight {
+    background: rgba(74, 20, 140, 0.4);
+    border-color: var(--primary);
+    color: #FFB300;
+  }
+  .arch-arrow {
+    color: var(--gray-400);
+    font-size: 16px;
+  }
+
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    padding: 8px 12px;
+    background: var(--gray-50);
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+  }
+  .check-icon {
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .footer-strip {
+    margin-top: 20px;
+    height: 32px;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    font-size: 8px;
+    color: var(--gray-400);
+    border-radius: 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 1: COVER                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 1: Intelligent Search & Gemini Enterprise</div>
+  <div class="cover-icon">🛡️</div>
+  <h1>Regulatory Radar <span>Impact</span></h1>
+  <div class="cover-sub">An automated regulatory nervous system that scans for regulation changes, parsing them with Semantic Knowledge Graphs to instantly map compliance gap impacts across the enterprise.</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Architecture</div>
+      <div class="cover-meta-value">Multi-Agent Routing</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Model</div>
+      <div class="cover-meta-value">Gemini Enterprise Plus</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Knowledge Base</div>
+      <div class="cover-meta-value">Google Drive Connector & Files</div>
+    </div>
+  </div>
+  <div style="margin-top:24px; z-index:1;">
+    <div style="font-size:16px; font-weight:700; letter-spacing:0.5px;">Sana Iqbal</div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px;">Employee ID: 1213383</div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 2: EXECUTIVE SUMMARY & MULTI-AGENT        -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Executive Summary <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <div class="warning-box">
+    <p><strong>🛑 The Organizational Problem:</strong> Assessing new regulatory changes requires compliance teams to manually read hundreds of pages to locate which specific internal IT policies, SLA thresholds, and Cloud architectures require change. The sheer manual effort causes delayed compliance reporting and introduces human error on penalty-driving regulations.</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>💡 Our Solution: Regulatory Radar</strong> acts as a proactive multi-agent auditor. Using Vertex AI to map regulatory amendments to an internal Google Drive Knowledge connector indexing past internal documentation, it actively maps out internal policies requiring updates and flags potential gaps autonomously in seconds.</p>
+  </div>
+
+  <div class="section-number" style="margin-top: 30px;">Section 02</div>
+  <div class="section-title">Multi-Agent Architecture <span class="rubric-weight">15% Weight</span></div>
+  <div class="divider"></div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">1. Ideathon Concept Blueprint</h3>
+  <img class="screenshot" src="regulatory_radar_architecture.png" style="background: var(--gray-50); padding: 12px; border: 1px solid var(--gray-200);" alt="Regulatory Radar Ideathon Architecture Diagram">
+  <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 1a: Conceptual Design — Pipeline connecting external regulatory sources, Document AI parsers, and Vertex AI Semantic Knowledge Graphs</div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">2. Vertex AI Live Implementation</h3>
+  <div class="arch-container" style="background:#172554; margin: 12px 0 8px 0;">
+    <div class="arch-title" style="color:var(--primary-light)">Multi-Agent System Route Flow</div>
+    <div class="arch-flow">
+      <div class="arch-node">👤<br>Compliance Team</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node highlight" style="background:#311b92;color:#FFB300">🛡️<br>Regulatory Radar<br><small>Orchestrator</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node" style="color:#fff">📜<br>Regulatory Analyzer<br><small>Clause Extraction</small></div>
+      <div class="arch-node" style="color:#fff">🎯<br>Impact Mapper<br><small>Assessment & Gaps</small></div>
+    </div>
+  </div>
+  <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 1b: Live Implementation — The Orchestrator routes parsing tasks to the Regulatory Analyzer, then maps the results to internal policies using the Impact Mapper</div>
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.21.40 AM.png" alt="Agent Welcome UI">
+  <div class="screenshot-caption">Figure 1c: Regulatory Radar native Agent UI interface displaying conversation starters upon user entry</div>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="Screenshots/Screenshot 2026-04-03 at 12.21.50 AM.png" alt="Agent Flow">
+      <div class="screenshot-caption">Figure 1d: Agent Designer UI displaying the interconnected Multi-Agent architecture</div>
+    </div>
+    <div>
+      <img src="Screenshots/Screenshot 2026-04-03 at 12.22.24 AM.png" alt="Agent Config">
+      <div class="screenshot-caption">Figure 1e: Core agent model selection mapping to Gemini Enterprise Plus</div>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 3: PROMPT ENGINEERING & ENTERPRISE GROUNDING-->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 03</div>
+  <div class="section-title">Core Prompt Engineering &amp; Guardrails <span class="rubric-weight">15% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>Stringent prompt formatting and robust instruction layers allow the Regulatory Radar agents to output uniform evaluation metric cards containing explicit document path citations (Grounding) and exact severity warnings.</p>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="Screenshots/Screenshot 2026-04-03 at 12.22.24 AM.png" alt="Agent Top Instructions">
+      <div class="screenshot-caption">Figure 2a: Multi-agent definitions outlining clear role boundaries and rigid UI constraint enforcement</div>
+    </div>
+    <div>
+      <img src="Screenshots/Screenshot 2026-04-03 at 12.23.31 AM.png" alt="Security Guardrails">
+      <div class="screenshot-caption">Figure 2b: Zero-Hallucination rules, rigorous PII prevention blocks, and Human-In-The-Loop disclaimers</div>
+    </div>
+  </div>
+
+  <div class="section-number" style="margin-top: 30px;">Section 04</div>
+  <div class="section-title">Enterprise Grounding <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>The system evaluates incoming regulatory mandates strictly against 16 core internal documents natively integrated into a knowledge connector via Google Drive. Grounding ensures high accuracy mapping against CRM systems, incident runbooks, and existing data retention policies.</p>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="Screenshots/Screenshot 2026-04-03 at 12.23.57 AM.png" alt="Data Store Connection">
+      <div class="screenshot-caption">Figure 3a: Enterprise Google Drive integrated in Vertex AI Knowledge Config via Connector</div>
+    </div>
+    <div>
+      <img src="Screenshots/Screenshot 2026-04-03 at 12.24.22 AM.png" alt="Institutional Memory">
+      <div class="screenshot-caption">Figure 3b: Source directory holding internal IT policies, vendor agreements, and breach timelines</div>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 4: SYSTEM CAPABILITY PROOF                -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 05</div>
+  <div class="section-title">Proof of Execution: DPDPA Impact <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>By processing a hypothetical new amendment to the DPDPA, we validate the agent's capability to read text inputs and seamlessly synthesize them against internal documentation policies.</p>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.17.05 AM.png" alt="DPDPA Impact Part 1">
+  <div class="screenshot-caption">Figure 4a: Agent outputs High Risk notifications with rigid evaluation parameters</div>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.17.19 AM.png" alt="DPDPA Impact Part 2">
+  <div class="screenshot-caption">Figure 4b: Explicit Gap mappings identifying required changes dynamically referencing internal policies</div>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.18.41 AM.png" alt="DPDPA Impact Part 3">
+  <div class="screenshot-caption">Figure 4c: Overall gap and system breakdown with explicitly grounded citations and a generated Action Plan</div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 5: SYSTEM CAPABILITY PROOF & SCHEDULING    -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 05 (continued)</div>
+  <div class="section-title">Compliance Evaluation & Scheduling</div>
+  <div class="divider"></div>
+
+  <p>The system is able to evaluate real-world frameworks and deliver robust compliance scorecards summarizing organizational readiness parameters and overall audit capabilities.</p>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.18.57 AM.png" alt="Scorecard 1">
+  <div class="screenshot-caption">Figure 4d: Summary evaluation on SEBI Framework showcasing exact areas passing and failing audit validations</div>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.19.22 AM.png" alt="Scorecard 2">
+  <div class="screenshot-caption">Figure 4e: Continued documentation of individual criteria compliance mapping across vendor agreements</div>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.20.42 AM.png" alt="Scorecard 3">
+  <div class="screenshot-caption">Figure 4f: Regulatory Landscape Onboarding summaries providing rapid ramp up to new compliance officers covering core business policies</div>
+
+
+  <div class="section-number" style="margin-top: 30px;">Section 06</div>
+  <div class="section-title">Continuous Execution Scheduling <span class="rubric-weight">10% Weight</span></div>
+  <div class="divider"></div>
+
+  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.22.03 AM.png" alt="Schedule Config">
+  <div class="screenshot-caption">Figure 5a: Regulatory sweep recurring background schedule parameter definitions to automatically invoke sweeps</div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 6: CONCLUSION & CHECKLIST                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 07</div>
+  <div class="section-title">Conclusion &amp; Evidence Checklist</div>
+  <div class="divider"></div>
+
+  <p><strong>Regulatory Change Impact Radar</strong> completely mitigates blind spots in enterprise compliance updating architectures by linking directly against internal documentation using a high-density, strictly formatted multi-agent evaluation hierarchy containing fully compliant PII and Audit guardrails.</p>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">✅ Evidence Checklist</h3>
+
+  <div class="checklist">
+    <div class="check-item"><span class="check-icon">✓</span> 1c. Welcome Interface Displayed</div>
+    <div class="check-item"><span class="check-icon">✓</span> 1d. Orchestrator Flow Canvas View</div>
+    <div class="check-item"><span class="check-icon">✓</span> 1e. Agent Engine Configuration</div>
+    <div class="check-item"><span class="check-icon">✓</span> 2a. System Instructions Structure</div>
+    <div class="check-item"><span class="check-icon">✓</span> 2b. Mandatory PII/HITL Guardrails</div>
+    <div class="check-item"><span class="check-icon">✓</span> 3a. Knowledge Connector Integration</div>
+    <div class="check-item"><span class="check-icon">✓</span> 3b. Enterprise Google Drive Memory</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4a. DPDPA Severity Assessment</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4b. Gap Mappings Validated</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4c. Action Plan & Citations</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4d. SEBI Framework Scorecard</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4f. Officer Onboarding Summaries</div>
+    <div class="check-item"><span class="check-icon">✓</span> 5a. Automatic Sweeps Configured</div>
+  </div>
+
+  <br>
+  <div class="highlight-box">
+    <p><strong>Reviewer Note:</strong> This document serves as the complete technical submission for <strong>Track 1: Intelligent Search &amp; Gemini Enterprise</strong>. All evidence, architecture diagrams, and execution screenshots map directly to the live <strong>Vertex AI Agent Builder</strong> multi-agent implementation powered by <strong>Gemini Enterprise Plus</strong> and grounded via <strong>Google Drive Connector</strong>.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+</body>
+</html>
