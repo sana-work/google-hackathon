@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision DNA — Technical Submission</title>
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  
+  :root {
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --primary-light: #e0f2fe;
+    --accent-red: #ef4444;
+    --accent-green: #22c55e;
+    --accent-blue: #3b82f6;
+    --accent-violet: #8b5cf6;
+    --accent-amber: #f59e0b;
+    --dark: #0f172a;
+    --dark-mid: #1e293b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page { margin: 8mm 0; size: A4; }
+
+  .page {
+    width: 210mm;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+  }
+
+  /* Only the cover page forces a page break after it */
+  .cover { page-break-after: always; }
+
+  /* Prevent splitting inside key elements */
+  .screenshot, .stat-card, .arch-container, .highlight-box, .warning-box, table, .checklist, .stats-row, .two-screenshots, .pipeline-visual {
+    page-break-inside: avoid;
+  }
+
+  /* Keep section headers with their content */
+  .section-number, .section-title, .divider {
+    page-break-after: avoid;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    background: linear-gradient(135deg, #020617 0%, #172554 50%, var(--primary-dark) 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px 50px 20px;
+    height: 100vh;
+    overflow: hidden;
+  }
+  @media print {
+    @page { margin: 0; }
+    .cover {
+      height: 297mm;
+      padding: 30px 50px 20px;
+      overflow: visible;
+    }
+    .content-page {
+      padding: 30px 40px;
+    }
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(14, 165, 233, 0.15);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.1);
+  }
+  .cover-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    backdrop-filter: blur(10px);
+  }
+  .cover-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    max-width: 500px;
+    margin-bottom: 32px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    z-index: 1;
+  }
+  .cover-meta-item {
+    text-align: center;
+  }
+  .cover-meta-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .cover-meta-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .cover-footer {
+    position: absolute;
+    bottom: 40px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── CONTENT PAGES ── */
+  .content-page {
+    padding: 40px 50px;
+    background: #fff;
+  }
+
+  .section-number {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .rubric-weight {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    margin: 8px 0 20px 0;
+    border-radius: 2px;
+  }
+
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box {
+    background: linear-gradient(135deg, var(--primary-light), #e0f2fe);
+    border-left: 4px solid var(--primary);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+
+  .warning-box {
+    background: #fef2f2;
+    border-left: 4px solid var(--accent-red);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+
+  .screenshot {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    margin: 12px 0;
+  }
+  .screenshot-caption {
+    font-size: 10px;
+    color: var(--gray-400);
+    text-align: center;
+    margin-top: -4px;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .two-screenshots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .two-screenshots img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 9px;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 11px;
+  }
+  th {
+    background: var(--dark);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  /* Architecture diagram styling */
+  .arch-container {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    color: #fff;
+  }
+  .arch-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .arch-node {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 90px;
+  }
+  .arch-node.highlight {
+    background: rgba(14, 165, 233, 0.2);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .arch-arrow {
+    color: var(--gray-400);
+    font-size: 16px;
+  }
+
+  .checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    padding: 8px 12px;
+    background: var(--gray-50);
+    border-radius: 6px;
+    border: 1px solid var(--gray-200);
+  }
+  .check-icon {
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .footer-strip {
+    margin-top: 20px;
+    height: 32px;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    font-size: 8px;
+    color: var(--gray-400);
+    border-radius: 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 1: COVER                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 1: Intelligent Search & Gemini Enterprise</div>
+  <div class="cover-icon">🧬</div>
+  <h1>Decision <span>DNA</span></h1>
+  <div class="cover-sub">An Institutional Memory Engine & Conflict Sentinel that evaluates tech specs and PRDs against past architectural decisions, post-mortems, and compliance policies in real-time.</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Architecture</div>
+      <div class="cover-meta-value">Multi-Agent System</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Model</div>
+      <div class="cover-meta-value">Gemini Enterprise Plus</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="cover-meta-label">Knowledge Base</div>
+      <div class="cover-meta-value">Google Drive Connector & Direct Uploads</div>
+    </div>
+  </div>
+  <div style="margin-top:24px; z-index:1;">
+    <div style="font-size:16px; font-weight:700; letter-spacing:0.5px;">Sana Iqbal</div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px;">Employee ID: 1213383</div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 2: EXECUTIVE SUMMARY & MULTI-AGENT        -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Executive Summary <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <div class="warning-box">
+    <p><strong>🛑 The Organizational Problem:</strong> Modern engineering teams suffer from severe <strong>Corporate Amnesia</strong>. Past architectural decisions (ADRs) are forgotten, post-mortems are ignored, and new engineers continually re-introduce past mistakes, vulnerabilities, and non-compliant vendors, leading to repeating incidents and massive technical debt.</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>💡 Our Solution: Decision DNA</strong> operates as a "Conflict Sentinel". Using Vertex AI's Multi-Agent architecture and Knowledge Connector grounding (Google Drive), it autonomously analyzes new PRDs and code changes, immediately detecting contradictions against the organization's institutional memory (past outages, ADRs, compliance policies, etc.).</p>
+  </div>
+
+  <div class="section-number" style="margin-top: 30px;">Section 02</div>
+  <div class="section-title">Multi-Agent Architecture <span class="rubric-weight">15% Weight</span></div>
+  <div class="divider"></div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">1. Ideathon Concept Blueprint</h3>
+  <img class="screenshot" src="decision_dna_architecture.png" style="background: var(--gray-50); padding: 12px; border: 1px solid var(--gray-200);" alt="Decision DNA Ideathon Architecture Diagram">
+  <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 1a: Conceptual Design — Initial architecture connecting Enterprise Memory to CI/CD pipelines and the developer workflow</div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">2. Vertex AI Live Implementation</h3>
+  <div class="arch-container" style="background:#172554; margin: 12px 0 8px 0;">
+    <div class="arch-title" style="color:var(--primary-light)">Multi-Agent System Route Flow</div>
+    <div class="arch-flow">
+      <div class="arch-node">👤<br>Engineer</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node highlight" style="background:#0284c7;color:#fff">🧬<br>Decision DNA<br><small>Orchestrator</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node" style="color:#fff">🛡️<br>Conflict Sentinel<br><small>PRD/Architecture</small></div>
+      <div class="arch-node" style="color:#fff">⚖️<br>Code Review Judge<br><small>Code PR Analysis</small></div>
+    </div>
+  </div>
+  <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 1b: Live Implementation — Using Vertex Agent Engine to dynamically route context directly to the specialized evaluation agents</div>
+  <div class="two-screenshots">
+    <div>
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.50.16%E2%80%AFPM.png" alt="Agent Flow">
+      <div class="screenshot-caption">Figure 1a: Orchestrator flow diagram demonstrating routing logic to sub-agents</div>
+    </div>
+    <div>
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.01.43%E2%80%AFPM.png" alt="Conflict Sentinel">
+      <div class="screenshot-caption">Figure 1b: Conflict Sentinel agent configuration detail</div>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 3: PROMPT ENGINEERING & ENTERPRISE GROUNDING-->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 03</div>
+  <div class="section-title">Core Prompt Engineering &amp; Guardrails <span class="rubric-weight">15% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>The orchestrator and its specialized agents operate under stringent system instructions. These instructions compel the system to categorize threats, identify exact enterprise rule violations, and cite the precise institutional memory source.</p>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.57.57%E2%80%AFPM.png" alt="Orchestrator Prompt">
+      <div class="screenshot-caption">Figure 2a: Main Orchestrator Prompt defining role, strict rules, and tool access boundaries</div>
+    </div>
+    <div>
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.58.52%E2%80%AFPM.png" alt="Security Guardrails">
+      <div class="screenshot-caption">Figure 2b: System instructions enforcing specific formatting and explicit "Do Not Override" guardrails</div>
+    </div>
+  </div>
+
+  <div class="section-number" style="margin-top: 30px;">Section 04</div>
+  <div class="section-title">Enterprise Grounding <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>Decision DNA is powered by 16 critical enterprise memory documents. Using Vertex Agent Builder's native Google Drive Connector and direct Knowledge uploads, the agents perform real-time RAG against a unified knowledge base, accessing ADRs, architectural standards, post-mortems, and compliance policies.</p>
+
+  <div class="two-screenshots">
+    <div>
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.07.19%E2%80%AFPM.png" alt="Data Store Connection">
+      <div class="screenshot-caption">Figure 3a: Knowledge configuration mapping Vertex agent to Enterprise Google Drive and File Uploads</div>
+    </div>
+    <div>
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.07.43%E2%80%AFPM.png" alt="Institutional Memory">
+      <div class="screenshot-caption">Figure 3b: Grounding corpus containing Post-Mortems, ADRs, Security Policies, and Vendor Guidelines</div>
+    </div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 4: SYSTEM CAPABILITY PROOF                -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 05</div>
+  <div class="section-title">Conflict Sentinel in Action <span class="rubric-weight">20% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>By simulating a PRD review (DataViz Integration), we comprehensively prove the capability of the <strong>Conflict Sentinel</strong> to intercept bad architectural proposals before they are implemented.</p>
+
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.10.10%E2%80%AFPM.png" alt="PRD Review - GDPR">
+  <div class="screenshot-caption">Figure 4a: GDPR Data Residency violation (Conflict 1) identified during PRD review, correctly referencing Data_Classification_Policy.txt</div>
+
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.10.25%E2%80%AFPM.png" alt="Vendor Risk">
+  <div class="screenshot-caption">Figure 4b: Detection of an unapproved third-party vendor (DataViz Corp) referenced by Vendor_Management_Policy_2025.txt</div>
+
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.11.11%E2%80%AFPM.png" alt="Architectural Integrity">
+  <div class="screenshot-caption">Figure 4c: Sentinel blocking a proposed Synchronous API call, enforcing the enterprise event-driven standard (ADR_018)</div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 5: POST-MORTEM & SETUP                    -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 05 (continued)</div>
+  <div class="section-title">Post-Mortem Intelligence Integration</div>
+  <div class="divider"></div>
+
+  <div class="highlight-box">
+    <p><strong>The Final Protective Layer:</strong> Decision DNA proactively connects proposed code changes or tech specs directly to historical post-mortems. When an engineer attempts a risky implementation, they are alerted to past incidents caused by the exact same architectural flaw.</p>
+  </div>
+
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.14.51%E2%80%AFPM.png" alt="Post-Mortem PII Leak">
+  <div class="screenshot-caption">Figure 4d: Code Review Judge catching PII logging and explicitly referencing "Post_Mortem_PII_Leak_2025_01.txt" as historical proof of consequence.</div>
+
+  <div class="section-number" style="margin-top: 30px;">Section 06</div>
+  <div class="section-title">Setup &amp; Continuous Monitoring <span class="rubric-weight">10% Weight</span></div>
+  <div class="divider"></div>
+
+  <p>To ensure 100% compliance coverage, Vertex AI Agent scheduled executions can invoke the agent against newly committed documents or codebase PRs automatically.</p>
+
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2010.52.05%E2%80%AFPM.png" alt="Continuous Monitoring">
+  <div class="screenshot-caption">Figure 5a: Agent configuration for continuous environment monitoring and execution scheduling</div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 6: CONCLUSION & CHECKLIST                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 07</div>
+  <div class="section-title">Conclusion &amp; Evidence Checklist</div>
+  <div class="divider"></div>
+
+  <p><strong>Decision DNA</strong> solves Corporate Amnesia by creating an active, intelligent immune system for enterprise architecture. By integrating Vertex AI's Multi-Agent architecture with a native Document Grounding Data Store, we shift from passive policy documents to active architectural enforcement, reducing technical debt and mitigating repeating outages.</p>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">✅ Track 1 Idea 4 Evidence Checklist</h3>
+
+  <div class="checklist">
+    <div class="check-item"><span class="check-icon">✓</span> 1a. Orchestrator Flow View</div>
+    <div class="check-item"><span class="check-icon">✓</span> 1b. Sub-Agent - Conflict Sentinel</div>
+    <div class="check-item"><span class="check-icon">✓</span> 1c. Sub-Agent - Code Review Judge</div>
+    <div class="check-item"><span class="check-icon">✓</span> 2a. Orchestrator Prompt Configuration</div>
+    <div class="check-item"><span class="check-icon">✓</span> 2b. System Instructions &amp; Security Guardrails</div>
+    <div class="check-item"><span class="check-icon">✓</span> 3a. Knowledge Connector &amp; Tool Integration</div>
+    <div class="check-item"><span class="check-icon">✓</span> 3b. Enterprise Memory Store (Google Drive)</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4a. PRD Review Execution (DataViz)</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4b. Compliance Violation Detection (GDPR)</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4c. Vendor Risk Analysis (Unapproved)</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4d. Contextual Conflict Resolution (ADR-018)</div>
+    <div class="check-item"><span class="check-icon">✓</span> 4e. Post-Mortem Intelligence Integration</div>
+    <div class="check-item"><span class="check-icon">✓</span> 5a. Continuous Monitoring Configuration</div>
+  </div>
+
+  <br>
+  <div style="text-align:center; padding:20px; background:linear-gradient(135deg, var(--primary-light), #f0f9ff); border-radius:12px;">
+    <div style="font-size:32px; margin-bottom:8px">🧬</div>
+    <div style="font-size:16px; font-weight:800; color:var(--dark)">Decision DNA</div>
+    <div style="font-size:11px; color:var(--gray-600); margin-top:4px">Built on Google Vertex AI Agent Engine</div>
+    <div style="font-size:10px; color:var(--gray-400); margin-top:8px">© 2026 Tata Consultancy Services Limited · tcs^AI Hackathon</div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+</body>
+</html>

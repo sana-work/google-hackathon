@@ -535,7 +535,12 @@
 
   <p>Our architecture follows enterprise-grade principles: <strong>decoupled components, modular tool-calling, and cloud-native deployment</strong>. The system separates the evaluation logic (ADK Agent) from the orchestration layer (FastAPI), enabling independent scaling and testing.</p>
 
-  <div class="arch-container">
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">1. Ideathon Concept Blueprint</h3>
+  <img class="screenshot" src="guardrail_factory_architecture.png" style="background: #fff; padding: 12px; border: 1px solid var(--gray-200);" alt="GenAI Guardrail Factory Architecture Diagram">
+  <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 2a: Conceptual Design — High-level architecture of the autonomous guardrail validation pipeline</div>
+
+  <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">2. Vertex Agent Live Implementation</h3>
+  <div class="arch-container" style="margin: 12px 0 8px 0;">
     <div class="arch-title">System Architecture — End-to-End Flow</div>
     <div class="arch-flow">
       <div class="arch-node">🏢<br>Enterprise App</div>
@@ -554,6 +559,7 @@
       <div class="arch-node">🔄<br>Auto-Remediation<br><small>Prompt Hardening</small></div>
     </div>
   </div>
+  <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 2b: Live Implementation — The FastAPI server routing requests to the ADK LlmAgent equipped with 4 specialized capability tools</div>
 
   <div class="two-screenshots">
     <div>
