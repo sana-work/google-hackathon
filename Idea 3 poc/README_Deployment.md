@@ -66,69 +66,233 @@ After deployment, note the **Function URL** — you'll need it for Dialogflow CX
 | `check.risk.score` | "What's the score for A-7842", "Quick score check E-6723" |
 
 ### 2.3 Create Flows
+---
 
-#### Default Start Flow
-- **Start Page** → Route intents to respective pages
-- Add **conversation starters** (suggested chips):
-  - "🔍 Analyze customer A-7842"
-  - "📨 Generate intervention for E-6723"
-  - "📊 Show cohort insights"
-  - "📋 Portfolio overview"
+### DETAILED FLOW SETUP (Single Start-Page Approach)
 
-#### Risk Analysis Flow
-1. **Collect Customer ID** (Page with form parameter: `customer-id`)
-2. **Call Webhook** with tag: `analyze_risk`
-3. **Display Results** → Return to start
+> **Pro Tip:** For this PoC, all logic lives on the **Start Page** of the **Default Start Flow**. No extra pages or flow transitions are needed — every user utterance matches an intent route, fires the webhook with a unique tag, and the Cloud Function returns the formatted response. This keeps the agent simple, testable, and demo-ready.
 
-#### Intervention Flow
-1. **Collect Customer ID** (reuse or new)
-2. **Call Webhook** with tag: `generate_intervention`
-3. **Display Intervention Plan** → Return to start
+---
 
-#### Cohort Insights Flow
-1. **Optional: Collect Segment** (`industry-segment`)
-2. **Call Webhook** with tag: `cohort_insights`
-3. **Display Insights** → Return to start
+#### ⚠️ IMPORTANT — Do This First: Create the Webhook
 
-#### Portfolio Flow
-1. **Call Webhook** with tag: `portfolio_overview`
-2. **Display Portfolio** → Return to start
+You **must** create the webhook **before** adding routes, because each route references it by name.
+
+1. In the Dialogflow CX Console, go to **Manage** (tab at the top) → **Webhooks** (left sidebar).
+2. Click **+ Create**.
+3. Fill in:
+   | Field | Value |
+   |-------|-------|
+   | **Display name** | `silent-predictor-webhook` |
+   | **Webhook URL** | The Cloud Function URL from Step 1 (e.g. `https://us-central1-tcs-1771309562917.cloudfunctions.net/silent-escalation-webhook`) |
+   | **Method** | `POST` |
+   | **Timeout** | `30` seconds (default is fine) |
+4. Click **Save**.
+
+> 💡 Find your Cloud Function URL by running:
+> ```bash
+> gcloud functions describe silent-escalation-webhook --region us-central1 --gen2 --format='value(serviceConfig.uri)'
+> ```
+
+---
+
+#### 1. Configure the "Default Start Flow" — Start Page Routes
+
+Everything happens on a single page. Navigate to: **Build** (tab) → click **Default Start Flow** in the left sidebar → click the **Start Page** node (blue circle at the top of the canvas).
+
+In the right panel you will see a **Routes** section. Click the **+** button next to it to add each route below. You need **5 routes total**.
+
+---
+
+##### Route 1 — Risk Analysis (`analyze_risk`)
+
+| Field | Value |
+|-------|-------|
+| **Intent** | `analyze.customer.risk` |
+| **Enable webhook** | ✅ Checked |
+| **Webhook** | `silent-predictor-webhook` |
+| **Tag** | `analyze_risk` |
+| **Transition** | End current page (or leave blank — stays on Start Page) |
+
+Click **Save**.
+
+**What it does:** When the user says *"Analyze risk for customer A-7842"*, Dialogflow matches the `analyze.customer.risk` intent, extracts `A-7842` as the `customer-id` parameter from the training phrases, and fires the webhook with tag `analyze_risk`. The Cloud Function returns a full risk breakdown with SRS score, 4-channel evidence, and intervention recommendation.
+
+---
+
+##### Route 2 — Intervention Plan (`generate_intervention`)
+
+| Field | Value |
+|-------|-------|
+| **Intent** | `generate.intervention` |
+| **Enable webhook** | ✅ Checked |
+| **Webhook** | `silent-predictor-webhook` |
+| **Tag** | `generate_intervention` |
+| **Transition** | End current page |
+
+Click **Save**.
+
+**What it does:** Generates a personalized intervention plan with a Gemini-style re-engagement message, success probability, and approval chain based on the customer's risk tier (LOW/MEDIUM/HIGH).
+
+---
+
+##### Route 3 — Cohort Insights (`cohort_insights`)
+
+| Field | Value |
+|-------|-------|
+| **Intent** | `view.cohort.insights` |
+| **Enable webhook** | ✅ Checked |
+| **Webhook** | `silent-predictor-webhook` |
+| **Tag** | `cohort_insights` |
+| **Transition** | End current page |
+
+Click **Save**.
+
+**What it does:** Returns segment-level churn intelligence (SaaS, Telecom, Banking, E-commerce, Insurance, Healthcare). If the user specifies a segment (e.g. *"cohort insights for Telecom"*), results are filtered to that segment via the `industry-segment` entity parameter.
+
+---
+
+##### Route 4 — Portfolio Overview (`portfolio_overview`)
+
+| Field | Value |
+|-------|-------|
+| **Intent** | `portfolio.overview` |
+| **Enable webhook** | ✅ Checked |
+| **Webhook** | `silent-predictor-webhook` |
+| **Tag** | `portfolio_overview` |
+| **Transition** | End current page |
+
+Click **Save**.
+
+**What it does:** Returns a full portfolio summary of all 5 customers grouped by risk tier (HIGH → MEDIUM → LOW), with total at-risk ACV.
+
+---
+
+##### Route 5 — Quick Score Check (`check_score`)
+
+| Field | Value |
+|-------|-------|
+| **Intent** | `check.risk.score` |
+| **Enable webhook** | ✅ Checked |
+| **Webhook** | `silent-predictor-webhook` |
+| **Tag** | `check_score` |
+| **Transition** | End current page |
+
+Click **Save**.
+
+**What it does:** Returns a one-line quick risk score for a specific customer (e.g. *"🔴 Customer E-6723 (Kavitha Nair): Silent Risk Score = 94/100 — HIGH RISK"*).
+
+---
+
+#### 2. How Parameter Extraction Works End-to-End
+
+Understanding the data flow is critical for debugging:
+
+```
+User says: "Analyze risk for customer A-7842"
+         ↓
+Dialogflow CX: Matches intent "analyze.customer.risk"
+         ↓
+Entity @customer-id extracts: "A-7842"
+         ↓
+Parameter stored in: sessionInfo.parameters.customer-id
+         ↓
+Webhook fires with tag: "analyze_risk"
+         ↓
+Cloud Function main.py receives JSON:
+  {
+    "fulfillmentInfo": {"tag": "analyze_risk"},
+    "sessionInfo": {"parameters": {"customer-id": "A-7842"}}
+  }
+         ↓
+main.py extracts: params.get("customer-id") → "A-7842"
+         ↓
+Looks up CUSTOMERS["A-7842"] → runs calculate_srs() → returns formatted response
+```
+
+> **Note:** The Cloud Function checks for the parameter under both `customer-id` and `customer_id` keys (line 454 of `main.py`), and also normalizes to uppercase. So `a-7842`, `A-7842`, and `a-7842 ` all resolve correctly.
+
+---
+
+#### 3. Default Fallback (No Tag Match)
+
+If the user sends a message that doesn't match any intent (or the webhook tag is empty/unrecognized), the Cloud Function returns a welcome message listing all available capabilities:
+
+```
+Welcome to the Silent Escalation Predictor! I can help you:
+
+• 🔍 Analyze risk for a specific customer
+• 📨 Generate intervention plans
+• 📊 View cohort insights across segments
+• 📋 Portfolio overview of all accounts
+
+Try: 'Analyze risk for customer A-7842'
+```
+
+This is handled by the `else` branch at line 494 of `main.py` — no Dialogflow-side fallback intent setup is required.
+
+---
+
+#### SUMMARY: Final Canvas Architecture
+
+```
+Default Start Flow
+└── Start Page
+    ├── Route 1 (Intent: analyze.customer.risk)  → Webhook(tag: analyze_risk)
+    ├── Route 2 (Intent: generate.intervention)   → Webhook(tag: generate_intervention)
+    ├── Route 3 (Intent: view.cohort.insights)    → Webhook(tag: cohort_insights)
+    ├── Route 4 (Intent: portfolio.overview)      → Webhook(tag: portfolio_overview)
+    └── Route 5 (Intent: check.risk.score)        → Webhook(tag: check_score)
+```
+
+> **Validation:** After saving all 5 routes, click the **Start Page** node — you should see exactly 5 routes listed in the right panel. Each should show the green webhook icon (⚡) indicating a webhook is attached.
+
 
 ### 2.4 Configure Webhook
 
-1. Go to **Manage → Webhooks**
-2. Create webhook: **"silent-predictor-webhook"**
-3. URL: `YOUR_CLOUD_FUNCTION_URL` (from Step 1)
-4. Method: POST
+> ⚠️ **Already covered above** — see "Do This First: Create the Webhook" in the DETAILED FLOW SETUP section. Ensure your webhook URL is:
+> ```
+> https://us-central1-tcs-1771309562917.cloudfunctions.net/silent-escalation-webhook
+> ```
 
 📸 **Screenshot Required:** 
-- CX Agent Flow Canvas showing all flows
+- CX Agent Flow Canvas showing all routes
 - Webhooks config page showing linked URL
 
 ---
 
 ## Step 3: Deploy App Engine Frontend
 
-1. Update the `agent-id` in `templates/index.html`:
+1. Verify the `agent-id` and `location` in `templates/index.html`:
    ```html
    <df-messenger
        project-id="tcs-1771309562917"
-       agent-id="YOUR_ACTUAL_AGENT_ID"
-       ...>
+       agent-id="ec92c653-4329-4aa2-a632-8b656b0ef35e"
+       location="us-central1"
+       language-code="en"
+       max-query-length="-1">
    ```
    
-   Find your Agent ID in Dialogflow CX Console → Agent Settings
+   > 💡 The `location` attribute is **required** for Dialogflow CX agents. Without it, the widget defaults to `global` and returns a 404 error.
 
-2. Deploy to App Engine:
+2. Enable the **Dialogflow Messenger** integration:
+   - Go to Dialogflow CX Console → your agent
+   - **Manage** tab → **Integrations** (left sidebar)
+   - Find **"Dialogflow Messenger"** → click **Connect** / **Enable**
+   - Click **Done** (the embed snippet is already in your HTML)
+
+3. Deploy to App Engine:
    ```bash
    cd "Idea 3 poc/app_engine"
    gcloud app deploy app.yaml --project tcs-1771309562917
    ```
 
-3. Access your app:
+4. Access your app:
    ```bash
    gcloud app browse
    ```
+   
+   Live URL: `https://tcs-1771309562917.wl.r.appspot.com`
 
 📸 **Screenshots Required:**
 - Cloud Shell terminal showing `gcloud app deploy` success
@@ -160,15 +324,22 @@ After deployment, note the **Function URL** — you'll need it for Dialogflow CX
    > "Show portfolio overview"
    > Expected: All 5 customers with risk tiers and total at-risk ACV
 
+6. **Quick Score Check:**
+   > "What's the score for A-7842"
+   > Expected: One-line SRS score with risk tier
+
 ---
 
 ## Track 3 Rubric Evidence Checklist
 
-- [ ] **Conversational Flow:** Screenshot of CX Flow Canvas
-- [ ] **Backend Logic:** Screenshot of Cloud Functions code editor
-- [ ] **Integration:** Screenshot of Webhooks config with URL linked
-- [ ] **Web Deployment:** Screenshot of `gcloud app deploy` terminal
-- [ ] **Final UI Validation:** Screenshot of App Engine webpage with chat
+- [x] **Conversational Flow:** Screenshot of CX Flow Canvas with 5 intent routes
+- [x] **Backend Logic:** Screenshot of Cloud Functions code editor
+- [x] **Integration:** Screenshot of Webhooks config with URL linked
+- [x] **Web Deployment:** Screenshot of `gcloud app deploy` terminal
+- [x] **Final UI Validation:** Screenshot of App Engine webpage with chat widget
+- [x] **Simulator Test:** Screenshot of CX Simulator showing webhook response
+
+> 📁 All 16 screenshots saved in `Screenshots/` folder.
 
 ---
 
@@ -200,8 +371,10 @@ Idea 3 poc/
 │   │   └── index.html
 │   └── static/
 │       └── style.css
+├── Screenshots/               # 16 deployment evidence screenshots
 ├── silent_predictor_architecture.png
 ├── Idea3_Silent_Escalation_Predictor.md
 ├── Idea3_Silent_Escalation_Predictor.html
 └── README_Deployment.md       # This file
 ```
+

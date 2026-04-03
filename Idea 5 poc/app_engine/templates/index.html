@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy-to-Flow Compiler | Deterministic AI Journeys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0a0f1e;
+            --bg-panel: rgba(15, 23, 42, 0.85);
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --border: rgba(255,255,255,0.08);
+            --border-active: rgba(14,165,233,0.4);
+            --primary: #0ea5e9;
+            --primary-glow: rgba(14,165,233,0.25);
+            --secondary: #a78bfa;
+            --accent: #34d399;
+            --danger: #f87171;
+            --warning: #fbbf24;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --text-muted: #64748b;
+            --glass: blur(16px);
+            --radius: 14px;
+        }
+        * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter',sans-serif; }
+        body {
+            background: var(--bg-dark);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image:
+                radial-gradient(ellipse at 90% 10%, rgba(14,165,233,0.12), transparent 40%),
+                radial-gradient(ellipse at 10% 90%, rgba(167,139,250,0.08), transparent 40%),
+                radial-gradient(ellipse at 50% 50%, rgba(52,211,153,0.04), transparent 50%);
+        }
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: 260px; height:100%; padding:24px 16px;
+            display:flex; flex-direction:column;
+            background: rgba(10,15,30,0.95);
+            border-right:1px solid var(--border);
+            backdrop-filter: var(--glass);
+        }
+        .logo {
+            font-size:1.15rem; font-weight:800;
+            display:flex; align-items:center; gap:10px;
+            margin-bottom:36px; padding:0 8px;
+            background: linear-gradient(135deg, #38bdf8, #a78bfa);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        }
+        .logo i { color:var(--primary); -webkit-text-fill-color:initial; font-size:1.3rem; }
+        .nav-label {
+            font-size:0.65rem; text-transform:uppercase; letter-spacing:0.1em;
+            color:var(--text-muted); margin:0 8px 10px; font-weight:700;
+        }
+        .nav-btn {
+            display:flex; align-items:center; gap:10px;
+            padding:10px 14px; border-radius:10px; cursor:pointer;
+            color:var(--text-dim); font-size:0.85rem; font-weight:500;
+            transition:all 0.2s; margin-bottom:3px; position:relative;
+        }
+        .nav-btn:hover { background:rgba(255,255,255,0.04); color:var(--text); }
+        .nav-btn.active {
+            background:linear-gradient(135deg, rgba(14,165,233,0.15), rgba(167,139,250,0.08));
+            color:var(--primary); border:1px solid var(--border-active);
+        }
+        .nav-btn.active::before {
+            content:''; position:absolute; left:-16px; top:50%; transform:translateY(-50%);
+            width:3px; height:20px; background:var(--primary); border-radius:0 4px 4px 0;
+        }
+        .nav-btn i { width:16px; text-align:center; font-size:0.9rem; }
+        .sidebar-footer {
+            margin-top:auto; padding:16px; border-top:1px solid var(--border);
+            text-align:center;
+        }
+        .sidebar-footer .badge-live {
+            display:inline-flex; align-items:center; gap:6px;
+            font-size:0.65rem; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.08em; color:var(--accent);
+            background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.2);
+            padding:4px 10px; border-radius:20px;
+        }
+        .sidebar-footer .badge-live::before {
+            content:''; width:6px; height:6px; border-radius:50%;
+            background:var(--accent); animation:pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .sidebar-footer p { font-size:0.6rem; color:var(--text-muted); margin-top:8px; }
+
+        /* ─── MAIN ─── */
+        .main { flex:1; display:flex; flex-direction:column; height:100%; }
+        .header {
+            padding:18px 36px; display:flex; justify-content:space-between; align-items:center;
+            border-bottom:1px solid var(--border); backdrop-filter:var(--glass);
+            background:rgba(10,15,30,0.6);
+        }
+        .header-left h1 { font-size:1.25rem; font-weight:700; }
+        .header-left p { font-size:0.75rem; color:var(--text-dim); margin-top:2px; }
+        .header-stats { display:flex; gap:20px; }
+        .h-stat { text-align:center; }
+        .h-stat .val { font-size:1.1rem; font-weight:800; font-family:'JetBrains Mono',monospace; }
+        .h-stat .lbl { font-size:0.6rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+
+        .content { flex:1; padding:24px 36px; overflow-y:auto; }
+        .view { display:none; height:100%; animation:fadeUp 0.35s ease forwards; }
+        .view.active { display:flex; flex-direction:column; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ─── CARDS & PANELS ─── */
+        .card {
+            background:var(--bg-card); border:1px solid var(--border);
+            border-radius:var(--radius); backdrop-filter:var(--glass);
+        }
+        .card-hdr {
+            padding:14px 18px; border-bottom:1px solid var(--border);
+            display:flex; justify-content:space-between; align-items:center;
+            font-weight:600; font-size:0.9rem;
+        }
+        .card-hdr i { margin-right:8px; opacity:0.7; }
+
+        .btn {
+            background:linear-gradient(135deg, var(--primary), #6366f1);
+            color:#fff; border:none; padding:10px 22px; border-radius:10px;
+            font-size:0.85rem; font-weight:600; cursor:pointer;
+            display:inline-flex; align-items:center; gap:8px;
+            transition:all 0.25s; box-shadow:0 4px 20px var(--primary-glow);
+        }
+        .btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px var(--primary-glow); }
+        .btn-sm { padding:6px 14px; font-size:0.75rem; border-radius:8px; }
+        .btn-ghost {
+            background:rgba(255,255,255,0.06); box-shadow:none;
+            border:1px solid var(--border);
+        }
+        .btn-ghost:hover { background:rgba(255,255,255,0.1); box-shadow:none; }
+
+        .badge { font-size:0.65rem; text-transform:uppercase; font-weight:700; padding:3px 8px; border-radius:4px; letter-spacing:0.04em; }
+
+        /* ─── VIEW 1: COMPILER ─── */
+        .compiler-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1; min-height:0; }
+        .doc-content {
+            padding:20px; font-family:'Georgia',serif; font-size:0.95rem;
+            line-height:1.85; color:#cbd5e1; overflow-y:auto; flex:1;
+        }
+        .doc-content h2 {
+            font-family:'Inter',sans-serif; color:#fff; font-size:1.2rem;
+            margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:6px;
+        }
+        .hl { transition:all 0.4s; border-radius:3px; padding:1px 3px; }
+        .hl.ent { background:rgba(14,165,233,0.25); border-bottom:2px solid var(--primary); }
+        .hl.rule { background:rgba(167,139,250,0.25); border-bottom:2px solid var(--secondary); }
+        .flow-out {
+            padding:20px; flex:1; overflow-y:auto;
+            font-family:'JetBrains Mono',monospace; background:rgba(0,0,0,0.3);
+            font-size:0.8rem; position:relative;
+        }
+        .dsl-block {
+            padding:14px; border-radius:8px; margin-bottom:12px;
+            border-left:3px solid transparent; opacity:0; transform:translateX(12px);
+            transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .dsl-block.show { opacity:1; transform:translateX(0); }
+        .dsl-ent { background:rgba(14,165,233,0.08); border-left-color:var(--primary); }
+        .dsl-rule { background:rgba(167,139,250,0.08); border-left-color:var(--secondary); }
+        .dsl-out { background:rgba(52,211,153,0.08); border-left-color:var(--accent); }
+        .dsl-warn { background:rgba(251,191,36,0.08); border-left-color:var(--warning); }
+        .ck { color:var(--primary); font-weight:700; }
+        .cs { color:var(--accent); }
+        .cl { color:var(--warning); font-weight:700; }
+        .overlay {
+            position:absolute; inset:0; background:rgba(10,15,30,0.85);
+            backdrop-filter:blur(6px); display:flex; flex-direction:column;
+            align-items:center; justify-content:center; z-index:10;
+            opacity:0; pointer-events:none; transition:opacity 0.3s;
+        }
+        .overlay.on { opacity:1; pointer-events:auto; }
+
+        /* ─── VIEW 2: FUZZER ─── */
+        .fuzz-grid { display:grid; grid-template-columns:240px 1fr; gap:20px; flex:1; min-height:0; }
+        .fuzz-stats { display:flex; flex-direction:column; gap:12px; }
+        .stat-card {
+            background:var(--bg-card); border:1px solid var(--border);
+            padding:16px; border-radius:var(--radius);
+        }
+        .stat-card .val { font-size:1.8rem; font-weight:800; font-family:'JetBrains Mono',monospace; }
+        .stat-card .lbl { font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; margin-top:2px; letter-spacing:0.04em; }
+        .term {
+            flex:1; padding:16px; background:#000; font-family:'JetBrains Mono',monospace;
+            font-size:0.78rem; color:var(--accent); overflow-y:auto;
+            border-bottom-left-radius:var(--radius); border-bottom-right-radius:var(--radius);
+        }
+        .log { margin-bottom:3px; opacity:0; animation:fadeUp 0.15s forwards; }
+        .log.err { color:var(--danger); }
+        .log.warn { color:var(--warning); }
+        .gap-report {
+            display:none; background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.25);
+            border-radius:8px; padding:14px; margin-top:12px; animation:fadeUp 0.3s forwards;
+        }
+
+        /* ─── VIEW 3: RUNTIME ─── */
+        .rt-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1; min-height:0; }
+        .chat-body { flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:16px; }
+        .bub {
+            max-width:82%; padding:12px 16px; border-radius:14px;
+            font-size:0.9rem; line-height:1.55;
+            animation:bubIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes bubIn { from{opacity:0;transform:translateY(8px) scale(0.96)} to{opacity:1;transform:translateY(0) scale(1)} }
+        .bub-user { align-self:flex-end; background:linear-gradient(135deg,var(--primary),#6366f1); color:#fff; border-bottom-right-radius:4px; }
+        .bub-ai { align-self:flex-start; background:rgba(255,255,255,0.07); border-bottom-left-radius:4px; }
+        .chat-bar { padding:14px; border-top:1px solid var(--border); display:flex; gap:10px; }
+        .xray { padding:20px; overflow-y:auto; background:rgba(0,0,0,0.2); }
+        .xray-title { font-size:0.65rem; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; letter-spacing:0.06em; font-weight:700; }
+        .node-box {
+            background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.2);
+            padding:14px; border-radius:10px; margin-bottom:18px; transition:all 0.35s;
+        }
+        .node-box.changed { background:rgba(167,139,250,0.12); border-color:var(--secondary); transform:scale(1.01); }
+        .clist { list-style:none; display:flex; flex-direction:column; gap:6px; }
+        .citem {
+            font-family:'JetBrains Mono',monospace; font-size:0.78rem;
+            padding:7px 10px; background:rgba(0,0,0,0.3); border-radius:4px;
+            border-left:2px solid var(--accent); display:flex; align-items:center; gap:10px;
+        }
+        .citem.no { border-left-color:var(--danger); text-decoration:line-through; opacity:0.55; }
+
+        /* ─── VIEW 4: DASHBOARD ─── */
+        .dash-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+        .pol-card {
+            background:var(--bg-card); border:1px solid var(--border);
+            border-radius:var(--radius); padding:20px; transition:all 0.25s; cursor:default;
+        }
+        .pol-card:hover { border-color:var(--border-active); transform:translateY(-2px); }
+        .pol-card h3 { font-size:0.95rem; margin-bottom:4px; }
+        .pol-card .meta { font-size:0.7rem; color:var(--text-muted); margin-bottom:12px; }
+        .pol-card .stats-row { display:flex; gap:12px; }
+        .pol-card .mini-stat { text-align:center; flex:1; }
+        .pol-card .mini-stat .v { font-size:1rem; font-weight:800; font-family:'JetBrains Mono',monospace; }
+        .pol-card .mini-stat .l { font-size:0.55rem; color:var(--text-muted); text-transform:uppercase; }
+        .audit-table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+        .audit-table th {
+            background:rgba(0,0,0,0.4); color:var(--text-dim); padding:10px 14px;
+            text-align:left; font-size:0.65rem; text-transform:uppercase; letter-spacing:0.05em;
+        }
+        .audit-table td { padding:10px 14px; border-bottom:1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="logo"><i class="fa-solid fa-code-merge"></i> Policy2Flow</div>
+    <div class="nav-label">Compiler Pipeline</div>
+    <div class="nav-btn active" onclick="go('dash',this)"><i class="fa-solid fa-grid-2"></i> Dashboard</div>
+    <div class="nav-btn" onclick="go('compiler',this)"><i class="fa-solid fa-file-export"></i> Policy Compiler</div>
+    <div class="nav-btn" onclick="go('fuzz',this)"><i class="fa-solid fa-flask-vial"></i> Auto-Fuzz Tester</div>
+    <div class="nav-label" style="margin-top:20px">Execution</div>
+    <div class="nav-btn" onclick="go('runtime',this)"><i class="fa-solid fa-robot"></i> Conversation Runtime</div>
+    <div class="sidebar-footer">
+        <div class="badge-live">Engine Active</div>
+        <p>Powered by Gemini + Dialogflow CX</p>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="header">
+        <div class="header-left">
+            <h1 id="vTitle">Policy-to-Flow Dashboard</h1>
+            <p id="vSub">Compiled policies, coverage metrics, and audit readiness</p>
+        </div>
+        <div class="header-stats">
+            <div class="h-stat"><div class="val" style="color:var(--primary)">3</div><div class="lbl">Policies</div></div>
+            <div class="h-stat"><div class="val" style="color:var(--accent)">98.1%</div><div class="lbl">Avg Coverage</div></div>
+            <div class="h-stat"><div class="val" style="color:var(--danger)">1</div><div class="lbl">Critical Gap</div></div>
+            <div class="h-stat"><div class="val" style="color:var(--warning)">6</div><div class="lbl">Warnings</div></div>
+        </div>
+    </header>
+
+    <div class="content">
+        <!-- VIEW: DASHBOARD -->
+        <div id="v-dash" class="view active">
+            <div class="dash-grid">
+                <div class="pol-card">
+                    <h3>📦 Return & Refund Policy</h3>
+                    <div class="meta">v2.4.1 · Customer Operations · E-Commerce</div>
+                    <div class="stats-row">
+                        <div class="mini-stat"><div class="v" style="color:var(--primary)">12</div><div class="l">Nodes</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--secondary)">6</div><div class="l">Entities</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--accent)">98.4%</div><div class="l">Coverage</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--danger)">1</div><div class="l">Gaps</div></div>
+                    </div>
+                </div>
+                <div class="pol-card">
+                    <h3>🏦 KYC Verification Policy</h3>
+                    <div class="meta">v3.1.0 · Compliance & Risk · Banking</div>
+                    <div class="stats-row">
+                        <div class="mini-stat"><div class="v" style="color:var(--primary)">12</div><div class="l">Nodes</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--secondary)">5</div><div class="l">Entities</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--accent)">96.7%</div><div class="l">Coverage</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--warning)">0</div><div class="l">Gaps</div></div>
+                    </div>
+                </div>
+                <div class="pol-card">
+                    <h3>🔧 Warranty & Service Policy</h3>
+                    <div class="meta">v1.8.0 · After-Sales · Consumer Electronics</div>
+                    <div class="stats-row">
+                        <div class="mini-stat"><div class="v" style="color:var(--primary)">15</div><div class="l">Nodes</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--secondary)">6</div><div class="l">Entities</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--accent)">99.1%</div><div class="l">Coverage</div></div>
+                        <div class="mini-stat"><div class="v" style="color:var(--warning)">0</div><div class="l">Gaps</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="flex:1;min-height:0;display:flex;flex-direction:column">
+                <div class="card-hdr"><div><i class="fa-solid fa-clipboard-list"></i> Audit Trail — Recent Compilations</div></div>
+                <div style="overflow-y:auto;flex:1">
+                    <table class="audit-table">
+                        <thead><tr><th>Timestamp</th><th>Policy</th><th>Action</th><th>Coverage</th><th>Gaps</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr><td>2026-04-03 04:15</td><td>Return & Refund v2.4.1</td><td>Full Compile + Fuzz</td><td>98.4%</td><td>1 Critical</td><td><span class="badge" style="background:rgba(248,113,113,0.15);color:var(--danger)">Needs Fix</span></td></tr>
+                            <tr><td>2026-04-02 23:40</td><td>Warranty v1.8.0</td><td>Recompile (policy update)</td><td>99.1%</td><td>0</td><td><span class="badge" style="background:rgba(52,211,153,0.15);color:var(--accent)">Clean</span></td></tr>
+                            <tr><td>2026-04-02 18:22</td><td>KYC v3.1.0</td><td>Initial Compile + Fuzz</td><td>96.7%</td><td>0</td><td><span class="badge" style="background:rgba(52,211,153,0.15);color:var(--accent)">Clean</span></td></tr>
+                            <tr><td>2026-04-01 11:05</td><td>Return & Refund v2.3.0</td><td>Regression Test</td><td>94.2%</td><td>2 Critical</td><td><span class="badge" style="background:rgba(248,113,113,0.15);color:var(--danger)">Superseded</span></td></tr>
+                            <tr><td>2026-03-30 09:15</td><td>Warranty v1.7.0</td><td>Full Compile + Fuzz</td><td>97.8%</td><td>1 Warning</td><td><span class="badge" style="background:rgba(251,191,36,0.15);color:var(--warning)">Upgraded</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: COMPILER -->
+        <div id="v-compiler" class="view">
+            <div class="compiler-grid">
+                <div class="card" style="display:flex;flex-direction:column;overflow:hidden">
+                    <div class="card-hdr"><div><i class="fa-regular fa-file-lines"></i> Warranty_Returns_Policy_v2.docx</div><span class="badge" style="background:rgba(14,165,233,0.15);color:var(--primary)">Source</span></div>
+                    <div class="doc-content">
+                        <h2>Standard Return Policy</h2>
+                        <p>Customers may return most new, unopened items sold and fulfilled by our company within <span class="hl" id="h1">30 days of delivery</span> for a full refund.</p><br>
+                        <p><strong>Exceptions:</strong></p>
+                        <p>If the item is a <span class="hl" id="h2">Consumer Electronics (e.g., Laptops, Phones)</span>, the return window is restricted to <span class="hl" id="h3">14 days</span>. The item must be in its original packaging. If the packaging is damaged or missing, we will apply a <span class="hl" id="h4">15% restocking fee</span>.</p><br>
+                        <p>At the start of any return interaction, the agent <span class="hl" id="h5">must state standard processing times (5-7 business days)</span> before accepting the return request.</p><br>
+                        <p>Items purchased during <span class="hl" id="h6">promotional events (Black Friday, Diwali Sale)</span> are subject to a <span class="hl" id="h7">7-day return window</span> with <span class="hl" id="h8">exchange-only policy</span> (no cash refunds).</p><br>
+                        <p><span class="hl" id="h9">Gift items</span> require a valid gift receipt for processing.</p>
+                    </div>
+                </div>
+                <div class="card" style="display:flex;flex-direction:column;overflow:hidden">
+                    <div class="card-hdr"><div><i class="fa-solid fa-code"></i> Generated Policy DSL</div>
+                        <button class="btn btn-sm" onclick="compile()" id="btnC"><i class="fa-solid fa-play"></i> Compile</button>
+                    </div>
+                    <div class="overlay" id="ovl"><i class="fa-solid fa-microchip fa-bounce" style="font-size:2.2rem;color:var(--primary);margin-bottom:14px"></i><div style="font-weight:600">Gemini extracting logic...</div><div style="font-size:0.75rem;color:var(--text-dim);margin-top:6px">Parsing entities, conditions, and disclaimers</div></div>
+                    <div class="flow-out" id="dsl"><div style="color:var(--text-muted);text-align:center;margin-top:35%">Click <strong>Compile</strong> to extract DSL from policy text.</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: FUZZ -->
+        <div id="v-fuzz" class="view">
+            <div class="fuzz-grid">
+                <div class="fuzz-stats">
+                    <button class="btn" style="width:100%;justify-content:center" onclick="fuzz()" id="btnF"><i class="fa-solid fa-bolt"></i> Run Auto-Fuzz</button>
+                    <div class="stat-card"><div class="val" id="sP" style="color:var(--primary)">0</div><div class="lbl">Paths Traversed</div></div>
+                    <div class="stat-card"><div class="val" id="sC" style="color:var(--warning)">0%</div><div class="lbl">Rule Coverage</div></div>
+                    <div class="stat-card" style="border-color:rgba(248,113,113,0.2)"><div class="val" id="sE" style="color:var(--danger)">0</div><div class="lbl">Critical Gaps</div></div>
+                    <div class="stat-card"><div class="val" id="sW" style="color:var(--warning)">0</div><div class="lbl">Warnings</div></div>
+                </div>
+                <div class="card" style="display:flex;flex-direction:column">
+                    <div class="card-hdr" style="background:rgba(0,0,0,0.4)"><div><i class="fa-solid fa-terminal"></i> Fuzzer Execution Log</div><span class="badge" style="background:rgba(52,211,153,0.15);color:var(--accent)" id="fStatus">Idle</span></div>
+                    <div class="term" id="fTerm">> Fuzzer initialized. Awaiting command...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: RUNTIME -->
+        <div id="v-runtime" class="view">
+            <div class="rt-grid">
+                <div class="card" style="display:flex;flex-direction:column">
+                    <div class="card-hdr"><div><i class="fa-solid fa-headset"></i> Customer Interaction</div><span class="badge" style="background:rgba(52,211,153,0.15);color:var(--accent)">Live</span></div>
+                    <div class="chat-body" id="chat"><div class="bub bub-ai">Hello! I'm the Policy-to-Flow engine. I enforce deterministic, policy-compliant responses. How can I help you today?</div></div>
+                    <div class="chat-bar">
+                        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="sim1()" id="b1">Say: "I want to return a laptop"</button>
+                        <button class="btn btn-ghost" style="flex:1;justify-content:center;display:none" onclick="sim2()" id="b2">Say: "I received it 18 days ago"</button>
+                        <button class="btn btn-ghost" style="flex:1;justify-content:center;display:none" onclick="sim3()" id="b3">Say: "Can I get store credit instead?"</button>
+                    </div>
+                </div>
+                <div class="card" style="display:flex;flex-direction:column;overflow:hidden">
+                    <div class="card-hdr"><div><i class="fa-solid fa-microchip"></i> Policy Engine X-Ray</div><span class="badge" style="background:rgba(52,211,153,0.15);color:var(--accent)">Enforcing</span></div>
+                    <div class="xray" id="xray">
+                        <div class="node-box" id="xState">
+                            <div style="font-family:'JetBrains Mono',monospace;color:var(--primary);font-weight:700;font-size:1rem;margin-bottom:12px">Node: IDLE_GREETING</div>
+                            <div class="xray-title">Allowed Intent Mappings</div>
+                            <ul class="clist">
+                                <li class="citem"><i class="fa-solid fa-arrow-right"></i> START_RETURN_FLOW</li>
+                                <li class="citem"><i class="fa-solid fa-arrow-right"></i> CHECK_WARRANTY</li>
+                                <li class="citem"><i class="fa-solid fa-arrow-right"></i> START_KYC</li>
+                                <li class="citem"><i class="fa-solid fa-arrow-right"></i> ESCALATE_TO_HUMAN</li>
+                            </ul>
+                        </div>
+                        <div class="node-box" style="opacity:0.4">
+                            <div class="xray-title">LLM Language Constraints</div>
+                            <ul class="clist">
+                                <li class="citem"><i class="fa-solid fa-check" style="color:var(--accent)"></i> Empathetic, professional tone</li>
+                                <li class="citem no"><i class="fa-solid fa-xmark"></i> Promise refunds without engine approval</li>
+                                <li class="citem no"><i class="fa-solid fa-xmark"></i> Override policy conditions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Dialogflow CX Messenger -->
+<df-messenger
+    project-id="tcs-1771309562917"
+    agent-id="AGENT_ID_PLACEHOLDER"
+    location="us-central1"
+    language-code="en"
+    max-query-length="-1">
+    <df-messenger-chat-bubble chat-title="Policy2Flow Assistant">
+    </df-messenger-chat-bubble>
+</df-messenger>
+<link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
+<script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+<style>
+    df-messenger {
+        z-index:999; position:fixed;
+        --df-messenger-font-color:#e2e8f0;
+        --df-messenger-font-family:'Inter',sans-serif;
+        --df-messenger-chat-background:#0a0f1e;
+        --df-messenger-message-user-background:#6366f1;
+        --df-messenger-message-bot-background:#1e293b;
+        --df-messenger-input-box-color:#1e293b;
+        --df-messenger-input-font-color:#e2e8f0;
+        --df-messenger-input-placeholder-font-color:#64748b;
+        --df-messenger-send-icon:#0ea5e9;
+        --df-messenger-chat-border-radius:16px;
+        bottom:16px; right:16px;
+    }
+</style>
+
+<script>
+const titles={dash:['Policy-to-Flow Dashboard','Compiled policies, coverage metrics, and audit readiness'],compiler:['Policy Compiler','Unstructured policy → Deterministic Flow DSL'],fuzz:['Auto-Fuzz Testing','Compliance validation across thousands of synthetic paths'],runtime:['Conversation Runtime','Deterministic execution with real-time Policy Engine X-Ray']};
+function go(id,el){
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('v-'+id).classList.add('active');
+    document.getElementById('vTitle').textContent=titles[id][0];
+    document.getElementById('vSub').textContent=titles[id][1];
+}
+
+function compile(){
+    const btn=document.getElementById('btnC');
+    btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Compiling...';
+    document.getElementById('ovl').classList.add('on');
+    setTimeout(()=>{
+        ['h1','h2','h6','h9'].forEach(id=>document.getElementById(id).classList.add('ent'));
+        ['h3','h4','h5','h7','h8'].forEach(id=>document.getElementById(id).classList.add('rule'));
+        document.getElementById('ovl').classList.remove('on');
+        btn.innerHTML='<i class="fa-solid fa-check"></i> Compiled';
+        btn.style.background='var(--accent)';
+        const d=document.getElementById('dsl');
+        d.innerHTML=`
+<div class="dsl-block dsl-rule show"><span class="ck">node</span>: START_RETURN<br><span class="ck">action</span>: display_disclaimer<br><span class="cs">"Processing time: 5-7 business days"</span><br><span class="ck">next</span>: IDENTIFY_PRODUCT</div>
+<div class="dsl-block dsl-ent show" style="transition-delay:.15s"><span class="ck">entity</span>: ProductCategory<br><span class="ck">enum</span>: [ELECTRONICS, GENERAL, PROMOTIONAL, GIFT]<br><span class="ck">source</span>: Line 2-5</div>
+<div class="dsl-block dsl-rule show" style="transition-delay:.3s"><span class="ck">node</span>: CHECK_ELIGIBILITY<br><span class="cl">IF</span> ProductCategory == ELECTRONICS:<br>&nbsp;&nbsp;max_days = <span class="cs">14</span><br><span class="cl">ELIF</span> PurchaseType == PROMOTIONAL:<br>&nbsp;&nbsp;max_days = <span class="cs">7</span><br><span class="cl">ELSE</span>:<br>&nbsp;&nbsp;max_days = <span class="cs">30</span><br><br><span class="cl">IF</span> days_since_delivery <= max_days:<br>&nbsp;&nbsp;<span class="ck">next</span>: CHECK_PACKAGING<br><span class="cl">ELSE</span>:<br>&nbsp;&nbsp;<span class="ck">state</span>: REJECT_RETURN</div>
+<div class="dsl-block dsl-rule show" style="transition-delay:.45s"><span class="ck">node</span>: CHECK_PACKAGING<br><span class="cl">IF</span> PackagingCondition == INTACT:<br>&nbsp;&nbsp;<span class="ck">next</span>: APPROVE_FULL_REFUND<br><span class="cl">ELSE</span>:<br>&nbsp;&nbsp;<span class="ck">next</span>: APPLY_RESTOCKING_FEE (15%)</div>
+<div class="dsl-block dsl-out show" style="transition-delay:.6s"><span class="ck">outcomes</span>:<br>&nbsp;&nbsp;✅ APPROVE_FULL_REFUND<br>&nbsp;&nbsp;💰 PARTIAL_REFUND (15% fee)<br>&nbsp;&nbsp;🔄 EXCHANGE_ONLY (promo items)<br>&nbsp;&nbsp;❌ REJECT_RETURN</div>
+<div class="dsl-block dsl-warn show" style="transition-delay:.75s"><span class="cl">⚠ disclaimers</span>:<br>&nbsp;&nbsp;MANDATORY: "5-7 business days"<br>&nbsp;&nbsp;CONDITIONAL: "15% restocking fee"<br>&nbsp;&nbsp;PROMO: "Exchange only, no cash refunds"<br>&nbsp;&nbsp;GIFT: "Valid gift receipt required"</div>`;
+    },1800);
+}
+
+function fuzz(){
+    const btn=document.getElementById('btnF'),t=document.getElementById('fTerm');
+    btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Simulating...';
+    btn.style.opacity='0.6';
+    document.getElementById('fStatus').textContent='Running';
+    document.getElementById('fStatus').style.color='var(--warning)';
+    t.innerHTML='';
+    let c=0;
+    const iv=setInterval(()=>{
+        c+=47;
+        document.getElementById('sP').textContent=c;
+        document.getElementById('sC').textContent=Math.min(Math.floor(c/20),100)+'%';
+        if(c>800&&c<850){
+            t.innerHTML+=`<div class="log err">> Path ${c}: FAIL — EDGE CASE DETECTED</div>`;
+            document.getElementById('sE').textContent='1';
+            t.innerHTML+=`<div class="gap-report" style="display:block"><h4 style="color:var(--danger);margin-bottom:6px"><i class="fa-solid fa-triangle-exclamation"></i> GAP-001 [CRITICAL]</h4><p style="color:#fff;font-size:0.75rem;font-family:Inter"><strong>Scenario:</strong> Electronics item, delivery 14 days ago, order 17 days ago (3-day shipping).</p><p style="color:#fff;font-size:0.75rem;font-family:Inter;margin-top:6px"><strong>Issue:</strong> Policy says "days of delivery" but flow maps to order creation timestamp.</p><p style="color:var(--warning);font-size:0.75rem;font-family:Inter;margin-top:6px"><strong>Fix:</strong> Bind DaysSinceDelivery to tracking API delivery confirmation.</p></div>`;
+            document.getElementById('sW').textContent='3';
+            clearInterval(iv);
+            btn.innerHTML='<i class="fa-solid fa-bolt"></i> Run Auto-Fuzz';
+            btn.style.opacity='1';
+            document.getElementById('sC').style.color='var(--accent)';
+            document.getElementById('fStatus').textContent='Complete';
+            document.getElementById('fStatus').style.color='var(--accent)';
+        } else if(c%141===0){
+            t.innerHTML+=`<div class="log">> Path ${c}: OK → APPROVED_FULL_REFUND</div>`;
+        } else {
+            t.innerHTML+=`<div class="log">> Path ${c}: OK → REJECT_OUT_OF_WINDOW</div>`;
+        }
+        t.scrollTop=t.scrollHeight;
+    },80);
+}
+
+function sim1(){
+    document.getElementById('b1').style.display='none';
+    document.getElementById('b2').style.display='flex';
+    const ch=document.getElementById('chat');
+    ch.innerHTML+=`<div class="bub bub-user">I want to return a laptop I bought recently.</div>`;
+    const x=document.getElementById('xState');
+    x.classList.add('changed');
+    x.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;color:var(--primary);font-weight:700;font-size:1rem;margin-bottom:12px">Node: EVALUATE_PRODUCT</div><div class="xray-title">Extracted Entities</div><ul class="clist" style="margin-bottom:14px"><li class="citem"><span class="badge" style="background:var(--primary);color:#fff">ProductCategory</span> ELECTRONICS</li></ul><div class="xray-title">Engine Logic</div><ul class="clist"><li class="citem" style="border-left-color:var(--secondary)"><i class="fa-solid fa-exclamation-circle"></i> MUST_STATE: "5-7 days processing"</li><li class="citem"><i class="fa-solid fa-question-circle"></i> NEXT: Ask for delivery date</li></ul>`;
+    setTimeout(()=>{ch.innerHTML+=`<div class="bub bub-ai">I can help with your laptop return. <strong>Please note: standard processing takes 5-7 business days.</strong><br><br>Since laptops are electronics, you have a 14-day return window from delivery. When was it delivered?</div>`;ch.scrollTop=ch.scrollHeight;},700);
+}
+function sim2(){
+    document.getElementById('b2').style.display='none';
+    document.getElementById('b3').style.display='flex';
+    const ch=document.getElementById('chat');
+    ch.innerHTML+=`<div class="bub bub-user">I received it 18 days ago.</div>`;
+    const x=document.getElementById('xState');
+    x.classList.remove('changed');void x.offsetWidth;x.classList.add('changed');
+    x.style.borderColor='var(--danger)';x.style.background='rgba(248,113,113,0.08)';
+    x.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;color:var(--danger);font-weight:700;font-size:1rem;margin-bottom:12px">Node: CHECK_ELIGIBILITY</div><div class="xray-title">Logic Evaluation</div><div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;background:rgba(0,0,0,0.4);padding:10px;border-radius:6px;margin-bottom:14px"><span class="cl">IF</span> (ELECTRONICS): max_days = 14<br>val(days) = 18<br>18 <= 14 : <span style="color:var(--danger)">FALSE</span></div><div class="xray-title">Engine Decision</div><ul class="clist"><li class="citem no"><i class="fa-solid fa-ban"></i> OUTCOME: REJECT_RETURN</li></ul>`;
+    setTimeout(()=>{ch.innerHTML+=`<div class="bub bub-ai">I'm sorry, but I'm unable to process this return. Our policy requires electronics to be returned within <strong>14 days of delivery</strong>, and it's been 18 days — outside the eligible window.<br><br>I apologize for the inconvenience. Is there anything else I can help with?</div>`;ch.scrollTop=ch.scrollHeight;},900);
+}
+function sim3(){
+    document.getElementById('b3').style.display='none';
+    const ch=document.getElementById('chat');
+    ch.innerHTML+=`<div class="bub bub-user">Can I at least get store credit instead?</div>`;
+    const x=document.getElementById('xState');
+    x.innerHTML=`<div style="font-family:'JetBrains Mono',monospace;color:var(--danger);font-weight:700;font-size:1rem;margin-bottom:12px">Node: REJECT_RETURN (ENFORCED)</div><div class="xray-title">Override Attempt Detected</div><div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;background:rgba(0,0,0,0.4);padding:10px;border-radius:6px;margin-bottom:14px">User requested: STORE_CREDIT<br>Engine state: REJECT_RETURN<br>Override allowed: <span style="color:var(--danger)">NO</span><br><br><span style="color:var(--warning)">⚠ LLM constrained — cannot offer alternatives not in graph</span></div><div class="xray-title">Enforced Constraints</div><ul class="clist"><li class="citem no"><i class="fa-solid fa-shield"></i> Cannot grant store credit on expired return</li><li class="citem no"><i class="fa-solid fa-shield"></i> Cannot override eligibility window</li><li class="citem"><i class="fa-solid fa-arrow-right" style="color:var(--accent)"></i> CAN: Offer escalation to human agent</li></ul>`;
+    setTimeout(()=>{ch.innerHTML+=`<div class="bub bub-ai">I understand your frustration. Unfortunately, since the return window has passed, our policy doesn't allow me to offer store credit for this item either.<br><br>However, I can <strong>escalate this to a senior representative</strong> who may be able to review your case. Would you like me to do that?</div>`;ch.scrollTop=ch.scrollHeight;},900);
+}
+</script>
+</body>
+</html>
