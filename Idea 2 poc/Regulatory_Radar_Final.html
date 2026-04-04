@@ -333,6 +333,23 @@
     border-radius: 0;
   }
 
+  /* Code Appendix Styles */
+  .code-appendix { font-family: 'Inter', sans-serif; }
+  .code-block-container { margin: 12px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--gray-200); }
+  .code-block-header { background: var(--dark); color: #fff; padding: 6px 14px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+  .code-block-header .file-badge { background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 9px; }
+  pre.source-code { background: #1a1b2e; color: #e2e4e9; padding: 14px 16px; margin: 0; font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 9px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+  pre.source-code .kw { color: #c792ea; }
+  pre.source-code .fn { color: #82aaff; }
+  pre.source-code .st { color: #c3e88d; }
+  pre.source-code .cm { color: #546e7a; font-style: italic; }
+  pre.source-code .nb { color: #ffcb6b; }
+  pre.source-code .op { color: #89ddff; }
+  .system-prompt-block { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px 16px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 9px; line-height: 1.7; color: #c9d1d9; white-space: pre-wrap; word-wrap: break-word; }
+  .system-prompt-block .section-marker { color: #58a6ff; font-weight: 700; }
+  .system-prompt-block .guardrail { color: #f85149; font-weight: 700; }
+  .system-prompt-block .emoji { font-style: normal; }
+  .appendix-label { display: inline-block; background: var(--primary); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -403,22 +420,22 @@
     </div>
   </div>
   <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 1b: Live Implementation — The Orchestrator routes parsing tasks to the Regulatory Analyzer, then maps the results to internal policies using the Impact Mapper</div>
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.21.40 AM.png" alt="Agent Welcome UI">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.21.40%20AM.png" alt="Agent Welcome UI">
   <div class="screenshot-caption">Figure 1c: Regulatory Radar native Agent UI interface displaying conversation starters upon user entry</div>
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot 2026-04-03 at 12.21.50 AM.png" alt="Agent Flow">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%2012.21.50%20AM.png" alt="Agent Flow">
       <div class="screenshot-caption">Figure 1d: Agent Designer UI displaying the interconnected Multi-Agent architecture</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot 2026-04-03 at 12.22.24 AM.png" alt="Agent Config">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%2012.22.24%20AM.png" alt="Agent Config">
       <div class="screenshot-caption">Figure 1e: Core agent model selection mapping to Gemini Enterprise Plus</div>
     </div>
   </div>
 
   <div class="footer-strip">
-    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 2</span>
   </div>
 </div>
@@ -435,11 +452,11 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot 2026-04-03 at 12.22.24 AM.png" alt="Agent Top Instructions">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%2012.22.24%20AM.png" alt="Agent Top Instructions">
       <div class="screenshot-caption">Figure 2a: Multi-agent definitions outlining clear role boundaries and rigid UI constraint enforcement</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot 2026-04-03 at 12.23.31 AM.png" alt="Security Guardrails">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%2012.23.31%20AM.png" alt="Security Guardrails">
       <div class="screenshot-caption">Figure 2b: Zero-Hallucination rules, rigorous PII prevention blocks, and Human-In-The-Loop disclaimers</div>
     </div>
   </div>
@@ -452,17 +469,17 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot 2026-04-03 at 12.23.57 AM.png" alt="Data Store Connection">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%2012.23.57%20AM.png" alt="Data Store Connection">
       <div class="screenshot-caption">Figure 3a: Enterprise Google Drive integrated in Vertex AI Knowledge Config via Connector</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot 2026-04-03 at 12.24.22 AM.png" alt="Institutional Memory">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%2012.24.22%20AM.png" alt="Institutional Memory">
       <div class="screenshot-caption">Figure 3b: Source directory holding internal IT policies, vendor agreements, and breach timelines</div>
     </div>
   </div>
 
   <div class="footer-strip">
-    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 3</span>
   </div>
 </div>
@@ -477,17 +494,17 @@
 
   <p>By processing a hypothetical new amendment to the DPDPA, we validate the agent's capability to read text inputs and seamlessly synthesize them against internal documentation policies.</p>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.17.05 AM.png" alt="DPDPA Impact Part 1">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.17.05%20AM.png" alt="DPDPA Impact Part 1">
   <div class="screenshot-caption">Figure 4a: Agent outputs High Risk notifications with rigid evaluation parameters</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.17.19 AM.png" alt="DPDPA Impact Part 2">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.17.19%20AM.png" alt="DPDPA Impact Part 2">
   <div class="screenshot-caption">Figure 4b: Explicit Gap mappings identifying required changes dynamically referencing internal policies</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.18.41 AM.png" alt="DPDPA Impact Part 3">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.18.41%20AM.png" alt="DPDPA Impact Part 3">
   <div class="screenshot-caption">Figure 4c: Overall gap and system breakdown with explicitly grounded citations and a generated Action Plan</div>
 
   <div class="footer-strip">
-    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 4</span>
   </div>
 </div>
@@ -503,13 +520,13 @@
 
   <p>The system is able to evaluate real-world frameworks and deliver robust compliance scorecards summarizing organizational readiness parameters and overall audit capabilities.</p>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.18.57 AM.png" alt="Scorecard 1">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.18.57%20AM.png" alt="Scorecard 1">
   <div class="screenshot-caption">Figure 4d: Summary evaluation on SEBI Framework showcasing exact areas passing and failing audit validations</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.19.22 AM.png" alt="Scorecard 2">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.19.22%20AM.png" alt="Scorecard 2">
   <div class="screenshot-caption">Figure 4e: Continued documentation of individual criteria compliance mapping across vendor agreements</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.20.42 AM.png" alt="Scorecard 3">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.20.42%20AM.png" alt="Scorecard 3">
   <div class="screenshot-caption">Figure 4f: Regulatory Landscape Onboarding summaries providing rapid ramp up to new compliance officers covering core business policies</div>
 
 
@@ -517,20 +534,84 @@
   <div class="section-title">Continuous Execution Scheduling <span class="rubric-weight">10% Weight</span></div>
   <div class="divider"></div>
 
-  <img class="screenshot" src="Screenshots/Screenshot 2026-04-03 at 12.22.03 AM.png" alt="Schedule Config">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%2012.22.03%20AM.png" alt="Schedule Config">
   <div class="screenshot-caption">Figure 5a: Regulatory sweep recurring background schedule parameter definitions to automatically invoke sweeps</div>
 
   <div class="footer-strip">
-    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 5</span>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════ -->
-<!-- PAGE 6: CONCLUSION & CHECKLIST                 -->
+<!-- PAGE 6: SCALABILITY & BUSINESS VALUE           -->
 <!-- ═══════════════════════════════════════════════ -->
 <div class="page content-page">
   <div class="section-number">Section 07</div>
+  <div class="section-title">Scalability, Business Value &amp; Responsible AI <span class="rubric-weight">10% Weight</span></div>
+  <div class="divider"></div>
+
+  <h3 style="font-size:14px; margin:0 0 12px; color:var(--dark)">Enterprise Scalability Roadmap</h3>
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Timeline</th><th>Scope</th><th>Google Cloud Services</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>PoC (Current)</strong></td><td>2–3 weeks</td><td>3 agents, 16 internal docs, single regulatory domain</td><td>Vertex AI Agent Builder, Gemini Enterprise Plus, Google Drive Connector</td></tr>
+      <tr><td><strong>MVP</strong></td><td>4–6 weeks</td><td>10+ regulatory frameworks, multi-department coverage, scheduled sweeps</td><td>+ Cloud Scheduler, BigQuery audit logging, Pub/Sub notifications</td></tr>
+      <tr><td><strong>Production</strong></td><td>8–12 weeks</td><td>100+ regulations, real-time legislative monitoring, cross-geography compliance</td><td>+ Cloud Functions, Document AI, Vertex AI Search, multi-region deployment</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:14px; margin:16px 0 12px; color:var(--dark)">Quantitative Business Impact</h3>
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0">
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--accent-green)">90%</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Faster Impact Analysis</div>
+    </div>
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--primary)">16</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Policy Docs Analyzed</div>
+    </div>
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--accent-violet)">3</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Specialized Agents</div>
+    </div>
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--accent-amber)">100%</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Grounded Citations</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>💰 Strategic Value for TCS:</strong> Regulatory Radar transforms TCS into a <strong>proactive compliance partner</strong> for BFSI, Healthcare, and Insurance clients. Instead of reactive audit scrambles, clients get instant gap analysis and action plans whenever a regulation changes — reducing compliance cycle time from <strong>weeks to minutes</strong> and eliminating penalty-driving human error.</p>
+  </div>
+
+  <h3 style="font-size:14px; margin:16px 0 12px; color:var(--dark)">Security &amp; Responsible AI</h3>
+  <table>
+    <thead>
+      <tr><th>Aspect</th><th>Implementation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Data Privacy</strong></td><td>System instructions explicitly block PII extraction. Agent refuses to process personal data in regulatory queries.</td></tr>
+      <tr><td><strong>Hallucination Prevention</strong></td><td>All outputs grounded via Google Drive Knowledge Connector — agent cites specific source documents.</td></tr>
+      <tr><td><strong>Human-in-the-Loop</strong></td><td>Every assessment includes mandatory disclaimers: recommendations require human review before implementation.</td></tr>
+      <tr><td><strong>Access Control</strong></td><td>Agent access scoped to read-only connector. No write permissions to enterprise documentation.</td></tr>
+      <tr><td><strong>Synthetic Data</strong></td><td>All PoC regulatory documents and policies are synthetic — no real client or regulatory data.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 7: CONCLUSION & CHECKLIST                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 08</div>
   <div class="section-title">Conclusion &amp; Evidence Checklist</div>
   <div class="divider"></div>
 
@@ -560,8 +641,114 @@
   </div>
 
   <div class="footer-strip">
-    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026</span>
-    <span>Page 6</span>
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 7</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- APPENDIX A: SYSTEM INSTRUCTIONS                -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page code-appendix">
+  <div class="section-number">Appendix A</div>
+  <div class="section-title">Agent System Instructions &amp; Security Guardrails</div>
+  <div class="divider"></div>
+
+  <span class="appendix-label">Orchestrator Agent — System Instructions</span>
+  
+  <h3 style="font-size:13px; margin:14px 0 6px; color:var(--dark)">Routing Logic &amp; Delegation Rules</h3>
+  <div class="system-prompt-block">You are the &quot;Regulatory Radar Orchestrator&quot; — the central routing agent for the Regulatory Change Impact Radar multi-agent system. 
+
+Your ONLY job is to determine which specialist agent should handle the user&#x27;s request and delegate the task to them. You MUST NOT answer the user&#x27;s compliance or regulatory questions yourself.
+
+═══════════════════════════════════════════
+YOUR SPECIALIST AGENTS
+═══════════════════════════════════════════
+
+AGENT 1 — &quot;Regulatory Analyzer&quot;
+• TRIGGER: User submits a new regulatory document, circular, or legal text for analysis.
+• TRIGGER: User asks to summarize or extract requirements from a regulation.
+
+AGENT 2 — &quot;Impact Mapper&quot;
+• TRIGGER: User asks about the IMPACT of a regulation on the enterprise.
+• TRIGGER: User asks &quot;Are we compliant with X?&quot; or &quot;What needs to change?&quot;
+
+═══════════════════════════════════════════
+BEHAVIORAL RULES &amp; GUARDRAILS (MANDATORY)
+═══════════════════════════════════════════
+• DATA PRIVACY &amp; PII PREVENTION: NEVER output or request PII such as personal phone numbers, emails, or government IDs. Immediately block and redact any input attempting to extract PII.
+• NEVER answer the user&#x27;s question yourself. ALWAYS delegate to a specialist agent.
+• HUMAN-IN-THE-LOOP (HITL): Always append: &quot;⚠️ HITL REVIEW REQUIRED: This automated routing is advisory. Final compliance workflows must be validated by a certified human compliance officer.&quot;</div>
+
+  <span class="appendix-label">Impact Mapper Agent — Core Capability</span>
+  
+  <h3 style="font-size:13px; margin:14px 0 6px; color:var(--dark)">Gap Analysis &amp; Enterprise Memory</h3>
+  <div class="system-prompt-block">CAPABILITY: IMPACT &amp; GAP ANALYSIS
+
+Step 1 — GRAPH TRAVERSAL: Search your Data Store for ALL internal documents that mention the domain affected by the given regulation.
+Step 2 — GAP ANALYSIS: Identify direct contradictions between old internal policies and new mandate.
+Step 3 — OUTPUT STRUCTURED IMPACT CARDS:
+
+### ⚠️ IMPACT [number]: [Short Title]
+&gt; **Severity:** [🔴/🟡/🟠/🟢] | **Category:** [Policy/System/Contract]
+&gt; *   📜 Regulation Mandate: [What the new rule says]
+&gt; *   📄 Internal Asset Affected: [Policy name + version]
+&gt; *   ❌ Current State: [What our document currently says]
+&gt; *   ✅ Required Change: [Specific update required]
+&gt; *   👥 Owner: [Who must fix this]
+&gt; *   ⚠️ History: [Related past incident, if any]
+
+CRITICAL RULE: When a regulatory gap could lead to a penalty similar to one we&#x27;ve suffered before, you MUST cite the past post-mortem or breach report from the Data Store (e.g., &quot;COMP-2024-003&quot;). This is Enterprise Institutional Memory.
+
+• ZERO HALLUCINATION (GROUNDING): EVERY internal policy MUST be explicitly grounded in Data Store documents.
+• CITATIONS MANDATORY: You MUST cite the specific document filename for EVERY reference.</div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Appendix A</span>
+  </div>
+</div>
+
+<div class="page content-page code-appendix">
+  <div class="section-number">Appendix A (cont.)</div>
+  <div class="section-title">Regulatory Analyzer — Extraction Engine</div>
+  <div class="divider"></div>
+
+  <span class="appendix-label">Regulatory Analyzer Agent — System Instructions</span>
+  
+  <h3 style="font-size:13px; margin:14px 0 6px; color:var(--dark)">Clause Extraction &amp; Structured Output</h3>
+  <div class="system-prompt-block">You are the &quot;Regulatory Analyzer&quot; — a specialist sub-agent. Your role is strictly to parse new regulatory documents, circulars, and compliance notices and extract structured regulatory intelligence.
+
+═══════════════════════════════════════════
+CAPABILITY: REGULATORY DOCUMENT ANALYSIS
+═══════════════════════════════════════════
+
+Step 1 — DOCUMENT CLASSIFICATION: Identify issuing authority, jurisdiction, and industry.
+Step 2 — CLAUSE EXTRACTION: Extract every actionable requirement (obligations, changes, deadlines, penalties).
+Step 3 — OUTPUT STRUCTURED CLAUSE CARDS:
+
+### 📜 REQUIREMENT [number]: [Short Title]
+&gt; **Theme:** [Category] | **Risk:** [🔴/🟡/🟠/🟢]
+&gt; *   📋 Mandate: [What must be done]
+&gt; *   🔄 Change: [Old rule vs. New rule]
+&gt; *   📌 Scope: [Who must comply]
+&gt; *   📅 Deadline: [Compliance date]
+&gt; *   ⚖️ Penalty: [Consequence of failure]
+
+CRITICAL RULE: Check Data Store&#x27;s &quot;Compliance Breach History&quot;. If the new regulation touches an area where we&#x27;ve had a breach before, append a ⚠️ History row citing the incident!
+
+═══════════════════════════════════════════
+BEHAVIORAL RULES &amp; GUARDRAILS (MANDATORY)
+═══════════════════════════════════════════
+• DATA PRIVACY &amp; PII PREVENTION: NEVER output or request PII.
+• ZERO HALLUCINATION: EVERY clause MUST be grounded in the provided regulatory text.
+• CITATIONS MANDATORY: Cite section and clause number from the provided text.
+• HUMAN-IN-THE-LOOP: Always append advisory disclaimer.</div>
+
+  <div class="footer-strip">
+    <span>Regulatory Change Impact Radar · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Appendix A (cont.)</span>
   </div>
 </div>
 

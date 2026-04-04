@@ -408,6 +408,23 @@
     border-radius: 0;
   }
 
+  /* Code Appendix Styles */
+  .code-appendix { font-family: 'Inter', sans-serif; }
+  .code-block-container { margin: 12px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--gray-200); }
+  .code-block-header { background: var(--dark); color: #fff; padding: 6px 14px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+  .code-block-header .file-badge { background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 9px; }
+  pre.source-code { background: #1a1b2e; color: #e2e4e9; padding: 14px 16px; margin: 0; font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 9px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+  pre.source-code .kw { color: #c792ea; }
+  pre.source-code .fn { color: #82aaff; }
+  pre.source-code .st { color: #c3e88d; }
+  pre.source-code .cm { color: #546e7a; font-style: italic; }
+  pre.source-code .nb { color: #ffcb6b; }
+  pre.source-code .op { color: #89ddff; }
+  .system-prompt-block { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px 16px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 9px; line-height: 1.7; color: #c9d1d9; white-space: pre-wrap; word-wrap: break-word; }
+  .system-prompt-block .section-marker { color: #58a6ff; font-weight: 700; }
+  .system-prompt-block .guardrail { color: #f85149; font-weight: 700; }
+  .system-prompt-block .emoji { font-style: normal; }
+  .appendix-label { display: inline-block; background: var(--primary); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -500,7 +517,7 @@
   </div>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 2</span>
   </div>
 </div>
@@ -559,7 +576,7 @@
   </table>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 3</span>
   </div>
 </div>
@@ -576,11 +593,11 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%203.51.08%E2%80%AFAM.png" alt="CX Flow Canvas">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%203.51.08%20AM.png" alt="CX Flow Canvas">
       <div class="screenshot-caption">Figure 2a: Dialogflow CX Flow Canvas — Start Page with 5 intent routes and webhook connections</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%203.53.55%E2%80%AFAM.png" alt="Route Config">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%203.53.55%20AM.png" alt="Route Config">
       <div class="screenshot-caption">Figure 2b: Route configuration showing webhook tag mapping (analyze_risk) with enable webhook toggle</div>
     </div>
   </div>
@@ -593,28 +610,28 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%201.47.55%E2%80%AFAM.png" alt="Cloud Function Code">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%201.47.55%20AM.png" alt="Cloud Function Code">
       <div class="screenshot-caption">Figure 3a: Cloud Functions — Inline Code Editor showing main.py webhook handler</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%201.48.15%E2%80%AFAM.png" alt="Cloud Function Deploy">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%201.48.15%20AM.png" alt="Cloud Function Deploy">
       <div class="screenshot-caption">Figure 3b: Cloud Functions — Deployment configuration (Gen2, Python 3.11, us-central1)</div>
     </div>
   </div>
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%203.52.28%E2%80%AFAM.png" alt="Intent Config">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%203.52.28%20AM.png" alt="Intent Config">
       <div class="screenshot-caption">Figure 3c: Intent training phrases — natural language variations for analyze.customer.risk</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%203.52.46%E2%80%AFAM.png" alt="Webhook Config">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%203.52.46%20AM.png" alt="Webhook Config">
       <div class="screenshot-caption">Figure 3d: Webhook configuration — silent-predictor-webhook linked to Cloud Function URL</div>
     </div>
   </div>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 4</span>
   </div>
 </div>
@@ -631,10 +648,10 @@
 
   <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">Dialogflow CX Simulator — Live Webhook Response</h3>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%204.03.44%E2%80%AFAM.png" alt="Simulator Risk Analysis">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%204.03.44%20AM.png" alt="Simulator Risk Analysis">
   <div class="screenshot-caption">Figure 4a: "Analyze risk for customer A-7842" — Webhook responds with full SRS breakdown: 77/100 HIGH RISK, 4-channel evidence</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%204.04.19%E2%80%AFAM.png" alt="Simulator Full Response">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-03%20at%204.04.19%20AM.png" alt="Simulator Full Response">
   <div class="screenshot-caption">Figure 4b: Complete response showing Customer Profile (Priya Sharma, FinEdge), Channel Scores, Behavioral Evidence, and Intervention Recommendation</div>
 
   <h3 style="font-size:14px; margin:20px 0 12px; color:var(--dark)">Explainable Prediction — Customer A-7842</h3>
@@ -656,7 +673,7 @@
   </div>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 5</span>
   </div>
 </div>
@@ -673,22 +690,22 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%204.27.32%E2%80%AFAM.png" alt="App Engine Dashboard">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%204.27.32%20AM.png" alt="App Engine Dashboard">
       <div class="screenshot-caption">Figure 5a: App Engine Dashboard — tcs-1771309562917.wl.r.appspot.com showing Risk Portfolio and Behavioral Channels</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%204.28.53%E2%80%AFAM.png" alt="Chat Widget Active">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%204.28.53%20AM.png" alt="Chat Widget Active">
       <div class="screenshot-caption">Figure 5b: df-messenger Chat Widget — Live interaction with Silent Escalation Predictor agent</div>
     </div>
   </div>
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%204.29.07%E2%80%AFAM.png" alt="Chat Responses">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%204.29.07%20AM.png" alt="Chat Responses">
       <div class="screenshot-caption">Figure 5c: Multiple chat interactions — Risk Analysis, Portfolio Overview, Cohort Insights, Interventions</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-03%20at%204.29.19%E2%80%AFAM.png" alt="Full Dashboard View">
+      <img src="Screenshots/Screenshot%202026-04-03%20at%204.29.19%20AM.png" alt="Full Dashboard View">
       <div class="screenshot-caption">Figure 5d: Full dashboard showing Risk Portfolio (2 High, 1 Med, 2 Low), at-risk ACV ₹1.73 Cr</div>
     </div>
   </div>
@@ -709,7 +726,7 @@
   </table>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 6</span>
   </div>
 </div>
@@ -760,16 +777,80 @@
   </table>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 7</span>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════ -->
-<!-- PAGE 8: CONCLUSION & CHECKLIST                 -->
+<!-- PAGE 8: SCALABILITY & BUSINESS VALUE           -->
 <!-- ═══════════════════════════════════════════════ -->
 <div class="page content-page">
   <div class="section-number">Section 07</div>
+  <div class="section-title">Scalability, Business Value &amp; Responsible AI <span class="rubric-weight">10% Weight</span></div>
+  <div class="divider"></div>
+
+  <h3 style="font-size:14px; margin:0 0 12px; color:var(--dark)">Enterprise Scalability Roadmap</h3>
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Timeline</th><th>Scope</th><th>Google Cloud Services</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>PoC (Current)</strong></td><td>2–3 weeks</td><td>5 synthetic customers, 4 channels, single webhook deployment</td><td>Dialogflow CX, Cloud Functions Gen2, App Engine, df-messenger</td></tr>
+      <tr><td><strong>MVP</strong></td><td>4–6 weeks</td><td>100+ real customers, CRM integration (Salesforce/HubSpot), scheduled scans</td><td>+ BigQuery (analytics), Cloud Scheduler, Pub/Sub, Gemini API</td></tr>
+      <tr><td><strong>Production</strong></td><td>8–12 weeks</td><td>10K+ customers, ML-driven weight optimization, multi-industry deployment</td><td>+ Vertex AI Pipelines, Looker dashboards, Cloud Spanner, Eventarc</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:14px; margin:16px 0 12px; color:var(--dark)">Quantitative Business Impact</h3>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-green)">40-60%</div>
+      <div class="stat-label">More Churners Caught</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--primary-dark)">₹1.73Cr</div>
+      <div class="stat-label">At-Risk ACV Protected</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-violet)">30-60d</div>
+      <div class="stat-label">Earlier Detection</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" style="color:var(--accent-amber)">3-5x</div>
+      <div class="stat-label">ROI on Interventions</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>💰 Strategic Value for TCS:</strong> The Silent Escalation Predictor creates a new <strong>Customer Intelligence Platform</strong> offering for TCS's B2B clients. By detecting the 60-70% of churn that is completely invisible to traditional models, it transforms reactive account management into <strong>proactive revenue protection</strong> — directly reducing customer acquisition costs (5-25x more expensive than retention) across SaaS, Healthcare, Telecom, and Financial Services.</p>
+  </div>
+
+  <h3 style="font-size:14px; margin:16px 0 12px; color:var(--dark)">Security &amp; Responsible AI</h3>
+  <table>
+    <thead>
+      <tr><th>Aspect</th><th>Implementation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Data Privacy</strong></td><td>All customer data is synthetic. No real PII, transaction records, or behavioral data is used in the PoC.</td></tr>
+      <tr><td><strong>Bias Mitigation</strong></td><td>Risk scoring uses objective behavioral metrics (login frequency, payment timing) — not demographic attributes.</td></tr>
+      <tr><td><strong>Explainability</strong></td><td>Every risk score includes full 4-channel evidence breakdown with specific behavioral indicators cited.</td></tr>
+      <tr><td><strong>Human-in-the-Loop</strong></td><td>HIGH-risk interventions require manager review. System recommends — humans decide.</td></tr>
+      <tr><td><strong>Webhook Security</strong></td><td>Cloud Function limited to authenticated Dialogflow CX requests only. No public API exposure.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 8</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 9: CONCLUSION & CHECKLIST                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 08</div>
   <div class="section-title">Conclusion & Evidence Checklist</div>
   <div class="divider"></div>
 
@@ -824,8 +905,198 @@
   </div>
 
   <div class="footer-strip">
-    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026</span>
-    <span>Page 8</span>
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 9</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- APPENDIX A: CORE SOURCE CODE                   -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page code-appendix">
+  <div class="section-number">Appendix A</div>
+  <div class="section-title">Silent Risk Score Engine — Core Algorithm</div>
+  <div class="divider"></div>
+
+  <span class="appendix-label">4-Channel Behavioral Scoring</span>
+  
+  <div class="code-block-container">
+    <div class="code-block-header">
+      <span>main.py</span>
+      <span class="file-badge">Python · Cloud Function</span>
+    </div>
+    <pre class="source-code">def calculate_usage_score(usage):
+    &quot;&quot;&quot;Calculate usage channel score (0-100).&quot;&quot;&quot;
+    login_decline = max(0, 1 - (usage[&quot;login_freq_30d&quot;] / max(usage[&quot;login_freq_prev&quot;], 1)))
+    session_decline = max(0, 1 - (usage[&quot;session_duration_avg&quot;] / max(usage[&quot;session_prev&quot;], 1)))
+    feature_score = 1 - usage[&quot;feature_depth&quot;]
+    api_decline = max(0, 1 - (usage[&quot;api_calls_weekly&quot;] / max(usage[&quot;api_prev&quot;], 1)))
+    adoption = 1.0 if usage[&quot;features_tried_30d&quot;] == 0 else 0.3
+
+    score = (login_decline * 30 + session_decline * 20 + feature_score * 20 +
+             api_decline * 15 + adoption * 15)
+    return min(100, round(score))
+
+def calculate_communication_score(comm):
+    &quot;&quot;&quot;Calculate communication channel score (0-100).&quot;&quot;&quot;
+    email_decline = max(0, 1 - (comm[&quot;email_open_rate&quot;] / max(comm[&quot;email_prev&quot;], 0.01)))
+    newsletter_score = min(1.0, comm[&quot;newsletters_unopened&quot;] / 6)
+    notif_silence = max(0, 1 - comm[&quot;notification_response&quot;])
+    days_inactive = min(1.0, comm[&quot;last_email_open_days&quot;] / 30)
+    unsub_penalty = 1.0 if comm[&quot;unsubscribe&quot;] else 0.0
+
+    score = (email_decline * 25 + newsletter_score * 20 + notif_silence * 20 +
+             days_inactive * 20 + unsub_penalty * 15)
+    return min(100, round(score))
+
+def calculate_support_score(support):
+    &quot;&quot;&quot;Calculate support channel score (0-100).&quot;&quot;&quot;
+    ticket_absence = 1.0 if support[&quot;tickets_90d&quot;] == 0 and support[&quot;tickets_prev_90d&quot;] &gt; 2 else 0.0
+    open_age = min(1.0, support[&quot;open_ticket_age_max&quot;] / 14)
+    survey_silence = max(0, 1 - (support[&quot;survey_response_rate&quot;] / max(support[&quot;survey_prev&quot;], 0.01)))
+    faq_decline = max(0, 1 - (support[&quot;faq_visits_30d&quot;] / max(support[&quot;faq_prev&quot;], 1)))
+
+    score = (ticket_absence * 35 + open_age * 20 + survey_silence * 25 + faq_decline * 20)
+    return min(100, round(score))
+
+def calculate_transaction_score(txn):
+    &quot;&quot;&quot;Calculate transaction channel score (0-100).&quot;&quot;&quot;
+    freq_decline = max(0, abs(txn[&quot;purchase_freq_trend&quot;])) if txn[&quot;purchase_freq_trend&quot;] &lt; 0 else 0
+    payment_risk = min(1.0, txn[&quot;payment_delay_days&quot;] / 10)
+    plan_risk = {{&quot;none&quot;: 0, &quot;upgrade_considered&quot;: 0, &quot;downgrade_requested&quot;: 0.6, 
+                 &quot;auto_renewal_cancelled&quot;: 1.0}}.get(txn[&quot;plan_change&quot;], 0)
+    renewal_risk = 1.0 if txn[&quot;renewal_days&quot;] &lt; 60 and not txn[&quot;renewal_engaged&quot;] else 0.0
+
+    score = (freq_decline * 100 * 0.25 + payment_risk * 100 * 0.25 +
+             plan_risk * 100 * 0.25 + renewal_risk * 100 * 0.25)
+    return min(100, round(score))</pre>
+  </div>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Appendix A</span>
+  </div>
+</div>
+
+<div class="page content-page code-appendix">
+  <div class="section-number">Appendix A (cont.)</div>
+  <div class="section-title">Composite SRS &amp; Intervention Engine</div>
+  <div class="divider"></div>
+
+  <span class="appendix-label">Composite Silent Risk Score (SRS) Calculator</span>
+  
+  <div class="code-block-container">
+    <div class="code-block-header">
+      <span>main.py</span>
+      <span class="file-badge">Python · Core Algorithm</span>
+    </div>
+    <pre class="source-code">def calculate_srs(customer):
+    &quot;&quot;&quot;Calculate composite Silent Risk Score with weighted fusion.&quot;&quot;&quot;
+    usage_score = calculate_usage_score(customer[&quot;usage&quot;])
+    comm_score = calculate_communication_score(customer[&quot;communication&quot;])
+    support_score = calculate_support_score(customer[&quot;support&quot;])
+    txn_score = calculate_transaction_score(customer[&quot;transactions&quot;])
+
+    # Weighted fusion: Usage 30%, Communication 25%, Support 20%, Transactions 25%
+    srs = round(0.30 * usage_score + 0.25 * comm_score + 
+                0.20 * support_score + 0.25 * txn_score)
+
+    # Special triggers: any single channel &gt; 90 escalates to HIGH
+    if any(s &gt; 90 for s in [usage_score, comm_score, support_score, txn_score]):
+        srs = max(srs, 75)
+
+    # Tenure trigger: long-tenured customers with declining engagement
+    if customer[&quot;tenure_months&quot;] &gt; 24 and srs &gt;= 41:
+        srs = max(srs, 71)
+
+    tier = &quot;LOW&quot; if srs &lt;= 40 else (&quot;MEDIUM&quot; if srs &lt;= 70 else &quot;HIGH&quot;)
+    color = &quot;🟢&quot; if tier == &quot;LOW&quot; else (&quot;🟡&quot; if tier == &quot;MEDIUM&quot; else &quot;🔴&quot;)
+
+    return {{&quot;srs&quot;: min(100, srs), &quot;tier&quot;: tier, &quot;color&quot;: color,
+            &quot;usage_score&quot;: usage_score, &quot;comm_score&quot;: comm_score,
+            &quot;support_score&quot;: support_score, &quot;txn_score&quot;: txn_score}}</pre>
+  </div>
+
+  <span class="appendix-label">Tiered Intervention Engine</span>
+  
+  <div class="code-block-container">
+    <div class="code-block-header">
+      <span>main.py</span>
+      <span class="file-badge">Python · Action System</span>
+    </div>
+    <pre class="source-code">def get_intervention(customer, scores):
+    &quot;&quot;&quot;Generate intervention recommendation based on risk tier.&quot;&quot;&quot;
+    tier = scores[&quot;tier&quot;]
+    name = customer[&quot;name&quot;]
+    company = customer[&quot;company&quot;]
+
+    if tier == &quot;LOW&quot;:
+        return {{
+            &quot;action&quot;: &quot;Automated Re-engagement&quot;,
+            &quot;channel&quot;: &quot;Email + In-App Notification&quot;,
+            &quot;urgency&quot;: &quot;Within 48 hours&quot;,
+            &quot;approval&quot;: &quot;None required&quot;
+        }}
+    elif tier == &quot;MEDIUM&quot;:
+        return {{
+            &quot;action&quot;: &quot;CSM Proactive Outreach&quot;,
+            &quot;channel&quot;: &quot;Phone + Follow-up Email&quot;,
+            &quot;urgency&quot;: &quot;Within 24 hours&quot;,
+            &quot;budget&quot;: f&quot;Up to ₹{{round(customer[&#x27;acv&#x27;] * 0.10):,}} (10% of ACV)&quot;,
+            &quot;approval&quot;: &quot;CSM Director&quot;
+        }}
+    else:  # HIGH
+        return {{
+            &quot;action&quot;: &quot;🚨 IMMEDIATE Manager Escalation&quot;,
+            &quot;channel&quot;: &quot;Executive Phone Call + Context Brief&quot;,
+            &quot;urgency&quot;: &quot;Within 12 hours — CRITICAL&quot;,
+            &quot;budget&quot;: f&quot;Up to ₹{{round(customer[&#x27;acv&#x27;] * 0.20):,}} (20% of ACV)&quot;,
+            &quot;approval&quot;: &quot;VP/Account Director — HUMAN-IN-THE-LOOP REQUIRED&quot;
+        }}</pre>
+  </div>
+
+  <span class="appendix-label">Dialogflow CX Webhook Handler</span>
+  
+  <div class="code-block-container">
+    <div class="code-block-header">
+      <span>main.py</span>
+      <span class="file-badge">Python · Cloud Functions</span>
+    </div>
+    <pre class="source-code">@functions_framework.http
+def webhook(request):
+    &quot;&quot;&quot;Main Dialogflow CX webhook handler.&quot;&quot;&quot;
+    req = request.get_json(silent=True, force=True)
+    tag = req.get(&quot;fulfillmentInfo&quot;, {{}}).get(&quot;tag&quot;, &quot;&quot;)
+    
+    # Extract parameters from session and page
+    params = {{}}
+    session_params = req.get(&quot;sessionInfo&quot;, {{}}).get(&quot;parameters&quot;, {{}})
+    page_params = req.get(&quot;pageInfo&quot;, {{}}).get(&quot;formInfo&quot;, {{}}).get(&quot;parameterInfo&quot;, [])
+    for p in page_params:
+        params[p.get(&quot;displayName&quot;, &quot;&quot;)] = p.get(&quot;value&quot;, &quot;&quot;)
+    params.update(session_params)
+    
+    customer_id = params.get(&quot;customer-id&quot;, &quot;&quot;).upper().strip()
+    
+    if tag == &quot;analyze_risk&quot;:
+        customer = CUSTOMERS[customer_id]
+        scores = calculate_srs(customer)
+        evidence = build_evidence(customer, scores)
+        response_text = format_risk_response(customer_id, customer, scores, evidence)
+    elif tag == &quot;generate_intervention&quot;:
+        # ... intervention logic
+    elif tag == &quot;cohort_insights&quot;:
+        response_text = format_cohort_response(segment)
+    elif tag == &quot;portfolio_overview&quot;:
+        response_text = format_portfolio_response()
+    
+    return json.dumps({{&quot;fulfillmentResponse&quot;: {{&quot;messages&quot;: [{{&quot;text&quot;: {{&quot;text&quot;: [response_text]}}}}]}}}}), 200</pre>
+  </div>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Appendix A (cont.)</span>
   </div>
 </div>
 

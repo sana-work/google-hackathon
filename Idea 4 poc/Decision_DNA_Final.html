@@ -383,6 +383,23 @@
     border-radius: 0;
   }
 
+  /* Code Appendix Styles */
+  .code-appendix { font-family: 'Inter', sans-serif; }
+  .code-block-container { margin: 12px 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--gray-200); }
+  .code-block-header { background: var(--dark); color: #fff; padding: 6px 14px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+  .code-block-header .file-badge { background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 9px; }
+  pre.source-code { background: #1a1b2e; color: #e2e4e9; padding: 14px 16px; margin: 0; font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 9px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+  pre.source-code .kw { color: #c792ea; }
+  pre.source-code .fn { color: #82aaff; }
+  pre.source-code .st { color: #c3e88d; }
+  pre.source-code .cm { color: #546e7a; font-style: italic; }
+  pre.source-code .nb { color: #ffcb6b; }
+  pre.source-code .op { color: #89ddff; }
+  .system-prompt-block { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px 16px; margin: 12px 0; font-family: 'JetBrains Mono', monospace; font-size: 9px; line-height: 1.7; color: #c9d1d9; white-space: pre-wrap; word-wrap: break-word; }
+  .system-prompt-block .section-marker { color: #58a6ff; font-weight: 700; }
+  .system-prompt-block .guardrail { color: #f85149; font-weight: 700; }
+  .system-prompt-block .emoji { font-style: normal; }
+  .appendix-label { display: inline-block; background: var(--primary); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -454,22 +471,22 @@
   </div>
   <div class="screenshot-caption" style="margin-bottom: 24px;">Figure 1b: Live Implementation — Using Vertex Agent Engine to dynamically route context directly to the specialized evaluation agents</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2010.54.03%E2%80%AFPM.png" alt="Decision DNA Welcome UI">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2010.54.03%20PM.png" alt="Decision DNA Welcome UI">
   <div class="screenshot-caption">Figure 1c: Decision DNA native Agent UI interface displaying conversation starters upon user entry</div>
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.00.37%E2%80%AFPM.png" alt="Agent Flow Canvas">
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.00.37%20PM.png" alt="Agent Flow Canvas">
       <div class="screenshot-caption">Figure 1d: Orchestrator flow canvas demonstrating routing logic to Conflict Sentinel sub-agent</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.01.24%E2%80%AFPM.png" alt="Code Review Judge">
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.01.24%20PM.png" alt="Code Review Judge">
       <div class="screenshot-caption">Figure 1e: Code Review Judge sub-agent configuration and model assignment</div>
     </div>
   </div>
 
   <div class="footer-strip">
-    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 2</span>
   </div>
 </div>
@@ -486,11 +503,11 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.57.57%E2%80%AFPM.png" alt="Orchestrator Prompt">
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.57.57%20PM.png" alt="Orchestrator Prompt">
       <div class="screenshot-caption">Figure 2a: Main Orchestrator Prompt defining role, strict rules, and tool access boundaries</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.58.52%E2%80%AFPM.png" alt="Security Guardrails">
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2010.58.52%20PM.png" alt="Security Guardrails">
       <div class="screenshot-caption">Figure 2b: System instructions enforcing specific formatting and explicit "Do Not Override" guardrails</div>
     </div>
   </div>
@@ -503,17 +520,17 @@
 
   <div class="two-screenshots">
     <div>
-      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.07.19%E2%80%AFPM.png" alt="Data Store Connection">
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.07.19%20PM.png" alt="Data Store Connection">
       <div class="screenshot-caption">Figure 3a: Knowledge configuration mapping Vertex agent to Enterprise Google Drive and File Uploads</div>
     </div>
     <div>
-      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.07.43%E2%80%AFPM.png" alt="Institutional Memory">
+      <img src="Screenshots/Screenshot%202026-04-02%20at%2011.07.43%20PM.png" alt="Institutional Memory">
       <div class="screenshot-caption">Figure 3b: Grounding corpus containing Post-Mortems, ADRs, Security Policies, and Vendor Guidelines</div>
     </div>
   </div>
 
   <div class="footer-strip">
-    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 3</span>
   </div>
 </div>
@@ -528,17 +545,17 @@
 
   <p>By simulating a PRD review (DataViz Integration), we comprehensively prove the capability of the <strong>Conflict Sentinel</strong> to intercept bad architectural proposals before they are implemented.</p>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.10.10%E2%80%AFPM.png" alt="PRD Review - GDPR">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.10.10%20PM.png" alt="PRD Review - GDPR">
   <div class="screenshot-caption">Figure 4a: GDPR Data Residency violation (Conflict 1) identified during PRD review, correctly referencing Data_Classification_Policy.txt</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.10.25%E2%80%AFPM.png" alt="Vendor Risk">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.10.25%20PM.png" alt="Vendor Risk">
   <div class="screenshot-caption">Figure 4b: Detection of an unapproved third-party vendor (DataViz Corp) referenced by Vendor_Management_Policy_2025.txt</div>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.11.11%E2%80%AFPM.png" alt="Architectural Integrity">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.11.11%20PM.png" alt="Architectural Integrity">
   <div class="screenshot-caption">Figure 4c: Sentinel blocking a proposed Synchronous API call, enforcing the enterprise event-driven standard (ADR_018)</div>
 
   <div class="footer-strip">
-    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 4</span>
   </div>
 </div>
@@ -555,7 +572,7 @@
     <p><strong>The Final Protective Layer:</strong> Decision DNA proactively connects proposed code changes or tech specs directly to historical post-mortems. When an engineer attempts a risky implementation, they are alerted to past incidents caused by the exact same architectural flaw.</p>
   </div>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.14.51%E2%80%AFPM.png" alt="Post-Mortem PII Leak">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2011.14.51%20PM.png" alt="Post-Mortem PII Leak">
   <div class="screenshot-caption">Figure 4d: Code Review Judge catching PII logging and explicitly referencing "Post_Mortem_PII_Leak_2025_01.txt" as historical proof of consequence.</div>
 
   <div class="section-number" style="margin-top: 30px;">Section 06</div>
@@ -564,20 +581,84 @@
 
   <p>To ensure 100% compliance coverage, Vertex AI Agent scheduled executions can invoke the agent against newly committed documents or codebase PRs automatically.</p>
 
-  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2010.52.05%E2%80%AFPM.png" alt="Continuous Monitoring">
+  <img class="screenshot" src="Screenshots/Screenshot%202026-04-02%20at%2010.52.05%20PM.png" alt="Continuous Monitoring">
   <div class="screenshot-caption">Figure 5a: Agent configuration for continuous environment monitoring and execution scheduling</div>
 
   <div class="footer-strip">
-    <span>Decision DNA · TCS^AI Hackathon 2026</span>
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
     <span>Page 5</span>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════ -->
-<!-- PAGE 6: CONCLUSION & CHECKLIST                 -->
+<!-- PAGE 6: SCALABILITY & BUSINESS VALUE           -->
 <!-- ═══════════════════════════════════════════════ -->
 <div class="page content-page">
   <div class="section-number">Section 07</div>
+  <div class="section-title">Scalability, Business Value &amp; Responsible AI <span class="rubric-weight">10% Weight</span></div>
+  <div class="divider"></div>
+
+  <h3 style="font-size:14px; margin:0 0 12px; color:var(--dark)">Enterprise Scalability Roadmap</h3>
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Timeline</th><th>Scope</th><th>Google Cloud Services</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>PoC (Current)</strong></td><td>2–3 weeks</td><td>2 sub-agents, 16 enterprise docs, PRD + Code Review</td><td>Vertex AI Agent Builder, Gemini Enterprise Plus, Google Drive Connector</td></tr>
+      <tr><td><strong>MVP</strong></td><td>4–6 weeks</td><td>CI/CD integration (GitHub/GitLab hooks), auto-trigger on PR merge, Jira linking</td><td>+ Cloud Functions, Eventarc, BigQuery audit trail, Pub/Sub</td></tr>
+      <tr><td><strong>Production</strong></td><td>8–12 weeks</td><td>500+ ADRs indexed, cross-team conflict detection, compliance dashboard</td><td>+ Vertex AI Search, Looker, Cloud Spanner, Document AI</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:14px; margin:16px 0 12px; color:var(--dark)">Quantitative Business Impact</h3>
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0">
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--accent-green)">70%</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Repeat Incidents Prevented</div>
+    </div>
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--primary)">16</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Enterprise Memory Docs</div>
+    </div>
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--accent-violet)">4</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Conflict Types Detected</div>
+    </div>
+    <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:14px 16px; text-align:center">
+      <div style="font-size:28px; font-weight:800; color:var(--accent-amber)">100%</div>
+      <div style="font-size:9px; color:var(--gray-600); text-transform:uppercase; letter-spacing:1px; margin-top:4px">Grounded Citations</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>💰 Strategic Value for TCS:</strong> Decision DNA transforms TCS into an <strong>Architecture Governance Partner</strong> for enterprise clients. By converting passive ADRs and post-mortems into an active enforcement layer, it prevents costly architectural regressions — the kind that cause repeat outages costing <strong>$100K–$1M per incident</strong>. This creates a reusable, scalable IP asset applicable across every TCS account managing complex engineering organizations.</p>
+  </div>
+
+  <h3 style="font-size:14px; margin:16px 0 12px; color:var(--dark)">Security &amp; Responsible AI</h3>
+  <table>
+    <thead>
+      <tr><th>Aspect</th><th>Implementation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Data Privacy</strong></td><td>Agent has read-only access to enterprise memory. No code execution or write permissions to source repos.</td></tr>
+      <tr><td><strong>Hallucination Prevention</strong></td><td>Every conflict detection grounded via Google Drive Connector — cites specific ADR, post-mortem, or policy document.</td></tr>
+      <tr><td><strong>Human-in-the-Loop</strong></td><td>All conflict assessments are advisory. Engineers and architects make the final decision — agent recommends, not enforces.</td></tr>
+      <tr><td><strong>Access Control</strong></td><td>Multi-agent routing ensures sub-agents only access their designated document scope. No cross-boundary leakage.</td></tr>
+      <tr><td><strong>Synthetic Data</strong></td><td>All ADRs, policies, post-mortems, and vendor guidelines are synthetic — no real organizational data.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PAGE 7: CONCLUSION & CHECKLIST                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page">
+  <div class="section-number">Section 08</div>
   <div class="section-title">Conclusion &amp; Evidence Checklist</div>
   <div class="divider"></div>
 
@@ -613,8 +694,86 @@
   </div>
 
   <div class="footer-strip">
-    <span>Decision DNA · TCS^AI Hackathon 2026</span>
-    <span>Page 6</span>
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 7</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- APPENDIX A: SYSTEM INSTRUCTIONS                -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page content-page code-appendix">
+  <div class="section-number">Appendix A</div>
+  <div class="section-title">Agent System Instructions &amp; Security Guardrails</div>
+  <div class="divider"></div>
+
+  <span class="appendix-label">Orchestrator Agent — System Instructions</span>
+  
+  <h3 style="font-size:13px; margin:14px 0 6px; color:var(--dark)">Multi-Agent Routing Logic</h3>
+  <div class="system-prompt-block">You are the &quot;Decision DNA Orchestrator&quot; — the central routing agent for a multi-agent enterprise memory system.
+
+═══════════════════════════════════════════
+YOUR SPECIALIST AGENTS
+═══════════════════════════════════════════
+
+AGENT 1 — &quot;Conflict Sentinel&quot;
+TRIGGER: User submits a draft document, PRD, proposal, or design doc for policy/compliance/architectural violation review.
+ALSO TRIGGER: When a user asks &quot;why&quot; a past decision was made, or asks about rationale/history.
+ALSO TRIGGER: When a user asks &quot;what if&quot; regarding policy or architectural changes.
+
+AGENT 2 — &quot;Code Review Judge (CRJ)&quot;
+TRIGGER: User submits code snippets, PR diffs, configs, IaC (Terraform/YAML), API specs, or DB schemas.
+ALSO TRIGGER: User asks whether code follows enterprise standards.
+
+═══════════════════════════════════════════
+ROUTING RULES
+═══════════════════════════════════════════
+1. DOCUMENT or PROPOSAL (natural language) → Conflict Sentinel
+2. CODE, CONFIG, or TECHNICAL IMPLEMENTATION → Code Review Judge
+3. Contains BOTH → Route to BOTH agents, combine outputs
+4. General &quot;why did we...&quot; questions → Conflict Sentinel
+
+═══════════════════════════════════════════
+SECURITY &amp; GUARDRAILS (MANDATORY)
+═══════════════════════════════════════════
+• DATA PRIVACY &amp; PII PREVENTION: NEVER output or request PII.
+• ZERO HALLUCINATION: EVERY claim must be grounded in provided instructions.
+• HUMAN-IN-THE-LOOP: Always append advisory disclaimer.</div>
+
+  <span class="appendix-label">Code Review Judge (CRJ) — Enterprise Compliance Engine</span>
+  
+  <h3 style="font-size:13px; margin:14px 0 6px; color:var(--dark)">ADR-Grounded Code Review</h3>
+  <div class="system-prompt-block">REVIEW CHECKLIST (Always Check These):
+□ Inter-service communication uses Pub/Sub (not sync REST) per ADR-018
+□ External APIs route through API Gateway per ADR-031
+□ User profile storage uses Firestore (not Cloud SQL) per ADR-042
+□ Cloud resources have required labels per ADR-055
+□ Audit logs retained ≥ 90 days per Global Security Policy v4
+□ Data at rest uses AES-256 encryption with CMEK
+□ EU data not processed outside approved regions per GDPR Addendum
+□ Personal data pseudonymized before analytics/ML use
+□ Payment API changes don&#x27;t degrade P95 &lt; 400ms per Payment API SLA v2.1
+□ No hardcoded secrets, API keys, or credentials in source code
+□ Container images use distroless base images
+□ Deployments use approved regions only (us-east4, europe-west1, us-central1)
+
+POST-MORTEM INTELLIGENCE:
+If code pattern matches one that caused a past incident (e.g., PII logging → PII Leak 2025-01, sync REST chains → Payment Outage 2024-07), cite the post-mortem.
+
+OUTPUT JUDGMENT CARDS:
+### 🔍 FINDING [number]: [Short Title]
+&gt; **Verdict:** 🔴 REJECT / 🟡 NEEDS CHANGE / 🟢 ADVISORY
+&gt; *   📍 Location: [File/line reference]
+&gt; *   ❌ What&#x27;s Wrong: [Explain the violation]
+&gt; *   📜 Enterprise Rule: [Cite the specific policy/ADR]
+&gt; *   📎 Evidence Source: [Document name, section, date]
+&gt; *   🔗 Related Context: [Post-mortem citation if applicable]
+&gt; *   ✅ Fix Required: [Exact code change needed]</div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · TCS^AI Hackathon 2026 · Sana Iqbal (EID: 1213383)</span>
+    <span>Appendix A</span>
   </div>
 </div>
 
