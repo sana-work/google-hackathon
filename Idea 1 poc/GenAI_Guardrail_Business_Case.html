@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GenAI Guardrail Factory — Business Case Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #0d9488; --primary-dark: #0f766e; --primary-light: #ccfbf1;
+    --accent-red: #ef4444; --accent-green: #22c55e; --accent-amber: #f59e0b;
+    --accent-blue: #3b82f6; --accent-violet: #8b5cf6;
+    --dark: #0f172a; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: #1e293b; background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; }
+  .cover { page-break-after: always; }
+  .biz-card, .highlight-box, .warning-box, .amber-box, table, .stats-row, .deal-row, .roi-box, .pain-grid { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(135deg, var(--dark) 0%, #0c4a6e 50%, var(--primary-dark) 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; } }
+  .cover-badge {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px;
+  }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 500px; margin-bottom: 20px; }
+  .cover-quote {
+    font-size: 13px; font-style: italic; color: rgba(255,255,255,0.6); max-width: 440px;
+    margin-bottom: 28px; border-left: 3px solid var(--primary); padding-left: 16px; text-align: left;
+  }
+  .cover-meta { display: flex; gap: 32px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  /* CONTENT */
+  .content-page { padding: 40px 50px; background: #fff; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: var(--dark); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+  h3 { font-size: 14px; font-weight: 700; color: var(--dark); margin: 18px 0 10px; }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #e0f2fe); border-left: 4px solid var(--primary); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+  .amber-box { background: #fffbeb; border-left: 4px solid var(--accent-amber); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .amber-box p { margin: 0; font-size: 12px; color: #92400e; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  .biz-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+  .biz-card-title { font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+  .biz-card p { margin: 0; font-size: 11.5px; }
+
+  .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .pain-item { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 12px 14px; }
+  .pain-icon { font-size: 18px; margin-bottom: 6px; }
+  .pain-title { font-size: 11px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .pain-body { font-size: 10.5px; color: var(--gray-800); line-height: 1.5; }
+
+  .roi-box { background: linear-gradient(135deg, var(--dark), #0c4a6e); color: #fff; border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .roi-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
+  .roi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .roi-item { text-align: center; }
+  .roi-item-val { font-size: 26px; font-weight: 900; color: var(--primary); }
+  .roi-item-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .deal-row { display: flex; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--gray-200); font-size: 11px; align-items: flex-start; }
+  .deal-row:last-child { border-bottom: none; }
+  .deal-number { background: var(--primary-dark); color: #fff; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .deal-text strong { color: var(--dark); }
+
+  .pipeline-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin: 14px 0; align-items: center; }
+  .pipeline-stage { background: var(--primary-light); border: 1px solid var(--primary); border-radius: 6px; padding: 8px 4px; text-align: center; }
+  .pipeline-stage-icon { font-size: 16px; }
+  .pipeline-stage-label { font-size: 9px; font-weight: 700; color: var(--primary-dark); margin-top: 3px; text-transform: uppercase; }
+  .pipeline-arrow { text-align: center; color: var(--primary); font-size: 16px; font-weight: 700; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; }
+  th { background: var(--dark); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  .footer-strip { margin-top: 20px; height: 32px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Executive Business Case</div>
+  <div class="cover-icon">🛡️</div>
+  <h1>GenAI <span>Guardrail</span> Factory</h1>
+  <div class="cover-sub">Business Case &amp; Commercial Opportunity Brief<br>For: AI Risk &amp; Compliance Leaders, CISOs &amp; TCS GenAI Practice Leads</div>
+  <div class="cover-quote">"Enterprises are deploying GenAI 10x faster than they are deploying GenAI safety frameworks. Every unguarded deployment is a liability waiting to manifest."</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Market Segment</div><div class="cover-meta-value">Enterprise AI Governance</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Deploy Speed</div><div class="cover-meta-value">Hours, not Months</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Safety Dimensions</div><div class="cover-meta-value">3 Core + Extensible</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">TCS Opportunity</div><div class="cover-meta-value">₹400Cr+ TAM</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Executive Confidential</div>
+</div>
+
+<!-- PAGE 2: THE PROBLEM + SOLUTION -->
+<div class="page content-page">
+  <div class="section-number">The Problem</div>
+  <div class="section-title">Enterprise GenAI Deployments Are Lethally Under-Tested</div>
+  <div class="divider"></div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">91%</div><div class="stat-label">Enterprises deploying GenAI without formal safety gates</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">₹4.5Cr</div><div class="stat-label">Avg. cost of a GenAI-caused data breach (IBM 2025)</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">6–9 mo</div><div class="stat-label">Time to manually build a safety evaluation framework</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">0</div><div class="stat-label">Off-the-shelf CI/CD safety pipelines exist today</div></div>
+  </div>
+
+  <div class="warning-box">
+    <p><strong>The Governance Gap:</strong> Enterprises racing to deploy Gemini-powered applications universally face the same gap: their existing software release processes are built for deterministic code — not probabilistic AI outputs. There is no "unit test" equivalent for whether an LLM will hallucinate, leak PII, or produce toxic content under adversarial conditions. Most teams use basic system prompts and hope for the best.</p>
+  </div>
+
+  <div class="pain-grid">
+    <div class="pain-item">
+      <div class="pain-icon">🔴</div>
+      <div class="pain-title">Hallucination in Production</div>
+      <div class="pain-body">Enterprise RAG assistants confidently answering from outside their knowledge base — generating plausible but false policy interpretations, financial figures, and compliance claims.</div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-icon">🔴</div>
+      <div class="pain-title">PII Leakage via Inference</div>
+      <div class="pain-body">Multi-hop reasoning chains enable customers to indirectly query private data — names, IDs, salary bands — through seemingly innocuous follow-up questions the system prompt didn't anticipate.</div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-icon">🔴</div>
+      <div class="pain-title">Jailbreak &amp; Role-Play Overrides</div>
+      <div class="pain-body">Bad actors using DAN, persona injection, and "ignore previous instructions" patterns to override enterprise guardrails and extract confidential operational information.</div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-icon">🔴</div>
+      <div class="pain-title">No Automated Release Gate</div>
+      <div class="pain-body">Every new model version, prompt update, or context document change potentially introduces new failure modes — with no automated mechanism to catch regressions before deployment.</div>
+    </div>
+  </div>
+
+  <div class="section-number" style="margin-top:24px;">The Solution</div>
+  <div class="section-title">A CI/CD Pipeline for GenAI Safety — Fully Automated</div>
+  <div class="divider"></div>
+
+  <p>The GenAI Guardrail Factory is a <strong>6-stage automated safety pipeline</strong> built on Google ADK and Vertex AI Evaluation SDK. It functions as a <em>release gate</em> — every GenAI model change must pass through adversarial testing, multi-dimensional scoring, and auto-remediation before it can be deployed to production.</p>
+
+  <div class="pipeline-row">
+    <div class="pipeline-stage"><div class="pipeline-stage-icon">📋</div><div class="pipeline-stage-label">Policy Setup</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="pipeline-stage-icon">⚔️</div><div class="pipeline-stage-label">AI Test Gen</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="pipeline-stage-icon">📊</div><div class="pipeline-stage-label">Evaluate</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage" style="background:#fef2f2; border-color:var(--accent-red);"><div class="pipeline-stage-icon">🚫</div><div class="pipeline-stage-label">Gate</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage"><div class="pipeline-stage-icon">🔧</div><div class="pipeline-stage-label">Remediate</div></div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-stage" style="background:#f0fdf4; border-color:var(--accent-green);"><div class="pipeline-stage-icon">✅</div><div class="pipeline-stage-label">Approve</div></div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>The Key Innovation:</strong> Unlike passive safety layers (content filters applied at inference time), the Guardrail Factory tests the model <em>before</em> deployment using adversarial inputs generated by Gemini itself. This means vulnerabilities are discovered and remediated in the development pipeline — not by customers in production. Think <strong>shift-left security, applied to GenAI</strong>.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Capability</th><th>Current State (No Guardrail Factory)</th><th>With Guardrail Factory</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Adversarial Test Generation</strong></td><td>Manual red-team, weeks of effort</td><td>Gemini-auto-generated in seconds</td><td>1000x faster coverage</td></tr>
+      <tr><td><strong>Hallucination Detection</strong></td><td>Discovered post-launch by users</td><td>Caught pre-deployment via ChromaDB RAG scoring</td><td>Pre-emptive</td></tr>
+      <tr><td><strong>PII Leakage Testing</strong></td><td>Not tested (assumption: system prompt sufficient)</td><td>Pattern-matched across 25+ adversarial probes</td><td>Quantified safety</td></tr>
+      <tr><td><strong>Model Version Regression</strong></td><td>Manual re-testing per update</td><td>Automated re-run on every change</td><td>Continuous assurance</td></tr>
+      <tr><td><strong>Audit Trail</strong></td><td>None — no record of what was tested</td><td>BigQuery-indexed, run-by-run evidence log</td><td>Regulator/auditor ready</td></tr>
+      <tr><td><strong>Remediation</strong></td><td>Months of prompt engineering cycles</td><td>AI-generated hardened system prompt in seconds</td><td>Hours, not months</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · Business Case Brief · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: ROI + TCS OPPORTUNITY -->
+<div class="page content-page">
+  <div class="section-number">Business Value</div>
+  <div class="section-title">ROI Model &amp; TCS Commercial Opportunity</div>
+  <div class="divider"></div>
+
+  <div class="roi-box">
+    <div class="roi-title">Commercial Value Summary — Per Enterprise Deployment</div>
+    <div class="roi-grid">
+      <div class="roi-item"><div class="roi-item-val">₹4.5Cr+</div><div class="roi-item-label">Avg. GenAI breach cost avoided per incident</div></div>
+      <div class="roi-item"><div class="roi-item-val">6–9 mo</div><div class="roi-item-label">Safety framework build time eliminated</div></div>
+      <div class="roi-item"><div class="roi-item-val">100%</div><div class="roi-item-label">Grounded audit evidence per run</div></div>
+    </div>
+  </div>
+
+  <div class="biz-card">
+    <div class="biz-card-title">💡 The Strategic Timing Argument</div>
+    <p>India's DPDPA 2023, the EU AI Act (effective 2026), and RBI's guidance on responsible AI deployment are all creating new legal obligations for enterprises deploying AI systems. The EU AI Act explicitly requires "testing, logging, and human oversight" for high-risk AI applications — exactly what the Guardrail Factory provides. Enterprises face a compliance imperative that makes the Guardrail Factory not a "nice to have" — but a regulatory necessity for any AI in high-risk use cases (HR, BFSI, Healthcare, Government).</p>
+  </div>
+
+  <h3>Industry-Specific Risk Exposure the Guardrail Factory Neutralizes</h3>
+
+  <table>
+    <thead><tr><th>Industry</th><th>Specific Risk Without Guardrails</th><th>Regulatory Exposure</th><th>Guardrail Factory Protection</th></tr></thead>
+    <tbody>
+      <tr><td><strong>🏦 BFSI</strong></td><td>Loan eligibility hallucinations; PII exposure in customer chat</td><td>RBI IT Framework; DPDPA ₹250Cr penalty</td><td>PII scanner + RAG groundedness gate</td></tr>
+      <tr><td><strong>🏥 Healthcare</strong></td><td>Medical advice hallucinations; patient data extraction</td><td>HIPAA equivalent; NDHM compliance</td><td>Zero-PII-threshold enforcement</td></tr>
+      <tr><td><strong>🏛️ Government</strong></td><td>Policy misrepresentation in citizen services</td><td>RTI, CAG audit exposure</td><td>Groundedness ≥ 85% gate</td></tr>
+      <tr><td><strong>🏢 Enterprise HR</strong></td><td>Wrong leave policy answers; unauthorized leave approval attempts</td><td>Labor law, litigation risk</td><td>Authority boundary + toxicity gate</td></tr>
+      <tr><td><strong>⚖️ Legal / Compliance</strong></td><td>Incorrect regulatory interpretations circulated as policy</td><td>Professional liability</td><td>Full adversarial test suite with audit log</td></tr>
+    </tbody>
+  </table>
+
+  <h3>TCS Commercial Opportunity</h3>
+  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; overflow:hidden;">
+    <div class="deal-row">
+      <div class="deal-number">1</div>
+      <div class="deal-text"><strong>GenAI Safety-as-a-Service (GSaS):</strong> License Guardrail Factory as a managed evaluation service — clients submit their GenAI application + policy thresholds, TCS runs the full adversarial pipeline and delivers a certified evaluation report within 24 hours. ₹15–40L per evaluation cycle. At 200 cycles/year across TCS's AI clients: ₹30–80Cr annual revenue stream.</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-number">2</div>
+      <div class="deal-text"><strong>Embedded in TCS AI Gateway:</strong> Integrate Guardrail Factory as a mandatory pre-deployment checkpoint within TCS's internal AI deployment pipeline and the TCS AI Gateway product offering — ensuring every TCS-delivered GenAI solution is certified before client handover. Transforms a cost centre (QA) into a differentiating quality signal.</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-number">3</div>
+      <div class="deal-text"><strong>EU AI Act Compliance Practice:</strong> The EU AI Act mandates testing, logging, and auditability for high-risk AI. Build a Guardrail Factory-anchored "AI Act Readiness" offering for TCS's European clients — covering gap assessment, evaluation pipeline setup, ongoing compliance evidence generation. ₹50L–2Cr per client engagement.</div>
+    </div>
+    <div class="deal-row">
+      <div class="deal-number">4</div>
+      <div class="deal-text"><strong>Google Cloud ISV Marketplace:</strong> Publish Guardrail Factory on Google Cloud Marketplace as a TCS + Google ADK showcase solution — qualifying for Google Cloud ISV co-sell incentives and gaining access to Google's 3,000+ enterprise accounts. Joint marketing with Google's Responsible AI team amplifies TCS's brand in the AI governance space.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 16px;">
+    <p><strong>Differentiation vs. AWS Guardrails / Azure Content Safety:</strong> Existing cloud safety tools are <em>reactive</em> — they filter bad outputs at inference time. The Guardrail Factory is <em>proactive</em> — it tests the model before deployment, diagnoses why it fails, automatically generates a hardened system prompt, and re-validates to confirm recovery. It also produces a structured audit report no cloud safety service currently provides. This is CI/CD for AI safety — a category that does not yet exist as a productized offering.</p>
+  </div>
+
+  <div class="amber-box">
+    <p><strong>TCS Unique Advantage:</strong> TCS is actively deploying GenAI across 400+ enterprise clients — meaning TCS is both the ideal first customer and the most credible distributor. Internal deployment across TCS's own AI delivery pipeline creates an immediate live reference implementation that can be demonstrated to enterprise buyers in any sales conversation.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>GenAI Guardrail Factory · Business Case Brief · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+</body>
+</html>

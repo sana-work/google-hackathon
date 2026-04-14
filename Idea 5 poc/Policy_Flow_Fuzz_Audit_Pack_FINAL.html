@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy-to-Flow Compiler — Compliance Fuzz Audit Pack</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #0ea5e9; --primary-dark: #0284c7; --primary-light: #e0f2fe;
+    --accent-red: #ef4444; --accent-green: #22c55e; --accent-amber: #f59e0b;
+    --accent-violet: #8b5cf6;
+    --dark: #020617; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: #1e293b; background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; min-height: 297mm; position: relative; }
+  .cover { page-break-after: always; }
+  .gap-card, .policy-card, .highlight-box, .warning-box, table, .stats-row, .cert-box { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  .cover {
+    background: linear-gradient(135deg, #020617 0%, #0c1a3a 40%, #0a2a4a 70%, #0369a1 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; display: flex; flex-direction: column; min-height: 297mm; } }
+  .cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 480px; margin-bottom: 12px; }
+  .run-badge { background: rgba(14,165,233,0.15); border: 1px solid var(--primary); border-radius: 8px; padding: 16px 32px; margin: 20px 0; }
+  .run-badge .rb-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .run-badge .rb-val { font-size: 15px; font-weight: 700; }
+  .cover-meta { display: flex; gap: 28px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .content-page { padding: 40px 50px; background: #fff; display: flex; flex-direction: column; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary-dark), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #e0f2fe); border-left: 4px solid var(--primary-dark); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  .policy-card { border-radius: 10px; overflow: hidden; margin: 12px 0; border: 1px solid var(--gray-200); }
+  .pc-header { background: var(--dark); color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .pc-name { font-size: 12px; font-weight: 700; }
+  .pc-meta { font-size: 9px; color: var(--gray-400); margin-top: 2px; }
+  .pc-coverage { text-align: center; }
+  .pc-pct { font-size: 24px; font-weight: 900; color: var(--accent-green); }
+  .pc-label { font-size: 9px; color: var(--gray-400); }
+  .pc-body { padding: 12px 16px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .pc-metric { text-align: center; background: var(--gray-50); border-radius: 6px; padding: 8px; border: 1px solid var(--gray-200); }
+  .pc-metric-val { font-size: 16px; font-weight: 800; }
+  .pc-metric-val.pass { color: var(--accent-green); }
+  .pc-metric-val.fail { color: var(--accent-red); }
+  .pc-metric-val.warn { color: var(--accent-amber); }
+  .pc-metric-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; }
+
+  .gap-card { border-radius: 10px; overflow: hidden; margin: 12px 0; border: 1px solid var(--gray-200); }
+  .gc-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .gc-header.critical { background: #fef2f2; border-bottom: 2px solid var(--accent-red); }
+  .gc-header.warning { background: #fffbeb; border-bottom: 2px solid var(--accent-amber); }
+  .gc-id { font-size: 13px; font-weight: 800; color: #0f172a; }
+  .gc-meta { font-size: 10px; color: var(--gray-600); margin-top: 2px; }
+  .gc-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .gc-badge.critical { background: #fef2f2; color: #dc2626; }
+  .gc-badge.warning { background: #fffbeb; color: #d97706; }
+  .gc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 16px; background: var(--gray-50); font-size: 11px; }
+  .gc-fix { padding: 10px 16px; background: #f0fdf4; border-top: 1px solid #bbf7d0; font-size: 11px; color: #166534; }
+  .gc-fix strong { color: #15803d; }
+
+  .cert-box { background: linear-gradient(135deg, #020617, #0c2a4a); border: 2px solid var(--primary); border-radius: 12px; padding: 24px; text-align: center; color: #fff; margin: 20px 0; }
+  .cert-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; }
+  .cert-main { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+  .cert-sub { font-size: 11px; color: rgba(255,255,255,0.6); }
+  .cert-badge { display: inline-block; background: var(--primary); color: #fff; border-radius: 50px; padding: 8px 24px; font-size: 14px; font-weight: 700; margin: 12px 0; }
+
+  .footer-strip { margin-top: auto; height: 32px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 3: Customer Engagement Suite</div>
+  <div class="cover-icon">⚙️</div>
+  <h1>Policy-to-<span>Flow</span> Compiler</h1>
+  <div class="cover-sub">Compliance Validation Audit Pack<br>Auto-Fuzz Testing Results for 3 Enterprise Policy Compilations</div>
+  <div class="run-badge">
+    <div class="rb-label">Fuzz Run ID</div>
+    <div class="rb-val">FUZZ-2026-0414-ENTERPRISE-BATCH-01</div>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Policies Tested</div><div class="cover-meta-value">3 Enterprise</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Paths Traversed</div><div class="cover-meta-value">8,182 Total</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Avg Coverage</div><div class="cover-meta-value">98.1%</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Critical Gaps</div><div class="cover-meta-value">1 Found</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential · Synthetic Data Only</div>
+</div>
+
+<!-- PAGE 2: OVERVIEW + POLICY CARDS -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Fuzz Test Overview &amp; Per-Policy Coverage</div>
+  <div class="divider"></div>
+
+  <p>The <strong>Policy-to-Flow Auto-Fuzz Tester</strong> generates adversarial conversation paths to validate that compiled Dialogflow CX flows handle every policy scenario deterministically — with zero hallucination risk. Below are results for Batch 01 comprising 3 enterprise policy compilations.</p>
+
+  <div class="highlight-box">
+    <p><strong>How to read this pack:</strong> <strong>Policy Cards</strong> summarize per-policy coverage and pass/fail outcomes. <strong>Gap Cards</strong> capture discrepancies found via fuzzing with (1) scenario, (2) root cause, (3) evidence, and (4) required fix. The final section issues a <strong>Compliance Certificate</strong> for the batch.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--primary)">8,182</div><div class="stat-label">Paths Traversed</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-green)">8,018</div><div class="stat-label">Paths Passed</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-amber)">163</div><div class="stat-label">Warnings</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">1</div><div class="stat-label">Critical Gap</div></div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>What Auto-Fuzzing Tests:</strong> Each compiled flow graph is subjected to (1) boundary path traversal — all defined policy paths, (2) off-script utterance injection — questions not anticipated by policy, (3) multi-turn context adversarial scenarios — testing state transitions, and (4) explicit policy escape attempts — prompts trying to bypass flow constraints.</p>
+  </div>
+
+  <!-- Policy Card 1 -->
+  <div class="policy-card">
+    <div class="pc-header">
+      <div>
+        <div class="pc-name">Policy 1: Return &amp; Refund Policy — E-Commerce</div>
+        <div class="pc-meta">Compiled: 14 Apr 2026 · Nodes: 12 · Dialogflow CX Flow</div>
+      </div>
+      <div class="pc-coverage"><div class="pc-pct">98.4%</div><div class="pc-label">coverage</div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-metric"><div class="pc-metric-val pass">2,847</div><div class="pc-metric-label">Paths Run</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">2,749</div><div class="pc-metric-label">Passed</div></div>
+      <div class="pc-metric"><div class="pc-metric-val warn">97</div><div class="pc-metric-label">Warnings</div></div>
+      <div class="pc-metric"><div class="pc-metric-val fail">1</div><div class="pc-metric-label">Critical</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">0</div><div class="pc-metric-label">Hallucinations</div></div>
+    </div>
+  </div>
+
+  <!-- Policy Card 2 -->
+  <div class="policy-card">
+    <div class="pc-header">
+      <div>
+        <div class="pc-name">Policy 2: KYC Verification Policy — Banking/BFSI</div>
+        <div class="pc-meta">Compiled: 14 Apr 2026 · Nodes: 12 · Dialogflow CX Flow</div>
+      </div>
+      <div class="pc-coverage"><div class="pc-pct">96.7%</div><div class="pc-label">coverage</div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-metric"><div class="pc-metric-val pass">1,923</div><div class="pc-metric-label">Paths Run</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">1,882</div><div class="pc-metric-label">Passed</div></div>
+      <div class="pc-metric"><div class="pc-metric-val warn">41</div><div class="pc-metric-label">Warnings</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">0</div><div class="pc-metric-label">Critical</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">0</div><div class="pc-metric-label">Hallucinations</div></div>
+    </div>
+  </div>
+
+  <!-- Policy Card 3 -->
+  <div class="policy-card">
+    <div class="pc-header">
+      <div>
+        <div class="pc-name">Policy 3: Warranty &amp; Service Policy — Consumer Electronics</div>
+        <div class="pc-meta">Compiled: 14 Apr 2026 · Nodes: 15 · Dialogflow CX Flow</div>
+      </div>
+      <div class="pc-coverage"><div class="pc-pct">99.1%</div><div class="pc-label">coverage</div></div>
+    </div>
+    <div class="pc-body">
+      <div class="pc-metric"><div class="pc-metric-val pass">3,412</div><div class="pc-metric-label">Paths Run</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">3,387</div><div class="pc-metric-label">Passed</div></div>
+      <div class="pc-metric"><div class="pc-metric-val warn">25</div><div class="pc-metric-label">Warnings</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">0</div><div class="pc-metric-label">Critical</div></div>
+      <div class="pc-metric"><div class="pc-metric-val pass">0</div><div class="pc-metric-label">Hallucinations</div></div>
+    </div>
+  </div>
+
+
+
+  <div class="footer-strip">
+    <span>Policy-to-Flow Compiler · Compliance Fuzz Audit Pack · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: GAP REPORT + CERTIFICATE -->
+<div class="page content-page">
+  <div class="section-number">Section 02</div>
+  <div class="section-title">Gap Analysis &amp; Compliance Certificate</div>
+  <div class="divider"></div>
+
+  <div class="warning-box">
+    <p><strong>⚠ GAP-001 CRITICAL — Requires immediate policy update:</strong> The Return &amp; Refund Policy (Policy 1) fails at the 14‑day electronics boundary when delivery date and order date differ. The policy defines eligibility by <strong>delivery confirmation timestamp</strong>, but one compiled path binds <code>DaysSinceDelivery</code> to order timestamp, causing incorrect decisions for edge cases at the threshold. Estimated impact: affects 23 boundary paths and must be fixed before certification.</p>
+  </div>
+
+  <!-- GAP Card 1 -->
+  <div class="gap-card">
+    <div class="gc-header critical">
+      <div>
+        <div class="gc-id">🔴 GAP-001: Delivery Timestamp vs Order Timestamp Boundary</div>
+        <div class="gc-meta">Policy: Return &amp; Refund · Node: CHECK_ELECTRONICS_WINDOW · Type: Entity Binding Error</div>
+      </div>
+      <div class="gc-badge critical">🔴 CRITICAL</div>
+    </div>
+    <div class="gc-body">
+      <div>
+        <div style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gray-600); margin-bottom:4px;">Adversarial Scenario That Exposed Gap</div>
+        <div style="font-size:10px; font-style:italic; color:#0f172a; background:var(--gray-50); padding:8px; border-radius:4px; border:1px solid var(--gray-200);">"Electronics item delivered exactly 14 days ago, but order placed 17 days ago — am I eligible for return?"</div>
+      </div>
+      <div>
+        <div style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--gray-600); margin-bottom:4px;">Root Cause</div>
+        <div style="font-size:11px; color:#0f172a;">Policy text defines eligibility by <strong>delivery date</strong>, but the compiled flow binds <code>DaysSinceDelivery</code> to <strong>order timestamp</strong>, producing incorrect decisions at the 14‑day boundary.</div>
+      </div>
+    </div>
+    <div class="gc-fix"><strong>✅ Required Fix:</strong> Bind <code>DaysSinceDelivery</code> to the carrier tracking API delivery confirmation timestamp (not order timestamp). Add a validation guard and re-run fuzz suite. <strong>Paths affected:</strong> 23</div>
+  </div>
+      
+
+  <h3 style="font-size:13px; margin:16px 0 10px; color:#0f172a;">Representative Warnings (GAP-W001 — GAP-W003)</h3>
+  <table>
+    <thead><tr><th>Warning ID</th><th>Policy</th><th>Node</th><th>Description</th><th>Severity</th></tr></thead>
+    <tbody>
+      <tr><td>GAP-W001</td><td>Return &amp; Refund</td><td>NODE-5</td><td>Gift return scenario missing an explicit receipt-validity window (policy text ambiguous) — requires a dedicated <code>CHECK_GIFT_RECEIPT</code> node</td><td style="color:var(--accent-amber);font-weight:700">🟡 WARN</td></tr>
+      <tr><td>GAP-W002</td><td>KYC Verification</td><td>NODE-9</td><td>Policy requires “acceptable ID list” but compiled flow lacks a rejection message for unsupported ID types — add <code>REJECT_UNSUPPORTED_ID</code> branch</td><td style="color:var(--accent-amber);font-weight:700">🟡 WARN</td></tr>
+      <tr><td>GAP-W003</td><td>Warranty &amp; Service</td><td>NODE-12</td><td>Consumables/accessories coverage not explicitly defined — add <code>CHECK_CONSUMABLE_EXCEPTION</code> node to avoid inconsistent approvals</td><td style="color:var(--accent-amber);font-weight:700">🟡 WARN</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Compliance Certificate -->
+  <div class="cert-box">
+    <div class="cert-title">🏆 Policy-to-Flow Compiler · Compliance Validation Certificate</div>
+    <div class="cert-badge">CONDITIONALLY CERTIFIED</div>
+    <div class="cert-main">Batch FUZZ-2026-0414-ENTERPRISE-BATCH-01</div>
+    <div class="cert-sub">2 of 3 policies fully certified (KYC 96.7% / Warranty 99.1% coverage). Return &amp; Refund conditionally certified pending<br>GAP-001 resolution. Zero AI hallucinations detected across 8,182 adversarial test paths.<br><br>
+    <strong>Determinism Guarantee:</strong> All certified flow responses are 100% policy-grounded.<br>No LLM decides outcomes at runtime. Responses are drawn from compiled policy nodes; optional LLM phrasing (if enabled) cannot override decisions.</div>
+    <div style="font-size:9px; color:rgba(255,255,255,0.4); margin-top:12px;">Certificate ID: CERT-P2F-2026-0414-B01 · Generated: 14 Apr 2026 09:07:22 UTC</div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Policy-to-Flow Compiler · Compliance Fuzz Audit Pack · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+</body>
+
+<script>
+(function(){
+  function ph(){
+    var d=document.createElement('div');
+    d.style.cssText="border:1px dashed #94a3b8;border-radius:8px;padding:14px;text-align:center;color:#475569;background:#f8fafc;font-size:11px;margin:12px 0;";
+    d.innerHTML="Image unavailable in this package. Please ensure the <strong>Screenshots/</strong> assets are included alongside this HTML.";
+    return d;
+  }
+  document.querySelectorAll('img').forEach(function(img){
+    img.addEventListener('error', function(){ img.replaceWith(ph()); });
+  });
+})();
+</script>
+
+</html>

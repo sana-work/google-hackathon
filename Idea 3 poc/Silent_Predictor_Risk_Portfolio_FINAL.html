@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silent Escalation Predictor — Customer Risk Portfolio Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #22c55e; --primary-dark: #16a34a; --primary-light: #dcfce7;
+    --accent-red: #ef4444; --accent-green: #22c55e; --accent-blue: #3b82f6;
+    --accent-violet: #8b5cf6; --accent-amber: #f59e0b;
+    --dark: #0f172a; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: var(--dark); background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; }
+  .cover { page-break-after: always; }
+  .highlight-box, .warning-box, table, .stats-row, .customer-card, .cohort-grid { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  .cover {
+    background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #065f46 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; } }
+  .cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 480px; margin-bottom: 12px; }
+  .cover-quote { font-size: 13px; font-style: italic; color: rgba(255,255,255,0.6); max-width: 420px; margin-bottom: 28px; border-left: 3px solid var(--primary); padding-left: 16px; text-align: left; }
+  .cover-meta { display: flex; gap: 32px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .content-page { padding: 40px 50px; background: #fff; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: var(--dark); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary-dark), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #ecfdf5); border-left: 4px solid var(--primary-dark); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; }
+  th { background: var(--dark); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  .customer-card { border-radius: 10px; border: 1px solid var(--gray-200); overflow: hidden; margin: 12px 0; }
+  .customer-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .customer-header.high { background: #fef2f2; border-bottom: 2px solid var(--accent-red); }
+  .customer-header.medium { background: #fffbeb; border-bottom: 2px solid var(--accent-amber); }
+  .customer-name { font-size: 14px; font-weight: 800; color: var(--dark); }
+  .customer-meta { font-size: 10px; color: var(--gray-600); margin-top: 2px; }
+  .srs-badge { text-align: center; }
+  .srs-score { font-size: 36px; font-weight: 900; line-height: 1; }
+  .srs-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .srs-score.high { color: var(--accent-red); }
+  .srs-score.medium { color: var(--accent-amber); }
+  .srs-score.low { color: var(--accent-green); }
+  .srs-label.high { color: var(--accent-red); }
+  .srs-label.medium { color: var(--accent-amber); }
+  .customer-channels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px 16px; background: var(--gray-50); }
+  .channel { text-align: center; }
+  .ch-score { font-size: 18px; font-weight: 800; }
+  .ch-score.bad { color: var(--accent-red); }
+  .ch-score.warn { color: var(--accent-amber); }
+  .ch-score.ok { color: var(--accent-green); }
+  .ch-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; }
+  .intervention-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; margin: 8px 16px 12px; }
+  .intervention-tag.high { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+  .intervention-tag.medium { background: #fffbeb; color: #d97706; border: 1px solid #fcd34d; }
+
+  .cohort-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .cohort-item { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 12px 14px; }
+  .cohort-insight { font-size: 11px; color: var(--gray-800); line-height: 1.5; }
+  .cohort-insight strong { color: var(--dark); }
+  .cohort-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary-dark); margin-bottom: 6px; }
+
+  .footer-strip { margin-top: 20px; height: 32px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 3: Customer Engagement Suite</div>
+  <div class="cover-icon">📉</div>
+  <h1>Silent <span>Escalation</span> Predictor</h1>
+  <div class="cover-sub">Customer Risk Portfolio Report — Q2 2026<br>AI-Powered Silent Churn Detection &amp; Intervention Intelligence</div>
+  <div class="cover-quote">"Your most dangerous churn isn't from complaints — it's from the customers who simply go quiet."</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Portfolio</div><div class="cover-meta-value">5 Customer Accounts</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">At-Risk ACV</div><div class="cover-meta-value">₹1.73 Cr</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">High Risk</div><div class="cover-meta-value">3 Customers</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Report Date</div><div class="cover-meta-value">14 Apr 2026</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential · Synthetic Data Only</div>
+</div>
+
+<!-- PAGE 2: PORTFOLIO OVERVIEW -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Portfolio Overview &amp; Risk Summary</div>
+  <div class="divider"></div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">3</div><div class="stat-label">High Risk Customers</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-amber)">1</div><div class="stat-label">Medium Risk</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-green)">1</div><div class="stat-label">Low Risk</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--primary-dark)">₹1.73 Cr</div><div class="stat-label">Total At-Risk ACV</div></div>
+  </div>
+
+  <div class="warning-box">
+    <p><strong>⚠ Portfolio Alert:</strong> 3 of 5 customers are classified HIGH RISK with Silent Risk Score (SRS) values above 70. Combined at-risk Annual Contract Value is ₹1.73 Cr. Immediate manager escalation recommended for Kavitha Nair (TelcoVista) — SRS 94/100, renewal in 28 days.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Customer ID</th><th>Name</th><th>Company</th><th>Segment</th><th>ACV</th><th>SRS Score</th><th>Risk Tier</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>E-6723</strong></td><td>Kavitha Nair</td><td>TelcoVista</td><td>Enterprise Telecom</td><td>₹56L</td>
+        <td style="color:#dc2626;font-weight:700">94</td><td style="color:#dc2626;font-weight:700">🔴 HIGH</td><td>Manager Escalation</td>
+      </tr>
+      <tr>
+        <td><strong>C-9281</strong></td><td>Ananya Reddy</td><td>MedSecure Health</td><td>Enterprise Healthcare</td><td>₹75L</td>
+        <td style="color:#dc2626;font-weight:700">72</td><td style="color:#dc2626;font-weight:700">🔴 HIGH</td><td>CSM Outreach</td>
+      </tr>
+      <tr>
+        <td><strong>A-7842</strong></td><td>Priya Sharma</td><td>FinEdge Solutions</td><td>Enterprise SaaS</td><td>₹42L</td>
+        <td style="color:#dc2626;font-weight:700">77</td><td style="color:#dc2626;font-weight:700">🔴 HIGH</td><td>Manager Escalation</td>
+      </tr>
+      <tr>
+        <td><strong>B-3156</strong></td><td>Rajesh Mehta</td><td>CloudStack India</td><td>Mid-Market SaaS</td><td>₹18L</td>
+        <td style="color:#d97706;font-weight:700">~40</td><td style="color:#d97706;font-weight:700">🟡 MEDIUM</td><td>Auto Email</td>
+      </tr>
+      <tr>
+        <td><strong>D-4510</strong></td><td>Vikram Joshi</td><td>RetailPulse</td><td>SMB E-commerce</td><td>₹4.8L</td>
+        <td style="color:#16a34a;font-weight:700">~15</td><td style="color:#16a34a;font-weight:700">🟢 LOW</td><td>Standard Nurture</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <p><strong>Intervention Economics:</strong> At an industry-standard 54% save rate for high-touch manager escalation, recovering even 1 high-risk customer (avg ₹57.7L) generates approximately <strong>₹31.2L in retained revenue</strong> — vs. an estimated ₹8-12L cost to acquire an equivalent new customer. ROI on intervention: <strong>3.5x minimum.</strong></p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · Customer Risk Portfolio · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: HIGH-RISK CUSTOMER PROFILES -->
+<div class="page content-page">
+  <div class="section-number">Section 02</div>
+  <div class="section-title">High-Risk Customer Deep Dives</div>
+  <div class="divider"></div>
+  <p>Explainable predictions with 4-channel behavioral evidence for each HIGH RISK customer. All signals sourced from anonymized behavioral logs — no PII in model inputs.</p>
+
+  <!-- Customer E-6723 -->
+  <div class="customer-card">
+    <div class="customer-header high">
+      <div><div class="customer-name">Kavitha Nair — TelcoVista</div><div class="customer-meta">Enterprise Telecom · ACV ₹56L · Renewal in 28 days · Agent: E-6723</div></div>
+      <div class="srs-badge"><div class="srs-score high">94</div><div class="srs-label high">🔴 CRITICAL</div></div>
+    </div>
+    <div class="customer-channels">
+      <div class="channel"><div class="ch-score bad">97</div><div class="ch-label">📱 Usage</div></div>
+      <div class="channel"><div class="ch-score bad">95</div><div class="ch-label">📧 Comms</div></div>
+      <div class="channel"><div class="ch-score bad">90</div><div class="ch-label">🎫 Support</div></div>
+      <div class="channel"><div class="ch-score bad">88</div><div class="ch-label">💳 Trans.</div></div>
+    </div>
+    <div style="padding:0 16px 4px; font-size:10px; color:var(--gray-600);">
+      Usage: Zero logins in 45 days (was 15/week). Comms: Last 12 emails unopened. Support: No tickets in 6 months — previously 3/month. Transactions: Bill payment 12 days late, no upsell response.
+    </div>
+    <div class="intervention-tag high">🚨 IMMEDIATE: Manager Escalation + Retention Package + Priority Support Resolution</div>
+  </div>
+
+  <!-- Customer A-7842 -->
+  <div class="customer-card">
+    <div class="customer-header high">
+      <div><div class="customer-name">Priya Sharma — FinEdge Solutions</div><div class="customer-meta">Enterprise SaaS (BFSI) · ACV ₹42L · Renewal in 62 days · Agent: A-7842</div></div>
+      <div class="srs-badge"><div class="srs-score high">77</div><div class="srs-label high">🔴 HIGH</div></div>
+    </div>
+    <div class="customer-channels">
+      <div class="channel"><div class="ch-score bad">86</div><div class="ch-label">📱 Usage</div></div>
+      <div class="channel"><div class="ch-score bad">80</div><div class="ch-label">📧 Comms</div></div>
+      <div class="channel"><div class="ch-score warn">78</div><div class="ch-label">🎫 Support</div></div>
+      <div class="channel"><div class="ch-score warn">61</div><div class="ch-label">💳 Trans.</div></div>
+    </div>
+    <div style="padding:0 16px 4px; font-size:10px; color:var(--gray-600);">
+      Usage: Logins dropped 12/week → 2/week (↓83%), session duration ↓77%, zero new features in 30 days. Comms: Last 6 newsletters unopened, email silence 28 days. Transactions: First late payment in 26 months.
+    </div>
+    <div class="intervention-tag high">🚨 IMMEDIATE: Relationship Manager contact + Open ticket resolution + Feature adoption workshop</div>
+  </div>
+
+  <!-- Customer C-9281 -->
+  <div class="customer-card">
+    <div class="customer-header high">
+      <div><div class="customer-name">Ananya Reddy — MedSecure Health</div><div class="customer-meta">Enterprise Healthcare · ACV ₹75L · Renewal in 90 days · Agent: C-9281</div></div>
+      <div class="srs-badge"><div class="srs-score high">72</div><div class="srs-label high">🔴 HIGH</div></div>
+    </div>
+    <div class="customer-channels">
+      <div class="channel"><div class="ch-score bad">80</div><div class="ch-label">📱 Usage</div></div>
+      <div class="channel"><div class="ch-score warn">70</div><div class="ch-label">📧 Comms</div></div>
+      <div class="channel"><div class="ch-score warn">65</div><div class="ch-label">🎫 Support</div></div>
+      <div class="channel"><div class="ch-score ok">55</div><div class="ch-label">💳 Trans.</div></div>
+    </div>
+    <div style="padding:0 16px 4px; font-size:10px; color:var(--gray-600);">
+      Usage: Monthly active users dropped from 120 to 35 (↓71%). Comms: Survey responses ceased 45 days ago. Support: No new tickets despite 3 known platform bugs. Transactions: Still current but plan downgrade request submitted.
+    </div>
+    <div class="intervention-tag high">🔶 CSM Proactive Call + Executive Sponsorship Meeting + Bug Resolution Commitment</div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · Customer Risk Portfolio · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- PAGE 4: COHORT INSIGHTS + AI MESSAGES -->
+<div class="page content-page">
+  <div class="section-number">Section 03</div>
+  <div class="section-title">Cohort Intelligence &amp; AI-Generated Interventions</div>
+  <div class="divider"></div>
+
+  <h3 style="font-size:13px; margin:0 0 12px; color:var(--dark);">Cohort-Level Insights (Gemini Generated)</h3>
+  <div class="cohort-grid">
+    <div class="cohort-item">
+      <div class="cohort-tag">🏥 Healthcare Segment</div>
+      <div class="cohort-insight">Enterprise healthcare customers show <strong>3x higher silent churn risk after Month 4</strong> of onboarding. Key driver: users who don't complete security compliance training within 30 days have 78% higher disengagement.</div>
+    </div>
+    <div class="cohort-item">
+      <div class="cohort-tag">📡 Telecom Segment</div>
+      <div class="cohort-insight">Telecom accounts show usage decline patterns <strong>2 months before contract end</strong>, not 1 month. Early detection at Month 10 of a 12-month cycle enables meaningful intervention.</div>
+    </div>
+    <div class="cohort-item">
+      <div class="cohort-tag">💻 Enterprise SaaS</div>
+      <div class="cohort-insight">Customers who don't adopt <strong>3+ platform features within 60 days</strong> have 65% higher churn probability at renewal. Feature adoption is the strongest leading indicator.</div>
+    </div>
+    <div class="cohort-item">
+      <div class="cohort-tag">📧 Email Re-engagement</div>
+      <div class="cohort-insight">Personalized email campaigns targeting medium-risk customers have <strong>45% re-engagement success rate</strong> — 3x higher than generic newsletter sends.</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:13px; margin:16px 0 12px; color:var(--dark);">Sample Gemini-Generated Intervention Messages</h3>
+
+  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:16px; margin:8px 0;">
+    <div style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--accent-red); margin-bottom:6px;">HIGH RISK — Kavitha Nair (TelcoVista) — Manager Escalation Script</div>
+    <div style="font-size:11px; color:var(--gray-800); line-height:1.6; font-style:italic; border-left:3px solid var(--accent-red); padding-left:12px;">
+      "Hi Kavitha, I'm Sana from TelcoVista's dedicated enterprise success team. I noticed you haven't had a chance to log into the platform recently, and I wanted to personally reach out as your relationship manager. I understand your team is navigating a significant infrastructure migration, and I want to make sure our platform is actively supporting that rather than adding friction. I'd love 20 minutes this week — I have some usage reports and a few platform updates that could directly address the integration challenges your team flagged in Q1. Would Thursday at 2pm work for a quick call?"
+    </div>
+  </div>
+
+  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:16px; margin:8px 0;">
+    <div style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--accent-amber); margin-bottom:6px;">MEDIUM RISK — Rajesh Mehta (CloudStack India) — Automated Re-engagement Email</div>
+    <div style="font-size:11px; color:var(--gray-800); line-height:1.6; font-style:italic; border-left:3px solid var(--accent-amber); padding-left:12px;">
+      "Hi Rajesh, we've been thinking about CloudStack India! Based on your team's usage patterns, we think you'd love our new API Gateway v3 feature — it directly addresses the throughput bottleneck your team experienced in February. We've also added one-click compliance reporting for your DPDPA audit requirements. Here's a 5-minute walkthrough: [link]. As a long-standing customer, you also have early access to our Q3 roadmap preview — reply to this email and we'll set up a 30-minute session."
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Feedback Loop Active:</strong> All intervention outcomes (email opened, call booked, contract renewed) are tracked and fed back to the prediction model. After 3 intervention cycles, the model achieves <strong>+12% prediction accuracy improvement</strong> through continuous learning — getting smarter with every customer interaction.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · Customer Risk Portfolio · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+</body>
+</html>

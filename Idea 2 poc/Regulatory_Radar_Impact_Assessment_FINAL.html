@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulatory Radar — Sample DPDPA Impact Assessment Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #7c3aed; --primary-dark: #4A148C; --primary-light: #ede7f6;
+    --accent: #FFB300; --accent-red: #ef4444; --accent-green: #22c55e;
+    --dark: #020617; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: #1e293b; background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; }
+  .cover { page-break-after: always; }
+  .impact-card, .highlight-box, .warning-box, table, .stats-row, .action-item { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  .cover {
+    background: linear-gradient(135deg, #020617 0%, #1A237E 50%, #4A148C 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; } }
+  .cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 480px; margin-bottom: 12px; }
+  .reg-badge { background: rgba(124,58,237,0.2); border: 1px solid var(--primary); border-radius: 8px; padding: 16px 32px; margin: 20px 0; }
+  .reg-badge .rb-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .reg-badge .rb-val { font-size: 15px; font-weight: 700; }
+  .cover-meta { display: flex; gap: 28px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .content-page { padding: 40px 50px; background: #fff; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary-dark), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #f3e8ff); border-left: 4px solid var(--primary-dark); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+  .amber-box { background: #fffbeb; border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .amber-box p { margin: 0; font-size: 12px; color: #92400e; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  .impact-card { border-radius: 10px; overflow: hidden; margin: 14px 0; border: 1px solid var(--gray-200); }
+  .ic-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .ic-header.critical { background: #fef2f2; border-bottom: 2px solid var(--accent-red); }
+  .ic-header.high { background: #fdf4ff; border-bottom: 2px solid var(--primary); }
+  .ic-header.medium { background: #fffbeb; border-bottom: 2px solid var(--accent); }
+  .ic-clause { font-size: 13px; font-weight: 800; color: #0f172a; }
+  .ic-meta { font-size: 10px; color: var(--gray-600); margin-top: 2px; }
+  .ic-severity { text-align: center; }
+  .ic-severity-text { font-size: 12px; font-weight: 900; padding: 4px 12px; border-radius: 20px; }
+  .ic-severity-text.critical { background: #fef2f2; color: #dc2626; }
+  .ic-severity-text.high { background: #fdf4ff; color: #7c3aed; }
+  .ic-severity-text.medium { background: #fffbeb; color: #d97706; }
+  .ic-body { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 16px; background: var(--gray-50); }
+  .ic-field { }
+  .ic-field-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-600); margin-bottom: 3px; }
+  .ic-field-value { font-size: 11px; color: #0f172a; line-height: 1.4; }
+  .ic-field-value.cite { font-family: 'Courier New', monospace; font-size: 10px; color: var(--primary-dark); background: var(--primary-light); padding: 4px 8px; border-radius: 4px; }
+  .ic-action { padding: 10px 16px; background: #f0fdf4; border-top: 1px solid #bbf7d0; font-size: 11px; color: #166534; }
+  .ic-action strong { color: #15803d; }
+
+  .action-item { display: flex; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--gray-200); font-size: 11px; }
+  .action-item:last-child { border-bottom: none; }
+  .priority-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+  .priority-dot.critical { background: var(--accent-red); }
+  .priority-dot.high { background: var(--primary); }
+  .priority-dot.medium { background: var(--accent); }
+  .action-text { flex: 1; }
+  .action-meta { font-size: 10px; color: var(--gray-600); margin-top: 3px; }
+
+  .footer-strip { margin-top: 20px; height: 32px; background: #020617; display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 1: Gemini Enterprise</div>
+  <div class="cover-icon">📡</div>
+  <h1>Regulatory <span>Radar</span></h1>
+  <div class="cover-sub">Sample Impact Assessment Report<br>Digital Personal Data Protection Act (DPDPA) 2023 — Amendment Gazette No. MHA-2026-04</div>
+  <div class="reg-badge">
+    <div class="rb-label">Regulatory Change ID</div>
+    <div class="rb-val">DPDPA-AMEND-2026-04-11 · MHA Gazette · Effective: 01 Jun 2026</div>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Impact Cards</div><div class="cover-meta-value">3 Generated</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Policies Affected</div><div class="cover-meta-value">7 Internal</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Analysis Time</div><div class="cover-meta-value">4.2 minutes</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Compliance Window</div><div class="cover-meta-value">48 days</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential · Synthetic Data Only</div>
+</div>
+
+<!-- PAGE 2: OVERVIEW + IMPACT CARDS -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Regulatory Change Overview &amp; Impact Scope</div>
+  <div class="divider"></div>
+
+  <p>The <strong>Regulatory Analyzer Agent</strong> detected and processed DPDPA Amendment Gazette No. MHA-2026-04 published on 11 April 2026. Multi-agent analysis completed in 4.2 minutes, mapping 8 new/modified clauses against 22 internal policy documents, contract templates, and system architecture documents.</p>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">3</div><div class="stat-label">Critical Gaps Found</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--primary)">7</div><div class="stat-label">Policies Affected</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent)">48</div><div class="stat-label">Days to Compliance</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">₹250Cr+</div><div class="stat-label">Max Penalty Exposure</div></div>
+  
+  </div>
+
+<div class="amber-box">
+    <p><strong>Scoring Method (How to read Impact Cards):</strong> Each Impact Card includes (1) <em>What changed</em> (regulatory clause delta), (2) <em>Current gap</em> (mapped internal policy/system), (3) <em>Evidence</em> (document citation), and (4) <em>Priority action</em> with owner and deadline. Severity is assigned using a rule-based rubric: deadline criticality, penalty exposure, customer contract impact, and operational readiness.</p>
+  </div>
+
+<div class="warning-box">
+    <p><strong>⚠ COMPLIANCE ALERT:</strong> DPDPA Amendment introduces 72-hour mandatory breach notification (was 30 days), new consent withdrawal mechanisms, and expanded definitions of "significant data fiduciaries." 3 critical gaps identified in current policies. Manual review estimated: 3-4 weeks. Deadline: 01 June 2026 (48 days).</p>
+  </div>
+
+  <!-- Impact Card 1 -->
+  <div class="impact-card">
+    <div class="ic-header critical">
+      <div>
+        <div class="ic-clause">🔴 IC-001: Breach Notification Deadline — 30 Days → 72 Hours</div>
+        <div class="ic-meta">DPDPA Clause 27(b) as Amended · Affects: Incident Response Policy v3.2, DPA contracts</div>
+      </div>
+      <div class="ic-severity"><div class="ic-severity-text critical">🔴 CRITICAL</div></div>
+    </div>
+    <div class="ic-body">
+      <div class="ic-field">
+        <div class="ic-field-label">📋 What Changed</div>
+        <div class="ic-field-value">Mandatory breach notification to Data Protection Board reduced from 30 calendar days to 72 hours from awareness of breach. Notification must include: nature, categories affected, approximate number of data principals, likely consequences, and remedial measures.</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">🏢 Current Policy Gap</div>
+        <div class="ic-field-value">Incident Response Policy v3.2 specifies 30-day notification. 14 active DPA contracts with enterprise clients reference 30-day clause. No 72-hour reporting workflow exists. Initial breach triage currently takes 5-7 business days.</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">📎 Policy Citation</div>
+        <div class="ic-field-value cite">Incident_Response_Policy_v3.2.pdf → Section 5.1: "Notification — 30 Calendar Days"</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">⚠ Penalty Exposure</div>
+        <div class="ic-field-value">Non-compliance: Up to ₹250 Crore per incident under DPDPA penalty schedule. Reputational risk for enterprise client contracts.</div>
+      </div>
+    </div>
+    <div class="ic-action"><strong>✅ Priority Action:</strong> (1) Update Incident Response Policy to 72-hour SLA. (2) Implement automated breach detection pipeline with < 1-hour classification SLA. (3) Amend all 14 DPA contracts. Owner: CISO / Legal. Deadline: 01 May 2026.</div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Regulatory Radar · DPDPA Impact Assessment · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: IMPACT CARDS 2&3 + ACTION PLAN -->
+<div class="page content-page">
+  <div class="section-number">Section 01 (continued)</div>
+  <div class="section-title">Impact Cards 2 &amp; 3 — Consent &amp; Data Fiduciary Changes</div>
+  <div class="divider"></div>
+
+  <!-- Impact Card 2 -->
+  <div class="impact-card">
+    <div class="ic-header high">
+      <div>
+        <div class="ic-clause">🟣 IC-002: Consent Withdrawal — Real-Time Mechanism Required</div>
+        <div class="ic-meta">DPDPA Clause 6(4) as Amended · Affects: Customer Portal, Privacy Policy, Data Retention System</div>
+      </div>
+      <div class="ic-severity"><div class="ic-severity-text high">🟣 HIGH</div></div>
+    </div>
+    <div class="ic-body">
+      <div class="ic-field">
+        <div class="ic-field-label">📋 What Changed</div>
+        <div class="ic-field-value">Customers must be able to withdraw consent for data processing "as easily as consent was given" and processing must cease within 24 hours of withdrawal. Previously, withdrawal could be submitted via email with 7-day processing time.</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">🏢 Current Policy Gap</div>
+        <div class="ic-field-value">Current consent withdrawal is email-based with 7-day SLA (clearly non-compliant). Customer portal has no self-service consent management. Data processing pipelines are not designed for real-time cessation.</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">📎 Policy Citation</div>
+        <div class="ic-field-value cite">Privacy_Policy_v2024.pdf → Section 4: "Consent Withdrawal — 7 Business Days via email"</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">💻 System Impact</div>
+        <div class="ic-field-value">Customer portal redesign, real-time data processing suppression, audit log of consent state per data principal required.</div>
+      </div>
+    </div>
+    <div class="ic-action"><strong>✅ Priority Action:</strong> Build self-service consent dashboard in customer portal. Implement consent revocation event stream to halt all downstream processing pipelines within 24 hours. Owner: Product + Engineering. Deadline: 15 May 2026.</div>
+  </div>
+
+  <!-- Impact Card 3 -->
+  <div class="impact-card">
+    <div class="ic-header medium">
+      <div>
+        <div class="ic-clause">🟡 IC-003: Expanded SDF Definition — New Obligations Apply</div>
+        <div class="ic-meta">DPDPA Clause 10 as Amended · Affects: Data Classification, Contract Templates</div>
+      </div>
+      <div class="ic-severity"><div class="ic-severity-text medium">🟡 MEDIUM</div></div>
+    </div>
+    <div class="ic-body">
+      <div class="ic-field">
+        <div class="ic-field-label">📋 What Changed</div>
+        <div class="ic-field-value">Significant Data Fiduciary (SDF) threshold lowered: any entity processing data of >10 lakh (was 1 crore) data principals OR offering services to children is classified as SDF, triggering Data Protection Impact Assessments (DPIA) and appointment of a Data Protection Officer.</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">🏢 Current Policy Gap</div>
+        <div class="ic-field-value">TCS currently processes data of approximately 45-55 lakh data principals across 3 BFSI clients. This now qualifies as SDF. No DPIA framework exists. No appointed DPO. Neither obligation currently met.</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">📎 Evidence Source</div>
+        <div class="ic-field-value cite">Data_Classification_Policy_v2023.txt → Section 2.1 "SDF Classification — 1 Crore+ threshold [OUTDATED]"</div>
+      </div>
+      <div class="ic-field">
+        <div class="ic-field-label">📊 Business Impact</div>
+        <div class="ic-field-value">SDF obligations include annual DPIA, DPO appointment, and enhanced transparency requirements. SDF non-compliance: up to ₹150 Crore penalty.</div>
+      </div>
+    </div>
+    <div class="ic-action"><strong>✅ Priority Action:</strong> (1) Appoint DPO or engage qualified DPO-as-a-service. (2) Initiate DPIA framework design. (3) Update Data Classification Policy to reflect new 10L threshold. Owner: Legal + Compliance. Deadline: 01 Jun 2026.</div>
+  </div>
+
+  <h3 style="font-size:13px; margin:16px 0 12px; color:#0f172a;">Consolidated Action Plan — Priority Order</h3>
+  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; overflow:hidden;">
+    <div class="action-item"><div class="priority-dot critical"></div><div class="action-text"><strong>Update Incident Response Policy to 72-hour breach notification SLA</strong><div class="action-meta">Owner: CISO · Deadline: 01 May 2026 · Status: NOT STARTED</div></div></div>
+    <div class="action-item"><div class="priority-dot critical"></div><div class="action-text"><strong>Amend 14 active DPA client contracts to reflect 72-hour clause</strong><div class="action-meta">Owner: Legal · Deadline: 15 May 2026 · Status: NOT STARTED</div></div></div>
+    <div class="action-item"><div class="priority-dot high"></div><div class="action-text"><strong>Build real-time consent withdrawal dashboard in customer portal</strong><div class="action-meta">Owner: Product Engineering · Deadline: 15 May 2026 · Status: NOT STARTED</div></div></div>
+    <div class="action-item"><div class="priority-dot high"></div><div class="action-text"><strong>Implement 24-hour data processing cessation pipeline</strong><div class="action-meta">Owner: Data Engineering · Deadline: 22 May 2026 · Status: NOT STARTED</div></div></div>
+    <div class="action-item"><div class="priority-dot medium"></div><div class="action-text"><strong>Appoint Data Protection Officer (DPO) or DPO-as-a-Service</strong><div class="action-meta">Owner: Legal / HR · Deadline: 01 Jun 2026 · Status: NOT STARTED</div></div></div>
+    <div class="action-item"><div class="priority-dot medium"></div><div class="action-text"><strong>Initiate Data Protection Impact Assessment (DPIA) framework</strong><div class="action-meta">Owner: Compliance · Deadline: 01 Jun 2026 · Status: NOT STARTED</div></div></div>
+    <div class="action-item"><div class="priority-dot medium"></div><div class="action-text"><strong>Update Data Classification Policy — SDF threshold from 1Cr to 10L</strong><div class="action-meta">Owner: DPO · Deadline: 01 Jun 2026 · Status: NOT STARTED</div></div></div>
+  </div>
+
+  <div class="amber-box" style="margin-top:14px;">
+    <p><strong>⚠ HITL Review Required:</strong> This AI-generated Impact Assessment is advisory and must be reviewed by the Compliance team and Legal before formal action is taken. The Regulatory Radar provides analysis — human compliance officers retain authority over all remediation decisions.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Regulatory Radar · DPDPA Impact Assessment · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+</body>
+</html>

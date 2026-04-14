@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision DNA — Sample Conflict Assessment Output</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #0ea5e9; --primary-dark: #0284c7; --primary-light: #e0f2fe;
+    --accent-red: #ef4444; --accent-green: #22c55e; --accent-blue: #3b82f6;
+    --accent-violet: #8b5cf6; --accent-amber: #f59e0b;
+    --dark: #0f172a; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: var(--dark); background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; }
+  .cover { page-break-after: always; }
+  .conflict-card, .highlight-box, .warning-box, table, .stats-row { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  .cover {
+    background: linear-gradient(135deg, #020617 0%, #172554 50%, var(--primary-dark) 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; } }
+  .cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 480px; margin-bottom: 12px; }
+  .review-badge { background: rgba(14,165,233,0.15); border: 1px solid var(--primary); border-radius: 8px; padding: 16px 32px; margin: 20px 0; font-size: 12px; }
+  .review-badge .rb-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .review-badge .rb-val { font-size: 15px; font-weight: 700; }
+  .cover-meta { display: flex; gap: 32px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .content-page { padding: 40px 50px; background: #fff; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: var(--dark); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #e0f2fe); border-left: 4px solid var(--primary); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  .conflict-card { border-radius: 10px; overflow: hidden; margin: 14px 0; border: 1px solid var(--gray-200); }
+  .cc-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .cc-header.critical { background: #fef2f2; border-bottom: 2px solid var(--accent-red); }
+  .cc-header.high { background: #fff7ed; border-bottom: 2px solid var(--accent-amber); }
+  .cc-header.advisory { background: #f5f3ff; border-bottom: 2px solid var(--accent-violet); }
+  .cc-title { font-size: 13px; font-weight: 800; color: var(--dark); }
+  .cc-meta { font-size: 10px; color: var(--gray-600); margin-top: 2px; }
+  .cc-verdict { text-align: center; }
+  .cc-verdict-text { font-size: 12px; font-weight: 900; padding: 4px 12px; border-radius: 20px; }
+  .cc-verdict-text.critical { background: #fef2f2; color: #dc2626; }
+  .cc-verdict-text.high { background: #fff7ed; color: #d97706; }
+  .cc-verdict-text.advisory { background: #f5f3ff; color: #7c3aed; }
+  .cc-body { padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: var(--gray-50); }
+  .cc-field { }
+  .cc-field-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-600); margin-bottom: 3px; }
+  .cc-field-value { font-size: 11px; color: var(--dark); line-height: 1.4; }
+  .cc-field-value.evidence { font-family: 'Courier New', monospace; font-size: 10px; color: var(--primary-dark); background: var(--primary-light); padding: 4px 8px; border-radius: 4px; }
+  .cc-fix { padding: 10px 16px; background: #f0fdf4; border-top: 1px solid #bbf7d0; font-size: 11px; color: #166534; }
+  .cc-fix strong { color: #15803d; }
+  .hitl-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 11px; color: #92400e; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; }
+  th { background: var(--dark); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  .footer-strip { margin-top: 20px; height: 32px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Track 1: Intelligent Search &amp; Gemini Enterprise</div>
+  <div class="cover-icon">🧬</div>
+  <h1>Decision <span>DNA</span></h1>
+  <div class="cover-sub">Sample Conflict Assessment Output<br>PRD Review: DataViz Integration Service — Analyzed by Conflict Sentinel</div>
+  <div class="review-badge">
+    <div class="rb-label">Document Under Review</div>
+    <div class="rb-val">DataViz_Integration_PRD_v0.4.docx</div>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Conflicts Found</div><div class="cover-meta-value">4 Total</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Critical</div><div class="cover-meta-value">2 🔴</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Memory Docs</div><div class="cover-meta-value">16 Indexed</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Analysis Time</div><div class="cover-meta-value">&lt; 8 seconds</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Confidential · Synthetic Data Only</div>
+</div>
+
+<!-- PAGE 2: SUMMARY + CONFLICT CARDS 1&2 -->
+<div class="page content-page">
+  <div class="section-number">Section 01</div>
+  <div class="section-title">Conflict Assessment Summary</div>
+  <div class="divider"></div>
+
+  <p>The <strong>Conflict Sentinel</strong> analyzed <em>DataViz_Integration_PRD_v0.4.docx</em> against 16 enterprise memory documents (ADRs, security policies, post-mortems, vendor guidelines). Analysis completed in 7.4 seconds with 100% grounded citations.</p>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">2</div><div class="stat-label">Critical Conflicts</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-amber)">1</div><div class="stat-label">High — Needs Change</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-violet)">1</div><div class="stat-label">Advisory</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--primary)">100%</div><div class="stat-label">Grounded Citations</div></div>
+  </div>
+
+  <div class="warning-box">
+    <p><strong>🛑 REJECT — PRD cannot proceed to implementation:</strong> 2 critical conflicts require resolution before development begins. Proceeding without resolution risks GDPR non-compliance (potential €20M fine) and a repeat of the Payment Outage incident (Post_Mortem_Payment_2024_07).</p>
+  </div>
+
+  <!-- Conflict Card 1 -->
+  <div class="conflict-card">
+    <div class="cc-header critical">
+      <div>
+        <div class="cc-title">🔴 CONFLICT 1: GDPR Data Residency Violation</div>
+        <div class="cc-meta">Type: Security/Compliance · Source: Section 3.2 "Data Architecture" of PRD</div>
+      </div>
+      <div class="cc-verdict"><div class="cc-verdict-text critical">🔴 REJECT</div></div>
+    </div>
+    <div class="cc-body">
+      <div class="cc-field">
+        <div class="cc-field-label">📋 PRD Proposes</div>
+        <div class="cc-field-value">Customer analytics data replicated to DataViz Corp's US-East data warehouse for real-time dashboard processing.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">⚖️ Enterprise Rule Violated</div>
+        <div class="cc-field-value">GDPR Addendum (Article 4.2): EU customer personal data must not be processed outside approved regions (europe-west1, europe-west4). US-East is not approved.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">📎 Evidence Source</div>
+        <div class="cc-field-value evidence">Data_Classification_Policy.txt → Section 3.1: "EU PII — Restricted Regions Only"</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">🔗 Historical Context</div>
+        <div class="cc-field-value">Pattern matches 2023 Customer Data Leak incident. See: Post_Mortem_PII_Leak_2025_01.txt → Root cause: misconfigured data replication to unapproved region.</div>
+      </div>
+    </div>
+    <div class="cc-fix"><strong>✅ Required Fix:</strong> Restrict DataViz integration to europe-west1 DataViz endpoint OR anonymize/pseudonymize EU customer data before US-East replication. Update Section 3.2 with region constraints and DPA amendment with DataViz Corp.</div>
+  </div>
+
+  <!-- Conflict Card 2 -->
+  <div class="conflict-card">
+    <div class="cc-header critical">
+      <div>
+        <div class="cc-title">🔴 CONFLICT 2: Unapproved Vendor (DataViz Corp)</div>
+        <div class="cc-meta">Type: Vendor Risk · Source: Section 2.1 "Third-Party Integrations" of PRD</div>
+      </div>
+      <div class="cc-verdict"><div class="cc-verdict-text critical">🔴 REJECT</div></div>
+    </div>
+    <div class="cc-body">
+      <div class="cc-field">
+        <div class="cc-field-label">📋 PRD Proposes</div>
+        <div class="cc-field-value">Direct API integration with DataViz Corp for analytics dashboard. DataViz Corp handles customer behavioral data.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">⚖️ Enterprise Rule Violated</div>
+        <div class="cc-field-value">Vendor_Management_Policy_2025.txt → Section 6.1: All third-party vendors handling customer data must complete security assessment and appear on the Approved Vendor Registry before integration.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">📎 Evidence Source</div>
+        <div class="cc-field-value evidence">Vendor_Management_Policy_2025.txt → Section 6.1 "Approved Vendor Registry Requirement"</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">🔗 Historical Context</div>
+        <div class="cc-field-value">DataViz Corp is not currently on the Approved Vendor Registry. Security assessment status: Not Started. Estimated assessment timeline: 3-4 weeks.</div>
+      </div>
+    </div>
+    <div class="cc-fix"><strong>✅ Required Fix:</strong> Initiate DataViz Corp vendor security assessment immediately. Development may proceed only after registry approval. Contact vendor-risk@tcs.com with DataViz Corp's SOC2 Type II report to begin expedited assessment.</div>
+  </div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · Sample Conflict Assessment Output · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- PAGE 3: CONFLICT CARDS 3&4 + ADR MEMORY -->
+<div class="page content-page">
+  <div class="section-number">Section 01 (continued)</div>
+  <div class="section-title">Conflict Cards 3 &amp; 4 — Architecture &amp; Code Findings</div>
+  <div class="divider"></div>
+
+  <!-- Conflict Card 3 -->
+  <div class="conflict-card">
+    <div class="cc-header high">
+      <div>
+        <div class="cc-title">🟡 CONFLICT 3: Synchronous REST Chain Violates ADR-018</div>
+        <div class="cc-meta">Type: Architecture Pattern · Source: Section 4.3 "API Design" of PRD</div>
+      </div>
+      <div class="cc-verdict"><div class="cc-verdict-text high">🟡 NEEDS CHANGE</div></div>
+    </div>
+    <div class="cc-body">
+      <div class="cc-field">
+        <div class="cc-field-label">📋 PRD Proposes</div>
+        <div class="cc-field-value">Analytics service calls DataViz API synchronously on every user request, with a 5-second timeout. Response is blocking.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">⚖️ Enterprise Rule Violated</div>
+        <div class="cc-field-value">ADR-018 (Async-First Architecture): Inter-service and third-party communication must use Pub/Sub event messaging. Synchronous REST chains banned for non-critical paths after Payment Outage 2024-07.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">📎 Evidence Source</div>
+        <div class="cc-field-value evidence">ADR_018_Async_Communication.txt → Status: ACCEPTED (2024-08-12)</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">🔗 Post-Mortem Reference</div>
+        <div class="cc-field-value">Post_Mortem_Payment_2024_07.txt: "Root cause — synchronous REST chain to analytics service caused cascading timeout. Outage duration: 4h 12min. Revenue impact: $847K."</div>
+      </div>
+    </div>
+    <div class="cc-fix"><strong>✅ Required Fix:</strong> Redesign analytics data flow to use Pub/Sub. Dashboard updates become eventually consistent (acceptable for analytics). Analytics failures no longer impact user-facing response latency.</div>
+  </div>
+
+  <!-- Conflict Card 4 -->
+  <div class="conflict-card">
+    <div class="cc-header advisory">
+      <div>
+        <div class="cc-title">🟣 CONFLICT 4: PII Logging Risk in Proposed Code</div>
+        <div class="cc-meta">Type: Code Pattern · Source: Appendix B "Sample API Code" of PRD</div>
+      </div>
+      <div class="cc-verdict"><div class="cc-verdict-text advisory">🟣 ADVISORY</div></div>
+    </div>
+    <div class="cc-body">
+      <div class="cc-field">
+        <div class="cc-field-label">📋 Code Proposes</div>
+        <div class="cc-field-value">Sample code logs full request payload including customer_email and customer_id to application logs for debugging.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">⚖️ Enterprise Rule</div>
+        <div class="cc-field-value">Global Security Policy v4: PII fields (email, phone, ID numbers) must be masked in all logs. Regex-based PII detection must run before any log write.</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">📎 Evidence Source</div>
+        <div class="cc-field-value evidence">Global_Security_Policy_v4.txt → Section 7.3 "Log Sanitization Requirements"</div>
+      </div>
+      <div class="cc-field">
+        <div class="cc-field-label">🔗 Historical Context</div>
+        <div class="cc-field-value">Post_Mortem_PII_Leak_2025_01.txt: Same pattern — unmasked email in logs led to GDPR breach notification. Incident cost: €142,000 in regulatory response.</div>
+      </div>
+    </div>
+    <div class="cc-fix"><strong>✅ Required Fix:</strong> Replace <code>logger.info(request.payload)</code> with PII-masked logging utility: <code>logger.info(pii_mask(request.payload))</code>. Ensure pii_mask() is imported from the enterprise security SDK.</div>
+  </div>
+
+  <div class="hitl-box">
+    <strong>⚠️ HITL REVIEW REQUIRED:</strong> This automated conflict assessment is advisory. All resolutions must be reviewed and approved by the Architecture Review Board (for Conflicts 1-3) and Security team (for Conflict 4) before the PRD proceeds to Sprint planning. Decision DNA provides evidence — humans make the final call.
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Enterprise Memory Applied:</strong> 16 institutional documents referenced in this analysis — 4 ADRs, 3 post-mortems, 5 security policies, 2 vendor guidelines, 2 compliance frameworks. All findings grounded with explicit document citations. Analysis time: 7.4 seconds vs. estimated 3-4 days for manual review.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · Sample Conflict Assessment Output · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+</body>
+</html>

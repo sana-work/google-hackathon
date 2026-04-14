@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision DNA — Business Case Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #0ea5e9; --primary-dark: #0284c7; --primary-light: #e0f2fe;
+    --accent-red: #ef4444; --accent-green: #22c55e; --accent-amber: #f59e0b;
+    --dark: #0f172a; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: #1e293b; background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; }
+  .cover { page-break-after: always; }
+  .biz-card, .highlight-box, .warning-box, table, .stats-row, .deal-row, .roi-box { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  .cover {
+    background: linear-gradient(135deg, #020617 0%, #172554 50%, var(--primary-dark) 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; } }
+  .cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 480px; margin-bottom: 24px; }
+  .cover-meta { display: flex; gap: 28px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .content-page { padding: 40px 50px; background: #fff; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary-dark), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+  h3 { font-size: 14px; font-weight: 700; color: #0f172a; margin: 18px 0 10px; }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #e0f2fe); border-left: 4px solid var(--primary-dark); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+  .amber-box { background: #fffbeb; border-left: 4px solid var(--accent-amber); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .amber-box p { margin: 0; font-size: 12px; color: #92400e; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  .biz-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+  .biz-card-title { font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+  .biz-card p { margin: 0; font-size: 11.5px; }
+
+  .roi-box { background: linear-gradient(135deg, #020617, #172554); color: #fff; border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .roi-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
+  .roi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .roi-item { text-align: center; }
+  .roi-item-val { font-size: 26px; font-weight: 900; color: var(--primary); }
+  .roi-item-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .deal-row { display: flex; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--gray-200); font-size: 11px; align-items: flex-start; }
+  .deal-row:last-child { border-bottom: none; }
+  .deal-number { background: var(--primary-dark); color: #fff; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .deal-text strong { color: #0f172a; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; }
+  th { background: var(--primary-dark); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 10px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  .footer-strip { margin-top: 20px; height: 32px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Executive Business Case</div>
+  <div class="cover-icon">🧬</div>
+  <h1>Decision <span>DNA</span></h1>
+  <div class="cover-sub">Business Case &amp; Commercial Opportunity Brief<br>For: Enterprise Architects, CTOs &amp; TCS Engineering &amp; Digital Practice Leads</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Market Segment</div><div class="cover-meta-value">Large Enterprise</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Analysis Speed</div><div class="cover-meta-value">7.4 sec vs. 3–4 days</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Incidents Prevented</div><div class="cover-meta-value">70% repeat incidents</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">TCS Opportunity</div><div class="cover-meta-value">₹300Cr+ TAM</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Executive Confidential</div>
+</div>
+
+<!-- PAGE 2: BUSINESS CASE -->
+<div class="page content-page">
+  <div class="section-number">The Problem</div>
+  <div class="section-title">Enterprise Amnesia is Costing Millions Per Incident</div>
+  <div class="divider"></div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">70%</div><div class="stat-label">Incidents are repeats of old mistakes</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">$847K</div><div class="stat-label">Cost — representative post-mortem sync outage example</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">3–4 days</div><div class="stat-label">Manual PRD review time (vs. 7.4 sec)</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">12–18 mo</div><div class="stat-label">Institutional memory “half-life” (without Decision DNA)</div></div>
+  </div>
+
+  <div class="warning-box">
+    <p><strong>The Root Cause:</strong> Enterprise organizations make thousands of consequential decisions — architecture choices, vendor approvals, compliance interpretations, security policies. These accumulate as post-mortems, ADRs, and policy documents that nobody reads. Every new project effectively starts from scratch, unknowingly repeating the same expensive mistakes. This is not a knowledge management problem — it's an enterprise memory problem.</p>
+  </div>
+
+  <div class="biz-card">
+    <div class="biz-card-title">💡 The "Insight to Impact" Latency Problem</div>
+    <p>When the DataViz PRD team proposed a synchronous REST integration in April 2026, the ADR-018 decision that banned it was made in August 2024. The post-mortem that justified ADR-018 followed a high-impact outage (representative ~$847K impact). None of the PRD authors knew about ADR-018. It took 3 days of architecture review to catch the violation — 3 days before a sprint started. With Decision DNA, this is caught in 7.4 seconds. Every single time. Automatically.</p>
+  </div>
+
+  <div class="section-number" style="margin-top:24px;">The Solution</div>
+  <div class="section-title">Enterprise Memory Layer — Temporal Decision Graph</div>
+  <div class="divider"></div>
+
+  <p>Decision DNA builds a <strong>living, queryable Temporal Decision Graph</strong> from all past decisions — ADRs, post-mortems, security incidents, vendor assessments, and compliance rulings. As new artifacts (PRDs, design docs, code) are submitted, the <strong>Conflict Sentinel multi-agent system</strong> instantly cross-references them against the full institutional memory — surfacing conflicts with grounded evidence before a single line of code is written.
+  <div class="highlight-box">
+    <p><strong>How it works (3 agents):</strong> <strong>Decision DNA Orchestrator</strong> routes requests to (1) <strong>Conflict Sentinel</strong> for PRD/design/policy checks and “why” questions, and (2) <strong>Code Review Judge (CRJ)</strong> for code/config/PR reviews. Outputs are structured <strong>Conflict Cards</strong> with evidence citations and a HITL disclaimer.</p>
+  </div>
+
+  <div class="amber-box">
+    <p><strong>Powered by:</strong> Gemini Enterprise Plus on Vertex AI Agent Engine, grounded via Google Drive Connector + Direct Uploads against a curated institutional memory corpus (ADRs, post-mortems, security policies, vendor guidelines).</p>
+  </div>
+</p>
+
+  <div class="highlight-box">
+    <p><strong>Core Value Proposition:</strong> Every governance document becomes a "learning" that permanently protects the organization. A security incident documented in 2022 will prevent the same mistake in a 2026 PRD. The organizational intelligence grows cumulatively — unlike human memory, it never fades, transfers when people leave, and scales infinitely.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Scenario</th><th>Without Decision DNA</th><th>With Decision DNA</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><strong>PRD Review</strong></td><td>3–4 days manual architecture board</td><td>7.4 sec automated conflict scan</td><td>99.8% faster</td></tr>
+      <tr><td><strong>GDPR Gap Detection</strong></td><td>External audit, ₹50L+ fee</td><td>Instant policy conflict flag</td><td>Pre-emptive</td></tr>
+      <tr><td><strong>Repeat Incident Prevention</strong></td><td>70% of incidents are documented repeats</td><td>70% caught at PRD stage</td><td>₹Cr+ saved/incident</td></tr>
+      <tr><td><strong>Vendor Risk</strong></td><td>Legal sends email 2 weeks later</td><td>Immediate unapproved vendor alert</td><td>Pre-build</td></tr>
+      <tr><td><strong>Knowledge Retention</strong></td><td>Decisions walk out the door when people leave</td><td>100% institutional memory retained</td><td>Zero knowledge drain</td></tr>
+    </tbody>
+  </table>
+
+  <div class="roi-box">
+    <div class="roi-title">Commercial Value Summary</div>
+    <div class="roi-grid">
+      <div class="roi-item"><div class="roi-item-val">₹5–15Cr</div><div class="roi-item-label">Avg. incident cost prevented / year</div></div>
+      <div class="roi-item"><div class="roi-item-val">5,000x</div><div class="roi-item-label">Faster conflict detection</div></div>
+      <div class="roi-item"><div class="roi-item-val">100%</div><div class="roi-item-label">Grounded citations — always auditable</div></div>
+    </div>
+  </div>
+
+  <h3>TCS Commercial Opportunity</h3>
+  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; overflow:hidden;">
+    <div class="deal-row"><div class="deal-number">1</div><div class="deal-text"><strong>Architecture Governance Platform:</strong> License Decision DNA as an enterprise architecture governance tool. Target TCS's 200+ large enterprise clients (Fortune 1000 / BFSI / Government). ₹80L–1.5Cr ARR per client. 30-client target = ₹24–45Cr ARR by Year 2.</div></div>
+    <div class="deal-row"><div class="deal-number">2</div><div class="deal-text"><strong>Digital Transformation Risk Gating:</strong> Embed Decision DNA into TCS's large-scale digital transformation programs as a mandatory governance checkpoint — preventing costly mid-project compliance failures and scope changes. Reduces project overruns and protects TCS's own margins.</div></div>
+    <div class="deal-row"><div class="deal-number">3</div><div class="deal-text"><strong>TCS Delivery Quality Shield:</strong> Deploy internally across TCS's delivery centers and practice units. Every client deliverable (designs, PRDs, architecture docs) automatically screened against TCS's accumulated institutional knowledge base of 10,000+ past decisions.</div></div>
+    <div class="deal-row"><div class="deal-number">4</div><div class="deal-text"><strong>Compliance AI Premium:</strong> For regulated industries (Banking, Pharma, Government), position Decision DNA as a mandatory compliance assurance layer — ensuring every design decision is pre-screened against applicable regulatory frameworks (GDPR, DPDPA, RBI IT Framework).</div></div>
+  </div>
+
+  <div class="amber-box" style="margin-top:16px;">
+    <p><strong>Differentiation vs. Confluence / Jira Knowledge Bases:</strong> These tools require humans to search for, find, and apply past decisions. Decision DNA is <em>proactive</em> — it automatically brings relevant historical context to every new artifact without requiring engineers to know what to search for. The system catches what humans forget to check.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Decision DNA · Business Case Brief · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+</body>
+</html>

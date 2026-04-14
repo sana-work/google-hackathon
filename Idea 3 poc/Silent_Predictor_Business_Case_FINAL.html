@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silent Escalation Predictor — Business Case Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --primary: #22c55e; --primary-dark: #16a34a; --primary-light: #dcfce7;
+    --accent-red: #ef4444; --accent-green: #22c55e;
+    --accent-amber: #f59e0b; --accent-blue: #3b82f6;
+    --dark: #0f172a; --gray-50: #f8fafc; --gray-200: #e2e8f0;
+    --gray-400: #94a3b8; --gray-600: #475569; --gray-800: #1e293b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; color: #1e293b; background: #fff; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 8mm 0; size: A4; }
+  .page { width: 210mm; margin: 0 auto; padding: 0; }
+  .cover { page-break-after: always; }
+  .biz-card, .highlight-box, .warning-box, table, .stats-row, .deal-row, .roi-box { page-break-inside: avoid; }
+  .section-number, .section-title, .divider { page-break-after: avoid; }
+
+  .cover {
+    background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #065f46 100%);
+    color: #fff; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 30px 50px 20px; height: 100vh;
+  }
+  @media print { @page { margin: 0; } .cover { height: 297mm; } .content-page { padding: 30px 40px; } }
+  .cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 8px 24px; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .cover-icon { font-size: 56px; margin-bottom: 16px; }
+  .cover h1 { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 8px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.7); max-width: 480px; margin-bottom: 24px; }
+  .cover-meta { display: flex; gap: 28px; margin-bottom: 24px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .cover-meta-value { font-size: 14px; font-weight: 600; }
+  .cover-footer { position: absolute; bottom: 40px; font-size: 11px; color: rgba(255,255,255,0.4); }
+
+  .content-page { padding: 40px 50px; background: #fff; }
+  .section-number { font-size: 11px; font-weight: 700; color: var(--primary-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .divider { height: 3px; background: linear-gradient(90deg, var(--primary-dark), transparent); margin: 8px 0 20px 0; border-radius: 2px; }
+  p { font-size: 12.5px; margin-bottom: 12px; color: var(--gray-800); }
+  h3 { font-size: 14px; font-weight: 700; color: #0f172a; margin: 18px 0 10px; }
+
+  .highlight-box { background: linear-gradient(135deg, var(--primary-light), #ecfdf5); border-left: 4px solid var(--primary-dark); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .highlight-box p { margin: 0; font-size: 12px; }
+  .highlight-box strong { color: var(--primary-dark); }
+  .warning-box { background: #fef2f2; border-left: 4px solid var(--accent-red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .warning-box p { margin: 0; font-size: 12px; color: #991b1b; }
+  .amber-box { background: #fffbeb; border-left: 4px solid var(--accent-amber); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+  .amber-box p { margin: 0; font-size: 12px; color: #92400e; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .stat-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 9px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  .biz-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 18px; margin: 10px 0; }
+  .biz-card-title { font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+  .biz-card p { margin: 0; font-size: 11.5px; }
+
+  .roi-box { background: linear-gradient(135deg, #022c22, #065f46); color: #fff; border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .roi-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
+  .roi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .roi-item { text-align: center; }
+  .roi-item-val { font-size: 26px; font-weight: 900; color: var(--primary); }
+  .roi-item-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+  .deal-row { display: flex; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--gray-200); font-size: 11px; align-items: flex-start; }
+  .deal-row:last-child { border-bottom: none; }
+  .deal-number { background: var(--primary-dark); color: #fff; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .deal-text strong { color: #0f172a; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11px; }
+  th { background: var(--primary-dark); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 10px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  tr:nth-child(even) { background: var(--gray-50); }
+
+  .footer-strip { margin-top: 20px; height: 32px; background: var(--dark); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; font-size: 8px; color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="cover-badge">TCS^AI Google Hackathon 2026 · Executive Business Case</div>
+  <div class="cover-icon">📉</div>
+  <h1>Silent <span>Escalation</span> Predictor</h1>
+  <div class="cover-sub">Business Case &amp; Commercial Opportunity Brief<br>For: CX Leaders, Customer Success VPs &amp; TCS BFSI / SaaS Practice</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cover-meta-label">Market Segment</div><div class="cover-meta-value">Enterprise SaaS / BFSI</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Detection Advantage</div><div class="cover-meta-value">30–60 days early</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">Avg Save Rate</div><div class="cover-meta-value">54% high-touch</div></div>
+    <div class="cover-meta-item"><div class="cover-meta-label">TCS Opportunity</div><div class="cover-meta-value">₹150Cr+ TAM</div></div>
+  </div>
+  <div class="cover-footer">© 2026 Tata Consultancy Services · Executive Confidential</div>
+</div>
+
+<!-- PAGE 2: BUSINESS CASE -->
+<div class="page content-page">
+  <div class="section-number">The Problem</div>
+  <div class="section-title">Silent Churn is the Invisible Revenue Killer</div>
+  <div class="divider"></div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">67%</div><div class="stat-label">Of churn happens silently</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">5–7x</div><div class="stat-label">Cost: acquire vs. retain</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">₹42L</div><div class="stat-label">Avg enterprise customer ACV</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-red)">30 days</div><div class="stat-label">Too late for NPS-based alerts</div></div>
+  </div>
+
+  <div class="warning-box">
+    <p><strong>The Reality:</strong> 67% of enterprise customers who churn never complain. They simply stop engaging — logging in less, opening fewer emails, submitting fewer tickets. By the time most CRM tools flag them as "at risk," it's too late: the decision to leave was made weeks or months ago. Traditional NPS surveys only capture the 33% who complain.</p>
+  </div>
+
+  <div class="biz-card">
+    <div class="biz-card-title">📊 The Detection Window Problem</div>
+    <p>A typical B2B SaaS company detects churn risk 1–2 weeks before contract renewal — when the customer has already made their decision. The Silent Escalation Predictor extends the detection window to <strong>30–60 days</strong> by fusing behavioral signals that begin changing months before overt signs appear. At 30–60 days lead time, success teams have enough runway to intervene, build value, and convert renewal decisions.</p>
+  </div>
+
+  <div class="section-number" style="margin-top:24px;">The Solution</div>
+  <div class="section-title">4-Channel Behavioral Fusion — Not Just Product Usage</div>
+  <div class="divider"></div>
+
+  <p>Most churn prediction tools only look at product usage data. The Silent Escalation Predictor fuses <strong>4 behavioral channels</strong> via the Gemini-powered <strong>SRS (Silent Risk Score)</strong> Engine:</p>
+
+  <table>
+    <thead><tr><th>Channel</th><th>What it Measures</th><th>Key Signals</th><th>Weight</th></tr></thead>
+    <tbody>
+      <tr><td><strong>📱 Usage</strong></td><td>Platform engagement decline</td><td>Login frequency, session depth, feature adoption velocity</td><td>30%</td></tr>
+      <tr><td><strong>📧 Communication</strong></td><td>Response silence</td><td>Email open rate, response latency, survey non-response</td><td>25%</td></tr>
+      <tr><td><strong>🎫 Support</strong></td><td>Support disengagement</td><td>Ticket absence, CSAT drop, escalation history</td><td>20%</td></tr>
+      <tr><td><strong>💳 Transactions</strong></td><td>Financial health signals</td><td>Payment latency, plan downgrade requests, add-on cancellations</td><td>25%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="amber-box" style="margin-top:12px;">
+    <p><strong>Intervention Tiers (SRS 0–100):</strong> 🟢 Low (0–40) → automated email + nurture, 🟡 Medium (41–70) → CSM outreach + priority support, 🔴 High (71–100) → manager escalation + retention strategy.</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Explainability:</strong> Unlike black-box ML churn models, every SRS score is fully explainable — account managers see exactly which channels contributed, which signals triggered the risk flag, and receive a Gemini-generated personalized intervention script right in the alert. No "black box" concerns for regulated industries like BFSI and Healthcare.</p>
+  </div>
+
+  <div class="roi-box">
+    <div class="roi-title">Commercial Value Summary — Per 100 Enterprise Customers</div>
+    <div class="roi-grid">
+      <div class="roi-item"><div class="roi-item-val">₹4.2Cr</div><div class="roi-item-label">Annual ACV at risk (100 customers)</div></div>
+      <div class="roi-item"><div class="roi-item-val">₹2.3Cr</div><div class="roi-item-label">Revenue retained (54% save rate)</div></div>
+      <div class="roi-item"><div class="roi-item-val">3–5x</div><div class="roi-item-label">ROI on interventions</div></div>
+    </div>
+  </div>
+
+  <h3>TCS Commercial Opportunity</h3>
+  <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; overflow:hidden;">
+    <div class="deal-row"><div class="deal-number">1</div><div class="deal-text"><strong>Churn Intelligence as a Service (CIaaS):</strong> License Silent Escalation Predictor to TCS's enterprise SaaS and BFSI clients as a managed retention intelligence service. ₹30–60L ARR per client. Target 50 clients = ₹15–30Cr ARR by Year 2.</div></div>
+    <div class="deal-row"><div class="deal-number">2</div><div class="deal-text"><strong>Customer Success Transformation:</strong> Anchor a full CS transformation engagement — retooling client's CSM team workflows, intervention playbooks, and success metrics around the SRS engine. ₹1–4Cr per engagement.</div></div>
+    <div class="deal-row"><div class="deal-number">3</div><div class="deal-text"><strong>TCS Internal Deployment:</strong> Deploy for TCS's own enterprise client portfolio management. Identify at-risk TCS service contracts early, enabling relationship managers to proactively engage before renewal negotiations deteriorate.</div></div>
+    <div class="deal-row"><div class="deal-number">4</div><div class="deal-text"><strong>Vertex AI + Gemini Showcase:</strong> Positions TCS as a leading Google Cloud ISV using Vertex AI and Gemini for customer intelligence — qualifying for Google co-sell programs and Marketplace listing, amplifying reach to Google's 3,000+ enterprise clients.</div></div>
+  </div>
+
+  <div class="amber-box" style="margin-top:16px;">
+    <p><strong>Differentiation vs. Gainsight / ChurnZero:</strong> Existing tools require manual CSM data entry and focus on product usage only. Silent Escalation Predictor is fully automated, cross-channel, and delivers AI-generated intervention scripts — not just risk scores. It integrates with existing CRM via Vertex AI Data Connectors, requiring zero workflow change for CSM teams.</p>
+  </div>
+
+  <div class="footer-strip">
+    <span>Silent Escalation Predictor · Business Case Brief · Sana Iqbal (EID: 1213383)</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+</body>
+</html>
