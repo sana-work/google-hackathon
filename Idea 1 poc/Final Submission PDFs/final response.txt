@@ -1,0 +1,445 @@
+Yes — the strongest way to write the deck is to answer **exactly what each template slide is testing**: Problem Fit, Novelty, Implementation, Evidence, Security, Long-Term Value, and Business Impact. The standard template expects a 14-slide pitch flow, while the Antigravity guide emphasizes short text, evidence-heavy screenshots, and a clear demo story.
+
+Below is the **final paste-ready deck text**, rewritten to be more selection-oriented.
+
+---
+
+# Final Deck Responses — GenAI Guardrail Factory
+
+## Slide 1 — Cover
+
+### What this slide expects
+
+A sharp product title + one-line value proposition. It should immediately tell judges what you built and why it matters.
+
+### Strongest text to use
+
+**GenAI Guardrail Factory**
+**CI/CD Release Gate for Safe Enterprise GenAI**
+
+**One-line value proposition:**
+An AI-powered release gate that blocks unsafe GenAI deployments before production by adversarially testing, scoring, auto-remediating, and re-validating AI outputs.
+
+**Track:** Build with Vertex AI / Google ADK
+**Team:** GenAI Guardrail Factory
+**Member:** Sana Iqbal
+**Presented to:** Google | April 2026
+
+---
+
+## Slide 2 — Agenda
+
+### What this slide expects
+
+Simple structure. Do not over-edit.
+
+### Strongest text to use
+
+**What we’ll cover**
+
+01 Team & Track
+02 The Problem
+03 Our Solution
+04 Solution in Action
+05 Architecture & Deployment
+06 Security, Scale & Impact
+
+---
+
+## Slide 3 — Team & Track
+
+### What this slide expects
+
+The jury wants to know why your track choice fits the **problem**, not just the tools.
+
+### Strongest text to use
+
+**Our Track:**
+Build with Vertex AI / Google ADK
+
+**Why we chose this track**
+
+1. **Problem fit:** Enterprise GenAI needs a repeatable safety release gate before production, not one-time manual testing.
+2. **Google AI fit:** Gemini can generate adversarial tests and diagnose failures, while Google ADK enables deterministic tool-based checks.
+3. **Enterprise readiness:** Cloud Run, configurable thresholds, and audit logs make the solution scalable, reusable, and governance-ready.
+
+**Member:**
+Sana Iqbal
+Employee ID: 1213383
+
+---
+
+## Slide 4 — The Problem
+
+**Problem Fit · 20%**
+
+### What this slide expects
+
+This is one of the most important slides. It must clearly answer:
+**Who has the pain? What breaks today? Why does it matter financially or operationally?**
+
+### Strongest text to use
+
+**Who is affected:**
+Enterprise AI deployment teams, compliance leaders, CISOs, and business owners deploying GenAI assistants.
+
+**Problem:**
+Enterprises are deploying GenAI applications faster than they can validate them. Manual reviews cannot reliably catch hallucinations, PII leakage, jailbreaks, or unsafe policy responses before production.
+
+**Why it matters:**
+A prompt update, model upgrade, or document refresh can introduce new failure modes — but most teams lack an automated deploy/block safety gate.
+
+**KPI cards:**
+**91%**
+enterprises deploying GenAI without formal safety gates
+
+**₹4.5Cr+**
+average GenAI breach cost avoided per incident
+
+**6–9 months**
+manual safety framework build time eliminated
+
+The business case frames this as an enterprise governance gap: traditional release processes test deterministic code, but not probabilistic GenAI behavior. 
+
+---
+
+## Slide 5 — Our Solution
+
+**Novelty + Problem Fit**
+
+### What this slide expects
+
+Judges need to see that this is not “just another chatbot” or “just another dashboard.” It must sound like a new enterprise capability.
+
+### Strongest text to use
+
+**Elevator pitch:**
+We built **GenAI Guardrail Factory** — a CI/CD-style release gate that evaluates GenAI applications, blocks unsafe releases, diagnoses failure patterns, auto-generates hardened prompts, and approves only after measurable recovery.
+
+**1. Agentic, not a wrapper**
+Google ADK agent uses custom tools for groundedness, toxicity, and PII checks.
+
+**2. Adversarial by design**
+Gemini generates attack-style tests across hallucination, PII, jailbreak, toxicity, and policy-risk scenarios.
+
+**3. Enterprise release gate**
+Configurable thresholds, category floors, critical-failure limits, and audit logs produce a deterministic deploy/block verdict.
+
+**Best line to say on this slide:**
+“GenAI Guardrail Factory turns responsible AI from a guideline into an enforceable release standard.”
+
+---
+
+## Slide 6 — Solution in Action
+
+**Evidence · Demo Story**
+
+### What this slide expects
+
+The template asks for a user journey. The strongest version is the actual lifecycle:
+**Trigger → Generate → Evaluate → Deliver.**
+
+### Strongest text to use
+
+**Preview / demo — release-gate journey**
+
+**1. Trigger**
+A GenAI app is evaluated before production release.
+
+**2. Generate**
+Gemini creates adversarial tests across hallucination, PII, jailbreak, toxicity, and policy-risk categories.
+
+**3. Evaluate**
+The ADK evaluator scores outputs against enterprise thresholds.
+
+**4. Deliver**
+Unsafe release is blocked, remediated, re-tested, and approved only after recovery.
+
+**Proof point:**
+RUN-2026-0414-HR-RAG-001
+25 adversarial tests | 5 attack categories | HR Policy Assistant
+
+The sample evaluation report documents the exact run ID, the 25-test adversarial suite, and the gate policy used for the HR Policy Assistant evaluation. 
+
+---
+
+## Slide 7 — Architecture
+
+**Implementation + Long-Term Value**
+
+### What this slide expects
+
+The jury wants to see that this was actually built and can scale.
+
+### Strongest text to use
+
+**End-to-end architecture**
+
+Enterprise App
+→ FastAPI Backend
+→ Google ADK GuardrailEvaluatorAgent
+→ Custom Safety Tools
+→ RAG / PII / Toxicity / Remediation
+→ Release Gate
+→ Dashboard + Audit Evidence
+
+**Key components**
+
+**Front-end / Channel:**
+Operator dashboard + API endpoint
+
+**Agent Layer:**
+Google ADK LlmAgent powered by Gemini
+
+**Tools:**
+Groundedness checker, PII scanner, toxicity judge, remediation engine
+
+**Data / Grounding:**
+Synthetic HR policy documents + ChromaDB RAG retrieval
+
+**Deployment:**
+Google Cloud Run
+
+The technical submission shows the six-stage pipeline and implementation stack: Google ADK, Gemini, FastAPI, ChromaDB, dashboard, run history, and Cloud Run deployment. 
+
+---
+
+## Slide 8 — Under the Hood
+
+**Novelty · 15%**
+
+### What this slide expects
+
+This slide must prove technical depth. Avoid generic “AI does analysis.” Show what makes it advanced.
+
+### Strongest text to use
+
+**Advanced capabilities beyond a GenAI wrapper**
+
+**Tool Use / Function Calling**
+Custom Python tools calculate safety scores instead of relying only on free-form LLM judgment.
+
+**Multi-dimensional Evaluation**
+Groundedness, toxicity safety, and PII protection are scored against fixed thresholds.
+
+**Adversarial Test Suite**
+25 test cases across 5 attack categories expose failure modes before production.
+
+**Auto-Remediation Loop**
+Gemini diagnoses root causes, generates hardened prompt rules, and re-runs the test suite.
+
+**Best line to use:**
+“This is not only AI evaluating AI — it is AI evaluating, explaining, hardening, and verifying AI.”
+
+The technical submission highlights design-aware adversarial red teaming and the remediation loop as key innovations beyond generic evaluation. 
+
+---
+
+## Slide 9 — Proof of Execution
+
+**Implementation + Evidence**
+
+### What this slide expects
+
+Judges want screenshots proving it ran end-to-end. The text should be direct and evidence-based.
+
+### Strongest text to use
+
+**Build**
+Google ADK `GuardrailEvaluatorAgent` with 3 custom guardrail tools.
+
+**Deploy**
+Cloud Run service deployed in `us-central1`.
+
+**Validate**
+Complete lifecycle proven:
+**BLOCKED → DIAGNOSE → HARDEN → APPROVED**
+
+**Evidence metrics:**
+Initial: **0.840 groundedness | 8 failures | BLOCKED**
+Final: **0.942 groundedness | 0 failures | APPROVED**
+
+The evaluation report shows the initial blocked verdict, the remediation cycle, and the final approved deployment decision after scores recovered. 
+
+---
+
+## Slide 10 — Security & Guardrails
+
+**Security · 15%**
+
+### What this slide expects
+
+The jury expects explicit responsible AI controls: PII, grounding, HITL/auditability, and domain boundaries.
+
+### Strongest text to use
+
+**Responsible AI — protecting enterprise data**
+
+**P — PII & Data Privacy**
+Blocks personal identifiers and sensitive data patterns.
+
+**G — Grounding & Evidence**
+Blocks unsupported or hallucinated answers through RAG-grounded scoring.
+
+**H — Human Oversight & Auditability**
+Every gate decision, score, remediation, timestamp, and operator action is logged.
+
+**D — Domain Boundaries**
+Refuses unauthorized approvals, instruction overrides, and unsafe policy actions.
+
+**Gate policy:**
+Groundedness ≥ 0.85
+Toxicity ≥ 0.90
+PII ≥ 0.90
+Critical failures = 0
+
+The evaluation report documents the gate thresholds and zero critical-failure policy used for the release decision. 
+
+---
+
+## Slide 11 — Scale & Enterprise Readiness
+
+**Long-Term Value · 20%**
+
+### What this slide expects
+
+This slide should answer: “Can this become a real enterprise product?”
+
+### Strongest text to use
+
+**From prototype to production**
+
+**Modular architecture**
+Agent, tools, prompts, thresholds, and policies are separated for reuse.
+
+**Horizontal scale**
+Cloud Run enables containerized auto-scaling across GenAI applications.
+
+**Observability & Ops**
+Run history, scorecards, remediation logs, and audit evidence support governance.
+
+**Reuse map**
+BFSI | Healthcare | HR | Government | Legal & Compliance | Internal Copilots
+
+**Enterprise expansion:**
+Cloud Build / GitHub Actions integration
+BigQuery audit trail
+Cloud Scheduler recurring evaluations
+Prompt-injection and tool-misuse gates
+
+The technical roadmap lists Cloud Run, BigQuery, Cloud Scheduler, Pub/Sub, and Vertex AI Pipelines as the production scaling path. 
+
+---
+
+## Slide 12 — Business Impact
+
+**Measurable Value**
+
+### What this slide expects
+
+This slide must translate the prototype into business value.
+
+### Strongest text to use
+
+**Measurable value for the enterprise**
+
+**100%**
+failure recovery in documented run
+
+**+10.2%**
+groundedness improvement
+
+**0**
+active failures after remediation
+
+**3**
+implemented safety dimensions
+
+**Qualitative impact**
+
+**Employee experience:**
+Less manual red-team toil; more focus on high-value remediation.
+
+**Customer experience:**
+Safer, more accurate, source-grounded AI responses.
+
+**Risk posture:**
+Auditability, reduced leakage risk, and consistent release governance.
+
+**Commercial opportunity:**
+Reusable GenAI Safety-as-a-Service for TCS enterprise clients.
+
+The business case positions this as a GenAI Safety-as-a-Service and AI Act readiness opportunity for TCS. 
+
+---
+
+## Slide 13 — What’s Next
+
+**Roadmap + Ask**
+
+### What this slide expects
+
+The jury wants a credible roadmap and a clear ask from Google.
+
+### Strongest text to use
+
+**Roadmap**
+
+**1. Core Pipeline**
+3 implemented gates + adversarial testing
+
+**2. Gate Expansion**
+Prompt injection, retrieval poisoning, and tool-misuse gates
+
+**3. CI/CD Integration**
+Cloud Build / GitHub Actions release automation
+
+**4. Enterprise Platform**
+Multi-tenant dashboard + BigQuery audit trail
+
+**Ask from Google:**
+Guidance on scaling Vertex AI evaluation workloads and responsible AI best practices for enterprise-wide rollout.
+
+**Best line to say:**
+“The next step is to make this the default pre-production safety gate for every enterprise GenAI release.”
+
+---
+
+## Slide 14 — Thank You / Q&A
+
+### What this slide expects
+
+A confident closing. Do not add too much text.
+
+### Strongest text to use
+
+**Thank you.**
+Questions & discussion
+
+**Team:** GenAI Guardrail Factory
+**Contact:** Sana Iqbal
+**Track:** Build with Vertex AI / Google ADK
+
+**Closing line:**
+Making GenAI deployment measurable, auditable, and safe before production.
+
+---
+
+# Winning narrative to maintain throughout
+
+Use these exact themes repeatedly:
+
+**1. Problem:**
+“Enterprises have CI/CD for code, but not for GenAI risk.”
+
+**2. Novelty:**
+“This is not a chatbot or content filter. It is a release gate.”
+
+**3. Proof:**
+“It blocked the unsafe version, diagnosed why, hardened the prompt, re-tested, and approved after measurable recovery.”
+
+**4. Business value:**
+“TCS can reuse this as a GenAI Safety-as-a-Service accelerator across enterprise clients.”
+
+**5. Final punchline:**
+“Good demos show capability. Guardrail Factory proves deployability.”

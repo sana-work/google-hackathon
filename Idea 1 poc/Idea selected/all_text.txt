@@ -1,0 +1,478 @@
+--- Screenshot 2026-04-24 at 2.12.02 PM.png ---
+TC S^AI GOOGLE HACKATHON 2026
+Presentation Template - Participant Guide
+How to use the template and deliver effectively to Google
+Congratulations - you made the Top 10
+Over 2,861 participants started this journey, 200 made it to the Implementation & Demo stage,
+and you are now in the final ten presenting directly to Google. This guide explains how to use
+the standard presentation template so that every team puts its best work forward in a consistent,
+Google-ready format.
+Read this document once end-to-end before you start editing the deck. It is short by
+design.
+What you have received
+• TCS_AI_Google_Hackathon_2026_Tem plate.pptx -a 14-slide, template aligned to the
+6-criterion jury rubric.
+Every placeholder is wrapped in square brackets, for example [Use Case Title] or [XX%].
+Replace every bracketed item - nothing bracketed should survive to the Google room.
+Slide-by-slide map
+he deck is 14 slides. Each content slide is tagged with the rubric criterion it supports - so filling
+the deck out well automatically demonstrates the evidence Google's reviewers expect.
+--- Screenshot 2026-04-24 at 2.12.19 PM.png ---
+Slide-by-slide map
+The deck is 14 slides. Each content slide is tagged with the rubric criterion it supports - so filling
+the deck out well automatically demonstrates the evidence Google's reviewers expect.
+# Slide
+1
+Cover
+What goes here
+| Rubric weight
+Use case title • team • track chip
+2
+3
+Agenda
+Team & Track
+Delete this slide if pressed for time
+Members + why you chose your track
+4
+The Problem
+Persona, process today, 3 quantified pain-point | Problem Fit • 20%
+stats
+5
+Our Solution
+6
+Solution in Action
+7
+Architecture
+8
+Under the Hood
+9
+Proof of
+Execution
+Elevator pitch + 3 differentiators
+Novelty - 15% +
+Problem Fit - 20%
+Screenshot of Preview / Playground / App Ul +
+4-step user journey
+End-to-end GCP architecture diagram +
+component legend
+Tool use, sub-agents, multi-step reasoning,
+webhooks
+Build → Deploy → Validate screenshots + track-
+specific checklist strip
+Evidence • 10%
+Implementation • 20% +
+Long-term Value • 20%
+Novelty • 15%
+Implementation • 20% +
+Evidence - 10%
+Page 1 of 4
+--- Screenshot 2026-04-24 at 2.12.32 PM.png ---
+#
+10
+11
+12
+13
+14
+/ Slide
+Security &
+Guardrails
+Scale &
+Enterprise
+Readiness
+Business Impact
+What's Next
+Thank you / Q&A
+What goes here
+Pll, grounding, HITL, domain boundaries
+Modularity, horizontal scale, ops + where else
+this solution can be applied
+4 KPI callouts + qualitative impact band
+4-milestone roadmap + 'our ask from Google'
+Closing slide - keep contact details
+Rubric weight
+Security • 15%
+Long-term Value • 20%
+-
+-
+-
+Editing the template — ground rules
+1. Replace every bracketed placeholder
+Anything in [square brackets] is a placeholder. Nothing bracketed should make it to the final
+version.
+2. Show, don't tell - use screenshots
+This is a proof-of-execution stage. Every team should have high-resolution, cropped
+screenshots from inside the Fresco Play lab. Place them into the screenshot placeholders on
+slides 6, 7 (architecture diagram), and 9 (build / deploy / validate).
+4. Keep text short - for anything the audience must read
+• Rule of thumb: no slide should have more than ~40 words of body text.
+• If you find yourself writing paragraphs, move that content into your spoken delivery.
+5. Quantify wherever possible
+Slides 4 and 12 have placeholders like [XX%] and [SXX M]. Even rough, clearly-labelled
+estimates (with your assumptions stated on the slide) are far stronger than vague claims.
+--- Screenshot 2026-04-24 at 2.12.49 PM.png ---
+Track-specific screenshots to insert
+Slide 9 (Proof of Execution) has three screenshot placeholders - Build, Deploy, Validate.
+Populate them from the relevant track below.
+Track 1 — Intelligent Search & Gemini Enterprise
+• Build: Agent Designer UI showing main agent + sub-agents in the Flow view
+• Deploy: Details Panel with your System Instructions (highlight PII / citation rules)
+• Validate: Preview Chat panel showing 2-3 real interactions (including a sub-agent
+handoff)
+• Also include: Knowledge / Connectors panel showing data sources (Drive / OneDrive /
+SharePoint)
+Page 2 of 4
+Track 2 — Build with Vertex Al (Google ADK)
+• Build: JupyterLab view of agent.py, prompts, tool definitions
+• Deploy: Terminal running adk deploy agent_engine successfully
+• Validate: Vertex Agent Engine Playground with a grounded, accurate response
+• Also include: GCP Console showing your agent listed as deployed
+--- Screenshot 2026-04-24 at 2.13.16 PM.png ---
+Track 3 — Customer Engagement Suite (CES)
+• Build: CX Agent Studio Flow Canvas with intents, entities, routing
+• Deploy: app deploy succeeding
+• Validate: Final hosted App Engine page with the embedded chat answering live
+• Also include: Cloud Run / Functions inline editor showing webhook fulfillment code
+How the template scores the 6-criterion rubric
+The jury already used this rubric. Google's reviewers will look for the same evidence. The deck
+is designed so each criterion has a dedicated home.
+Novelty (15%) - slides 5 & 8
+Move beyond prompt wrappers. Call out tool-use, sub-agent routing, multi-step reasoning,
+webhook fulfillment. Screenshot the logic where possible.
+Problem Fit (20%) - slides 4 & 5
+Ground the solution in a specific persona and a specific bottleneck. Tie the elevator pitch
+directly to the pain points on slide 4.
+Implementation Feasibility (20%) - slides 7 & 9
+Prove it was built and deployed. The three-panel Build / Deploy / Validate strip is specifically
+designed to telegraph successful execution in seconds.
+Long-term Value & Sustenance (20%) - slides 7 & 11
+Show the architecture is modular and the solution is reusable. Use the Reuse Map to call out
+adjacent accounts, industries, or workflows.
+Security & Compliance (15%) - slide 10
+Four named guardrails: PII, grounding, human-in-the-loop, domain boundaries. Replace each
+bracketed description with your actual implementation detail — system instructions excerpt,
+grounding source, HITL trigger, etc.
+Evidence & Documentation (10%) - every slide
+High-resolution, cropped, annotated screenshots. Captions on every image. Clean alignment. If
+the jury cannot see it in a screenshot, they cannot grade it.
+--- Screenshot 2026-04-24 at 2.13.34 PM.png ---
+Delivering to Google - a 10-12 minute pitch
+Google's audience has seen thousands of demos. The teams who stand out keep the demo at
+the centre and let the architecture and numbers back it up.
+Time budget
+Segment
+Open — cover + team/track
+Problem
+Solution + demo (the star of the show)
+Architecture + novelty + proof
+Security, scale, business impact
+Roadmap + ask + thank you
+Buffer for Q&A
+| Suggested time
+1 min
+1 min
+Slides
+1,3
+4
+3-4 min
+3 min
+2 min
+1 min
+Remaining
+5, 6
+7, 8, 9
+10, 11, 12
+13, 14
+-
+Common pitfalls to avoid
+• Leaving [square bracket] placeholders in the final deck — do a find for T' before
+submitting.
+• Using real client names, logos, PII, or client documents. Anonymise or use synthetic
+data — the hackathon rules require it.
+• Low-resolution or uncropped screenshots. Recapture at native resolution. Trim
+whitespace and sensitive UI.
+• Reading the slides aloud. The audience can read. Use slides as evidence; speak to the
+insight.
+• Ignoring security. A deck without a credible Security slide drops a full band on the rubric.
+Put real implementation detail on slide 10.
+--- Screenshot 2026-04-24 at 2.13.45 PM.png ---
+Pre-flight checklist (the day before)
+Deck
+Every [bracketed] placeholder is replaced.
+Screenshots are high-resolution, cropped, and annotated where useful.
+Numbers on slide 4 (problem) and slide 12 (impact) each have a stated assumption.
+Slide 13 contains one concrete ask from Google.
+--- Screenshot 2026-04-24 at 2.14.02 PM.png ---
+TCS^AI GOOGLE HACKATHON 2026
+[ Use Case Title ]
+One-line value proposition — what does your Agentic Al solution do, and for whom?
+• Track: [Gemini Enterprise / Vertex Al / CES]
+Team: [Team Name]
+Members: [Member 1], [Member 2], [Member 3]
+Presented to: Google | [DD Month 2026]
+Tata Consultancy Services • Cloud, Al and Data
+--- Screenshot 2026-04-24 at 2.14.10 PM.png ---
+AGENDA
+What we'll cover
+01
+Team & Track
+Who we are and the Google Al track we chose
+04
+Solution in Action
+Live demo / preview walkthrough
+tcs^Al Google Hackathon 2026
+02
+The Problem
+The business bottleneck we set out to solve
+05
+Architecture & Deployment
+GCP architecture, agentic design, proof of
+execution
+03
+Our Solution
+The GenAl prototype and what makes it
+different
+06
+Security, Scale & Impact
+Guardrails, enterprise-readiness, business
+value, roadmap
+02 / 14
+--- Screenshot 2026-04-24 at 2.14.18 PM.png ---
+01 • TEAM & TRACK
+Who we are and the track we chose
+[Photo]
+[Photo]
+[Photo]
+[Member 1 Name] [Member 2 Name] [Member 3 Name]
+[Role / BU]
+[Role / BU]
+[Role / BU]
+OUR TRACK
+[Track Name]
+e.g., Intelligent Search & Gemini Enterprise / Build with Vertex
+Al / Customer Engagement Suite
+WHY WE CHOSE IT
+• [Reason 1 — fit with the problem]
+:
+[Reason 2 — fit with Google Al capability]
+[Reason 3 — enterprise readiness]
+tes^Al Google Hackathon 2026
+03/14
+--- Screenshot 2026-04-24 at 2.14.25 PM.png ---
+02 • THE PROBLEM (Problem Fit • 20%)
+The business bottleneck we set out to solve
+wHo IS AffECTED
+[Persona • Industry • Function]
+Describe the user, the process today, and the pain point
+in 2-3 lines.
+Quantify where possible:
+[time spent / cost / errors / customer impact]
+[XX%]
+of [stakeholder] time lost to the
+current manual process
+[$XX M]
+annual cost / revenue leakage in
+the as-is state
+[XX hrs]
+average SLA / cycle time per
+request today
+tcs^Al Google Hackathon 2026
+04 / 14
+--- Screenshot 2026-04-24 at 2.14.43 PM.png ---
+03 • OUR SOLUTION • NOVELTY + PROBLEM FIT
+The Agentic Al prototype and what makes it different
+Elevator pitch: We built [what] that helps [whom] to [outcome] — powered by [Gemini / Vertex / CES
+components].
+Agentic, not a wrapper
+[Tool-use, sub-agent routing,
+autonomous multi-step reasoning]
+2
+Grounded in enterprise
+data
+[RAG / connectors / Vertex Al Search
+against synthetic corpus]
+3
+Enterprise-ready
+[Modular design, guardrails, HITL,
+deployable to prod]
+tcs^A| Google Hackathon 2026
+05 / 14
+--- Screenshot 2026-04-24 at 2.14.54 PM.png ---
+• 04. SOLUTION IN ACTION • EVIDENCE
+Preview / demo — a real user journey
+USER JOURNEY
+[ Insert screenshot: Preview Chat / Playground / App Engine UI ]
+[User raises the request in natural
+language]
+2
+• Reason
+[Agent routes / selects tools / retrieves
+datal
+3
+Act
+[Agent takes action / completes the
+workflow]
+Deliver
+[Grounded answer with citation / HITL
+handoff]
+Caption: (describe what this screen shows]
+tes^Al Google Hackathon 2026
+06 / 14
+--- Screenshot 2026-04-24 at 2.15.01 PM.png ---
+05 • ARCHITECTURE • IMPLEMENTATION + VALUE
+End-to-end GCP architecture
+[ Insert architecture diagram:
+User → Front-end → Agent (Gemini / Vertex ADK / Dialogflew CX) →
+Tools / Webhooks / Cloud Functions → Data Sources (Drive / BigQuerx./...) → Response ]
+tcs^Al Google Hackathon 2026
+KEY COMPONENTS
+Front-end / Channel
+[Web app / Chat UI / API]
+Agent Layer
+[Gemini Enterprise / Vertex ADK /
+Dialogflow CX]
+Tools & Webhooks
+[Cloud Functions / Cloud Run]
+Data / Grounding
+[Drive / SharePoint / BigQuery / Vector
+store]
+07 / 14
+--- Screenshot 2026-04-24 at 2.15.08 PM.png ---
+0 6
+• UNDER THE HOOD • NOVELTY
+Advanced capabilities beyond a GenAl wrapper
+Tool Use / Function Calling
+[Custom Python tools, function calling, dynamic
+extension invocation]
+Sub-agent Routing
+[Main agent hands off to specialist sub-agents based
+on intent]
+Multi-step Reasoning
+[Chain-of-thought, plan-and-execute, self-correction
+loops]
+Webhook Fulfillment
+[CX flows call Cloud Functions that return dynamic
+payloads]
+testAl Google Hackathon 2026
+08 / 14
+--- Screenshot 2026-04-24 at 2.15.15 PM.png ---
+•
+07 • PROOF OF EXECUTION • IMPLEMENTATION + EVIDENCE
+Screenshots that prove it runs end-to-end on GCP
+BUILD
+DEPLOY
+VALIDATE
+[ Insert screenshot ]
+[ Insert screenshot ]
+[ Insert screenshot ]
+Code / Agent Designer / CX Flow
+Terminal • Beloyd / adk deploy
+GCP Console • live test response
+Track 1: Agent Designer + Connectors + Preview - Track 2: adk run / deploy + Agent Engine playground - Track 3: CX flow + Webhook + App Engine URL
+tes^Al Google Hackathon 2026
+09 / 14
+--- Screenshot 2026-04-24 at 2.15.23 PM.png ---
+08 • SECURITY & GUARDRAILS • SECURITY
+Responsible Al - protecting enterprise data
+PIl & Data Privacy
+[System instructions block PII - synthetic data only • no client identifiers]
+Grounding & Citations
+[Vertex Al Grounding • RAG • mandatory source citations in responses]
+H
+Human-in-the-Loop
+[HITL confirmation for high-risk actions • explicit handoff to human agents]
+Domain Boundaries
+[Strict intent scoping • refusal patterns • prompt-injection mitigations]
+tes^Al Google Hackathon 2026
+10 / 14
+--- Screenshot 2026-04-24 at 2.15.48 PM.png ---
+: Chat
+× | •• Short listing Confírmati × TCS Al Google Hacke E H É Hack & | x
+< >
+C = tcscomprod-my.sharepoint.com/:p:/g/personal/692600_tcs_com/IQC|yAsLFXRFSZgrES07Dr5rAQyk4tP3TQEDJ60cLukg9Zs?e=TI0uVY
+TCS_AI_Google_Hackathon_2026_Template
+O Search
+File Home
+Insert Draw Design
+Transitions
+Animations
+Slide Show Review View Help
+v v
+v 12
+AABIU EVA
+Screenatiote thet prove:
+• Comments
+r v
+N° Catch up
+Q
+Q Present
+•
+•• 09 .SCALE & ENTERPRISE READINESS • LONG-TERM VALUE
+From prototype to production
+10
+11
+12
+13
+Modular architecture
+[Code organized by agent, tool, prompt, config — easy to extend]
+REUSE MAP
+Where else this solution can be
+applied
+Horizontal scale
+[Stateless services on Cloud Run • Agent Engine auto-scaling • connector-based
+data]
+Observability & Ops
+[Cloud Logging / Monitoring • evals - versioned prompts • CI/CD ready]
+•
+[Industry/ account 1]
+[Industry / account 2]|
+[Adjacent function / process]
+[Platform-wide reuse opportunity]
+tes^Al Google Hackathon 2026
+Slide 11 of 13
+English (U.S.)
+E
+ці М
+Give Feedback to Microsoft [ Notes g
+TES Al Google Hac...
+:
+Si
+89 Share v
+V
+O Editing V
+88 v
+11/14
+- + 75%
+23:45
+G
+--- Screenshot 2026-04-24 at 2.16.01 PM.png ---
+•
+10 • BUSINESS IMPACT
+Measurable value for the enterprise
+[XX%]
+Reduction in cycle time / AHT
+[$XX M]
+Annual cost saved / revenue
+unlocked
+[XX pp]
+CSAT / NPS uplift
+[XX x]
+Productivity gain per user /
+per workflow
+QUALITATIVE IMPACT
+Employee experience: [lower toil, higher judgement work]
+Customer experience: [faster, more accurate, 24x7]
+Risk posture: [auditability, reduced human error, consistent compliance]
+tcs^Al Google Hackathon 2026|
+12 / 14
+--- Screenshot 2026-04-24 at 2.16.20 PM.png ---
+Hi All TCS^AI Google Hackathon Participants,
+I hope all of you have started working on the PPT template that has been shared below. Please ensure that the PPT is ready by 27th April 2pm. Once its ready you can share it with me individually.
+Please find attached the following documents to support your preparation:
+• • TCS Al Google Hackathon 2026 Participant Guide (1).docx
+• •ICS Al Google Hackathon 2026 Template.pptx
+We request you to carefully review the Participant Guide before starting your presentation. Please ensure that:
+• The provided PPT template and format are used without any changes
+• The final PPT should be ready and submitted by 2:00 PM on 27th April
+Also keep yourself available on 29th Apr and 30th Apr to give your virtual presentation to the TCS SME's.
+We will be sharing the timings of the Presentation shortly.
+If you have any concerns or challenges let us know.
