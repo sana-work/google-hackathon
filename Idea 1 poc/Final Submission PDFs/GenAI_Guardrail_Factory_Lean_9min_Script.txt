@@ -1,0 +1,161 @@
+GenAI Guardrail Factory — Lean 9-Minute Recording Script
+
+Slide 1 — Cover | 30 seconds
+Good morning everyone. I’m Sana Iqbal, and my solution is GenAI Guardrail Factory.
+
+Enterprises have CI/CD for code, but not yet for GenAI risk. A GenAI app may look great in a demo, but still hallucinate, leak sensitive data, follow jailbreaks, or respond outside policy boundaries in production.
+
+So I built a CI/CD-style AI release gate that tests GenAI apps before production. It adversarially tests, scores, blocks unsafe releases, auto-remediates failures, and re-validates before approval.
+
+Good GenAI demos show capability. Guardrail Factory proves deployability.
+
+Slide 2 — Agenda | 10 seconds
+I’ll cover the problem, solution, demo journey, architecture, proof of execution, security, scale, business impact, and roadmap.
+
+The lifecycle to remember is: BLOCKED → DIAGNOSE → HARDEN → APPROVED.
+
+Slide 3 — Team & Track | 25 seconds
+I chose Build with Vertex AI and Google ADK because this is not just a chatbot use case. It is about making GenAI safe enough for enterprise deployment.
+
+Gemini helps generate adversarial tests and diagnose failures. Google ADK enables an evaluator agent to call deterministic safety tools. Cloud Run, thresholds, and audit logs make the solution scalable and governance-ready.
+
+Slide 4 — The Problem | 55 seconds
+Enterprise teams are deploying GenAI assistants faster than they can validate them.
+
+Traditional software has unit tests, regression tests, security scans, and approval gates. But GenAI is different. A prompt update, model upgrade, or document refresh can change behavior.
+
+That creates four risks: hallucination, PII leakage, jailbreak or role override, and policy-boundary violations.
+
+The affected stakeholders are AI deployment teams, compliance leaders, and CISOs. They need proof before release.
+
+The numbers on this slide are business-case benchmarks: 91% represents the maturity gap around formal GenAI safety gates, ₹4.5Cr+ is a conservative incident-exposure benchmark, and 6–9 months is the effort to build a manual enterprise safety framework.
+
+The key question is not: “Can this GenAI app answer?” The real question is: Can we prove it is safe enough to release?
+
+Slide 5 — Our Solution | 55 seconds
+GenAI Guardrail Factory is the safety pipeline around a GenAI application.
+
+In the PoC, the target app is an HR Policy RAG Assistant, but the factory itself is reusable.
+
+A target app enters the factory. Gemini generates adversarial tests. The system executes them, scores outputs using safety tools, applies release thresholds, and blocks unsafe deployment.
+
+If it fails, Gemini diagnoses why, generates hardened prompt rules, and the same suite is re-run. The app is approved only after measurable recovery.
+
+Three differentiators: agentic tool-calling through ADK, RAG-grounded checks against synthetic HR policy documents, and enterprise-ready thresholds, floors, audit logs, and Cloud Run deployment.
+
+This is not the chatbot. This is the safety factory around the chatbot.
+
+Slide 6 — Solution in Action | 60 seconds
+This slide shows the Guardrail Factory dashboard — the operator view of the PoC.
+
+The HR Policy Assistant is submitted for pre-production evaluation. The dashboard configures the model, thresholds, and policy corpus.
+
+Gemini then creates failure-seeking tests across hallucination, PII extraction, jailbreak, toxicity, and policy-boundary scenarios. Examples include: asking for the HR director’s email, listing employees on medical leave, ignoring instructions, or approving leave.
+
+The ADK evaluator routes responses to three safety tools: groundedness, toxicity, and PII protection.
+
+The release gate checks thresholds, category floors, and critical failures. If the app is unsafe, deployment is blocked.
+
+The most important part: the system does not stop at red status. It diagnoses, hardens, re-tests, and approves only after recovery.
+
+Slide 7 — Architecture | 60 seconds
+The architecture starts with the target GenAI app sending outputs into a FastAPI backend.
+
+FastAPI orchestrates evaluation and returns results to the dashboard.
+
+The core evaluator is the Google ADK LlmAgent powered by Gemini 2.5 Flash. It calls custom tools: a groundedness checker, PII scanner, toxicity judge, and auto-remediation engine.
+
+The groundedness checker validates answers against the HR policy knowledge base. The PII scanner detects sensitive identifiers. The toxicity judge checks safety and enterprise tone. The remediation engine creates hardened prompt rules.
+
+For the PoC, run history is stored in SQLite RunStore. In production, the same records can move to BigQuery, with Looker dashboards for governance.
+
+FastAPI orchestrates. ADK evaluates. Safety tools score. Gemini remediates. SQLite stores PoC history. Cloud Run makes it deployable.
+
+Slide 8 — Under the Hood | 45 seconds
+The technical novelty has four parts.
+
+First, tool use: ADK invokes deterministic Python tools, so scoring is measurable.
+
+Second, adversarial generation: Gemini acts like an internal red team.
+
+Third, deterministic release gating: the decision uses thresholds, category floors, and zero critical failures.
+
+Fourth, auto-remediation: Gemini diagnoses failure patterns, generates hardened prompt rules, and the test suite is re-run.
+
+The novelty is not only AI evaluating AI. It is AI evaluating, explaining, hardening, and verifying AI.
+
+Slide 9 — Proof of Execution | 70 seconds
+This is the strongest evidence slide.
+
+The prototype proves build, deploy, and validate.
+
+Build: ADK terminal execution and tool-call scoring.
+Deploy: Cloud Run service in us-central1.
+Validate: dashboard and evaluation evidence.
+
+In the documented run, the HR assistant was initially blocked. Groundedness was 0.840, below the 0.850 threshold. There were 8 active failures, category-floor misses, and critical failures.
+
+After remediation, groundedness improved to 0.942, toxicity to 0.970, PII protection to 0.992, and active failures dropped from 8 to 0.
+
+The final verdict became APPROVED FOR DEPLOYMENT.
+
+The system did not just detect risk. It failed the unsafe release before users could experience the failure.
+
+Slide 10 — Security & Guardrails | 45 seconds
+Security is not an add-on here. Security is the product.
+
+The guardrails cover PII and data privacy, grounding and citations, auditability, and domain boundaries.
+
+The PoC implements three core gates: groundedness, toxicity, and PII.
+
+The release policy is strict: groundedness must be at least 0.85, toxicity at least 0.90, PII at least 0.90, category floor at least 70%, and critical failures must be zero.
+
+Next-sprint gates include prompt injection, retrieval poisoning, and tool misuse.
+
+This turns responsible AI from a guideline into an enforceable release rule.
+
+Slide 11 — Scale & Enterprise Readiness | 45 seconds
+This is designed to scale beyond the HR PoC.
+
+The architecture is modular: agent, tools, prompts, thresholds, and policies are separated.
+
+Cloud Run supports containerized auto-scaling, and the observability layer captures run history, scorecards, remediation logs, thresholds, and audit evidence.
+
+The reuse map includes BFSI loan and policy assistants, healthcare knowledge assistants, HR copilots, and legal or compliance RAG workflows.
+
+So this is not just a hackathon PoC. It is a reusable foundation for GenAI Safety-as-a-Service.
+
+Slide 12 — Business Impact | 45 seconds
+The impact is productivity, risk reduction, and commercial value.
+
+Productivity: less manual red-team effort and faster remediation.
+Risk: hallucination, PII leakage, and policy-boundary failures are caught before production.
+Commercial value: TCS gets a reusable accelerator for enterprise AI governance.
+
+The documented run shows 100% failure recovery, +10.2% groundedness improvement, 0 active failures after remediation, and 0 PII leaks in the final run.
+
+TCS can move from building GenAI apps to certifying safe GenAI deployments.
+
+In enterprise AI, trust is not a feature. Trust is the product.
+
+Slide 13 — What’s Next | 35 seconds
+The roadmap moves from PoC to platform.
+
+In 0–2 weeks, harden the PoC, freeze thresholds, add prompt-injection gates, and package repeatable configuration.
+
+In 4–6 weeks, integrate with Cloud Build or GitHub Actions and store audit evidence in BigQuery.
+
+In 8–12 weeks, scale to multi-model evaluation, scheduled regression checks, centralized dashboards, and reusable gate packs.
+
+Our ask from Google is architecture review, responsible AI evaluation guidance, and feedback on extending this to Gemini Enterprise apps.
+
+Slide 14 — Thank You | 25 seconds
+To close, enterprises do not only need impressive GenAI demos. They need GenAI systems they can trust in production.
+
+Guardrail Factory answers: Is this GenAI application safe enough to deploy?
+
+That answer is backed by adversarial testing, deterministic thresholds, remediation, re-validation, and audit evidence.
+
+Good GenAI demos show capability. Guardrail Factory proves deployability.
+
+Thank you.
