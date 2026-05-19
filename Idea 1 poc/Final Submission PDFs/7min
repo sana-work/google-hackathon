@@ -212,12 +212,6 @@ The documented run shows **100% failure recovery**, **+10.2% groundedness improv
 
 The roadmap moves from PoC to platform.
 
-In **0–2 weeks**, harden the PoC and add prompt-injection gates.
-
-In **4–6 weeks**, integrate with Cloud Build or GitHub Actions and store audit evidence in BigQuery.
-
-In **8–12 weeks**, scale to multi-model evaluation, scheduled regression checks, centralized dashboards, and reusable gate packs.
-
 Our ask from Google is architecture review, responsible AI guidance, and feedback on extending this to Gemini Enterprise apps.
 
 ---
@@ -231,8 +225,6 @@ To close, enterprises do not only need impressive GenAI demos.
 They need GenAI systems they can trust in production.
 
 Guardrail Factory answers: **Is this GenAI application safe enough to deploy?**
-
-That answer is backed by adversarial testing, thresholds, remediation, re-validation, and audit evidence.
 
 **Good GenAI demos show capability. Guardrail Factory proves deployability.**
 
