@@ -1,0 +1,249 @@
+You’re right. The video should **not start with ADK or track choice**. It should start with **your intro + business problem**, then move to solution and technical proof. Also, do **not speak on every slide**. Use some slides only as visual support.
+
+Use this revised **6.5-minute voiceover script**.
+
+---
+
+# Revised 6.5-Minute Video Script
+
+## Focus: Business Problem → Solution → Demo → Proof → Value
+
+## Slide 1 — Cover
+
+**Time: 25 sec**
+
+Hi, I am **Sana Iqbal**, working as a **GenAI Solution Architect in the AI Services team, BFSI unit**.
+
+My idea is **GenAI Guardrail Factory**.
+
+The business problem I am solving is simple but critical:
+
+**Enterprises are deploying GenAI applications faster than they can prove those applications are safe for production.**
+
+A GenAI app may pass a demo, but still fail later after a prompt change, model update, or document refresh.
+
+So the real question is not just, **“Can the GenAI app answer?”**
+
+The real question is:
+
+**“Can we prove this GenAI app is safe enough to release?”**
+
+---
+
+## Slide 4 — Business Problem
+
+**Time: 1 min 15 sec**
+
+Today, in many enterprise environments, GenAI validation is still handled through manual testing, sample prompts, SME reviews, and one-time security checks.
+
+That approach may work for a small demo, but it does not scale for production.
+
+In production, users ask unpredictable questions. They may ask for sensitive information. They may try jailbreak prompts. They may ask the assistant to approve something it is not authorized to approve. And sometimes the model may simply hallucinate an answer that sounds confident but is not grounded in enterprise documents.
+
+This creates four major risks: **hallucination, PII leakage, jailbreak or role override, and policy-boundary violations**.
+
+The people affected are **AI deployment teams, compliance leaders, security teams, CISOs, and business owners**. They all need evidence before a GenAI system goes live.
+
+In BFSI especially, this matters because trust, auditability, privacy, and governance are not optional. A GenAI release cannot depend only on “it worked during demo.”
+
+It needs a repeatable safety gate.
+
+That is the gap this solution addresses.
+
+---
+
+## Slide 5 — Solution
+
+**Time: 1 min 10 sec**
+
+The solution is **GenAI Guardrail Factory**.
+
+It is a **pre-production safety release gate** for GenAI applications.
+
+In this PoC, the target application is an **HR Policy RAG Assistant** using synthetic HR policy documents. But that assistant is only the test vehicle.
+
+The actual product is the **Guardrail Factory** around it.
+
+The factory takes a GenAI app and runs it through a controlled safety process.
+
+First, Gemini generates adversarial test cases.
+Then the system executes those tests against the target app.
+Then Google ADK routes the responses to safety tools for groundedness, toxicity, and PII checks.
+Then a deterministic release gate decides whether the app should be blocked or approved.
+
+If the app fails, Gemini diagnoses the failure, hardens the prompt, and the same test suite is re-run.
+
+So the solution does not only detect risk.
+
+It follows the full lifecycle:
+
+**Block → Diagnose → Harden → Re-test → Approve.**
+
+That is what makes it different from a normal chatbot or dashboard.
+
+---
+
+## Slide 6 — Dashboard / Demo Workflow
+
+**Time: 55 sec**
+
+This dashboard is the operator view of the PoC.
+
+It shows how an enterprise team would run a safety evaluation before release.
+
+The app is submitted for evaluation. The operator can see the model, region, run mode, thresholds, and the current safety posture.
+
+Gemini generates adversarial prompts across categories such as hallucination, PII extraction, jailbreak attempts, toxicity, and policy-risk scenarios.
+
+For example, the system tests questions like asking for employee details, asking the assistant to ignore instructions, or requesting an unauthorized policy action.
+
+The ADK evaluator then routes each response to the safety tools.
+
+If any threshold fails, if a category drops below the pass floor, or if a critical failure appears, deployment is blocked.
+
+Then the system moves into auto-remediation, hardens the prompt, re-runs the tests, and approves only after recovery.
+
+This makes responsible AI visible, measurable, and actionable.
+
+---
+
+## Slide 7 — Architecture
+
+**Time: 55 sec**
+
+At a high level, the architecture has five layers.
+
+The target GenAI app sends outputs into a **FastAPI orchestration layer**.
+
+The evaluator is a **Google ADK LlmAgent powered by Gemini 2.5 Flash**.
+
+The agent calls deterministic safety tools: a groundedness checker, PII scanner, toxicity judge, and auto-remediation engine.
+
+The groundedness check uses **ChromaDB and synthetic HR policy documents** to verify whether the answer is supported by source content.
+
+For the PoC, run history is stored in **SQLite RunStore**. This keeps the prototype lightweight and proves the audit-trail concept.
+
+In a production version, the same run records can move to **BigQuery**, and **Looker** can be used for governance dashboards.
+
+So the simple architecture story is:
+
+**FastAPI orchestrates. ADK evaluates. Safety tools score. Gemini remediates. SQLite stores PoC history. Cloud Run makes it deployable.**
+
+---
+
+## Proof of Execution / Metrics Slide
+
+**Time: 1 min 5 sec**
+
+This is the most important proof point.
+
+The solution was not only designed; it was executed.
+
+The evidence shows three things: **build, deploy, and validate**.
+
+Build: ADK terminal execution and tool-call scoring.
+Deploy: Cloud Run service running in `us-central1`.
+Validate: dashboard evidence showing release-gate results.
+
+In the documented PoC run, the first evaluation was blocked.
+
+Groundedness was **0.840**, below the required threshold of **0.850**.
+There were **8 active failures**.
+The release gate correctly returned **Deployment Blocked**.
+
+After remediation, the system generated hardened prompt rules and re-ran the evaluation.
+
+Groundedness improved to **0.942**.
+Toxicity improved to **0.970**.
+PII protection improved to **0.992**.
+Active failures reduced from **8 to 0** in the documented PoC run.
+
+I will not claim that every real-world system will always show 100% recovery. The important point is that the PoC proves a repeatable safety workflow:
+
+**unsafe release blocked, failure diagnosed, prompt hardened, tests re-run, and approval given only after measurable improvement.**
+
+---
+
+## Google Model Armor Comparison Slide
+
+**Time: 45 sec**
+
+A natural question is: how is this different from **Google Model Armor**?
+
+Model Armor is a runtime security layer. It protects live prompts, responses, documents, and agent interactions from risks such as prompt injection, jailbreaks, sensitive data leakage, harmful content, and malicious URLs.
+
+Guardrail Factory works earlier in the lifecycle.
+
+Model Armor asks:
+
+**“Is this prompt or response safe right now?”**
+
+Guardrail Factory asks:
+
+**“Is this GenAI application safe enough to release?”**
+
+So they are complementary, not competing.
+
+Model Armor is the runtime shield. Guardrail Factory is the pre-production safety gate.
+
+A simple way to remember it is:
+
+**Model Armor protects the live road. Guardrail Factory decides whether the vehicle is safe enough to enter the road.**
+
+---
+
+## Security, Scale, and Business Value
+
+**Time: 1 min**
+
+The solution supports four responsible AI guardrails.
+
+First, **PII and data privacy**, through multi-pattern PII detection.
+
+Second, **grounding and citations**, by checking answers against enterprise source documents.
+
+Third, **auditability**, by storing scores, thresholds, verdicts, remediation history, timestamps, and operator evidence.
+
+Fourth, **domain boundaries**, by rejecting role overrides, unauthorized approvals, and unsupported responses.
+
+The release policy is deterministic: groundedness must meet the threshold, toxicity must pass, PII protection must pass, category floors must pass, and critical failures must be zero.
+
+The solution can help **AI deployment teams, compliance teams, risk teams, security teams, and business owners**.
+
+From a business-value perspective, it reduces manual red-team effort, catches risk before production, creates audit-ready evidence, and gives TCS a reusable GenAI Safety-as-a-Service accelerator.
+
+It can be reused across BFSI, HR, healthcare, legal, compliance, customer support, and internal enterprise copilots.
+
+In enterprise AI:
+
+**Trust is not a feature. Trust is the product.**
+
+---
+
+## Closing Slide
+
+**Time: 30 sec**
+
+To close, enterprises do not only need impressive GenAI demos.
+
+They need GenAI systems they can trust in production.
+
+GenAI Guardrail Factory gives teams a measurable answer to the question:
+
+**Is this GenAI application safe enough to deploy?**
+
+That answer is backed by adversarial testing, deterministic thresholds, remediation, re-validation, and audit evidence.
+
+**Good GenAI demos show capability. Guardrail Factory proves deployability.**
+
+Thank you.
+
+---
+
+# Slides to speak on only
+
+Speak mainly on:
+
+**Slide 1 → Slide 4 → Slide 5 → Slide 6 → Slide 7 → Proof Metrics → Model Armor → Security/Impact → Closing**
+
+Do **not** spend time explaining agenda, team/track, or roadmap in detail. Use them only as visual transitions.
