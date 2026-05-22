@@ -1,0 +1,17 @@
+Scan this repository and summarize current observability/logging.
+
+Find:
+- all log statements
+- error handling
+- metrics/tracing if any
+- Kafka/message logging if any
+- API request/response logging
+- agent, LLM, RAG, or tool logging if any
+
+For each, provide:
+File | Component | What is logged | Fields captured | Missing observability fields | PII/security risk | Recommendation
+
+Check specifically whether these are present:
+correlation_id, event_id, event_type, timestamp, application_id, environment, service_name, component, status, latency_ms, error_code, request_id, agent_id, tool_id, rag_id, model_name, token counts.
+
+Also identify gaps and suggest P0/P1/P2 changes to make this repo observability-ready.
