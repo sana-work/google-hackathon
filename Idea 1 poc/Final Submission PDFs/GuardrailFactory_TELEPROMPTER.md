@@ -30,19 +30,6 @@ behind everything you're about to see.
 
 ---
 
-## ▸ SLIDE 2 — AGENDA
-
-In the next few minutes I'll walk you through
-
-the problem,
-the solution,
-a live demo,
-the architecture on Google Cloud,
-
-and the proof that it actually runs.
-
----
-
 ## ▸ SLIDE 3 — TEAM & TRACK
 
 And quickly about me —
@@ -56,18 +43,6 @@ and production-readiness aren't nice-to-haves —
 
 they're the difference between a release going out,
 and a release getting stopped.
-
-We built this on the Build with Vertex AI track,
-using Google ADK.
-
-And the reason is right here:
-
-enterprise GenAI needs a repeatable safety release gate
-before production —
-not one-time manual testing.
-
-Gemini can generate adversarial tests and diagnose failures,
-and ADK lets us run deterministic, tool-based checks.
 
 So the question we keep asking — [PAUSE]
 "Can this app answer?" —
@@ -177,7 +152,6 @@ Three things make this different.
 
 **It's agentic** — a Google ADK agent
 actively calls tools to score the app,
-instead of filtering text.
 
 **It's grounded** — every check runs
 against your own source documents.
@@ -196,13 +170,11 @@ until safety is proven.
 It's AI evaluating, explaining, hardening,
 and verifying AI** —
 
-and in a moment, you'll see it run.
-
 ---
 
 ## ▸ SLIDE 6 — SOLUTION IN ACTION
 
-This is the working dashboard —
+This is the working dashboard image—
 the operator's view of a real run.
 
 A team configures the model,
@@ -218,12 +190,6 @@ PII extraction,
 jailbreak attempts,
 toxicity,
 and policy-risk scenarios.
-
-In HR terms, that's checking
-whether the assistant leaks an employee's details,
-obeys a malicious instruction,
-or hands out an approval
-it was never authorized to give.
 
 Google ADK then routes every response
 to the right tool.
@@ -355,12 +321,6 @@ end-to-end on Google Cloud.
 
 These screenshots walk the real path:
 
-documents loaded and indexed,
-the RAG context built,
-Gemini generating adversarial prompts,
-the ADK agent calling each safety tool,
-the gate applying thresholds,
-
 a failure triggering hardened guidance from Gemini,
 and a re-run to confirm recovery.
 
@@ -370,7 +330,7 @@ a working pipeline.**
 
 ---
 
-## ▸ SLIDE 13 — THE PROOF METRICS
+## ▸ SLIDE 10 — THE PROOF METRICS
 ### (Slow down. This is the moment. Let every number land.)
 
 Here's what that run produced.
@@ -408,7 +368,7 @@ evidence-backed pass.
 
 ---
 
-## ▸ SLIDE 10 — MODEL ARMOR COMPARISON
+## ▸ SLIDE 11 — MODEL ARMOR COMPARISON
 
 The natural question:
 how is this different from Google Model Armor?
@@ -445,24 +405,11 @@ You want both.
 
 ---
 
-## ▸ SLIDES 11 & 12 — SECURITY, SCALE & VALUE
+## ▸ SLIDES 12 & 13 — SECURITY, SCALE & VALUE
 ### (Keep tight. Fold into the close if you're near 6:50.)
 
-Underneath, four responsible-AI guardrails hold the line:
-
-data privacy,
-through multi-pattern PII detection;
-
-grounding,
-through source-document checks;
-
-auditability —
-every score, threshold, verdict, and timestamp
-stored as evidence;
-
-and domain boundaries,
-that reject role overrides
-and unauthorized approvals.
+Security is not feature in this application,
+Security is the application.
 
 And because the architecture is modular
 and runs on Cloud Run,
@@ -475,7 +422,7 @@ support bots,
 and regulated RAG workflows.
 
 For TCS, that's a reusable
-GenAI Safety-as-a-Service accelerator.
+**GenAI Safety-as-a-Service accelerator.**
 
 ---
 
