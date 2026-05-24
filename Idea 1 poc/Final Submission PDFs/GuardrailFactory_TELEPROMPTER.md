@@ -8,6 +8,11 @@
 
 Hi everyone.
 
+Welcome to GenAI Guardrail Factory —
+
+our answer to a question
+every enterprise is quietly worried about.
+
 So we've all seen how fast GenAI assistants
 are going from prototype to production these days.
 
@@ -20,9 +25,8 @@ the moment you tweak a prompt,
 swap a model version, [PAUSE]
 or refresh a document.
 
-That's exactly the tension behind today's idea:
-
-**GenAI Guardrail Factory.**
+That's exactly the tension
+behind everything you're about to see.
 
 ---
 
