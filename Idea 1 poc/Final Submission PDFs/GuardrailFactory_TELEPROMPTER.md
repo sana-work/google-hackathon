@@ -158,39 +158,51 @@ running on synthetic HR documents.
 But I want to be clear — [PAUSE]
 
 **the HR assistant is just the test vehicle.
-The product is the gate around it.**
+The product is the gate around it** —
 
-That gate is designed to wrap any GenAI app.
+designed to wrap any GenAI app.
 
-Think of it as a safety inspection line,
-before a vehicle is allowed onto the road.
+Now, plenty of tools can scan a model.
+What makes this different comes down to three things.
 
-The app gets submitted for evaluation.
+**First — it's agentic, not a wrapper.** [PAUSE]
 
-Gemini then generates adversarial test cases —
-not friendly demo prompts,
-but attacks built to find the cracks.
+A Google ADK evaluator agent actively *calls* tools
+to score groundedness, toxicity, and PII —
 
-Each response is scored by dedicated safety tools —
-for groundedness, toxicity, and PII risk.
+it doesn't just pass text through a filter.
 
-And a deterministic release gate decides: [PAUSE]
-block, or approve.
+**Second — it's grounded in enterprise data.**
 
-Here's what makes it more than a scanner.
+Every check runs against your own source documents,
+so a "safe" verdict is backed by real evidence,
+not the model's opinion of itself.
 
-If the app fails,
-we don't stop at a red light.
+**Third — it's built for the enterprise.**
 
-Gemini diagnoses why it failed,
-hardens the prompt to close that gap,
-and re-runs the exact same test suite.
+Configurable thresholds,
+category floors,
+critical-failure limits,
+audit logs,
+and Cloud Run deployment.
 
-So the full lifecycle is: [PAUSE]
-**block, diagnose, harden, re-test, approve.**
+And here's the real novelty: [PAUSE]
 
-It doesn't just flag risk —
-it drives a measurable recovery.
+it doesn't stop at flagging risk.
+
+It diagnoses the failure,
+hardens the app,
+and re-tests —
+
+until safety is proven, or the release stays blocked.
+
+So this isn't AI evaluating AI.
+
+**It's AI evaluating, explaining, hardening,
+and verifying AI.**
+
+In a moment I'll show you exactly
+what that looks like in a real run.
 
 ---
 
@@ -333,8 +345,12 @@ to produce the same decision every time —
 consistent, traceable, audit-ready.
 
 **So the novelty isn't "AI evaluating AI." [PAUSE]
-It's AI evaluating, explaining, hardening, and verifying AI —
-inside one repeatable release process.**
+It's that the verdict is governed —
+the same inputs always produce the same decision,
+with a full evidence trail behind it.**
+
+That's what turns a clever demo
+into something a risk team can actually sign off on.
 
 ---
 
