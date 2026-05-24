@@ -1,31 +1,51 @@
 # GenAI Guardrail Factory — Final Demo Package
 **Presenter:** Sana Iqbal · GenAI Solution Architect, AI Services (BFSI) · TCS^AI Google Hackathon 2026
-**Target runtime:** 6 min 25 sec spoken (safe buffer under the 7-minute cap)
+**Target runtime:** ~6 min 40 sec spoken (under the 7-minute cap; condense slides 11–12 if you need more buffer)
 
 ---
 
-## 1. Final Speaking Script (6:25)
+## 1. Final Speaking Script (~6:40)
 
 > Delivery notes are in *italics* — don't read them aloud. Bolded lines are the ones to land with emphasis and a short pause after.
 > Pace target ≈ 140 words/min. If you tend to speed up when nervous, the buffer absorbs it.
 
-### SLIDE 1 — Cover *(0:00 – 0:40)*
+### SLIDE 1 — Cover *(0:00 – 0:18)*
 
-Hi everyone — I'm Sana Iqbal, and I'm a GenAI Solution Architect on the AI Services team in our BFSI unit. So I spend my days where responsible AI, privacy, and production-readiness aren't nice-to-haves — they're the difference between a release going out and a release getting stopped.
+*(Title's on screen — don't read it. Open warm and easy, like you're talking, not pitching.)*
+
+Hi everyone. So we've all seen how fast GenAI assistants are going from prototype to production these days. The catch is, a model that looks brilliant in a demo can quietly start behaving differently the moment you tweak a prompt, swap a model version, *(half-second pause)* or refresh a document.
 
 That's exactly the tension behind today's idea: **GenAI Guardrail Factory**.
 
-Here's the situation every enterprise is in right now. We're pushing GenAI assistants from prototype straight into production — fast. But a model that dazzles in a demo can quietly change behavior the moment you tweak a prompt, swap a model version, or refresh a document.
-
-So the question we keep asking — *"Can this app answer?"* — turns out to be the wrong one.
-
-**The real question is: can we prove it's safe enough to release?**
-
-*(pause, advance to Slide 4)*
+*(advance to Slide 2)*
 
 ---
 
-### SLIDE 4 — The Business Problem *(0:40 – 1:50)*
+### SLIDE 2 — Agenda *(0:18 – 0:26)*
+
+*(Quick orient — don't read every line on the slide.)*
+
+In the next few minutes I'll walk you through the problem, the solution, a live demo, the architecture on Google Cloud, and the proof that it actually runs.
+
+*(advance to Slide 3)*
+
+---
+
+### SLIDE 3 — Team & Track *(0:26 – 0:55)*
+
+*(Your intro lands here, on the slide that actually shows your name and track.)*
+
+And quickly about me — I'm **Sana Iqbal**, a GenAI Solution Architect on the AI Services team in our BFSI unit. So I spend my days where responsible AI, privacy, and production-readiness aren't nice-to-haves — they're the difference between a release going out and a release getting stopped.
+
+We built this on the **Build with Vertex AI** track using **Google ADK**. And the reason is right here: enterprise GenAI needs a *repeatable* safety release gate before production — not one-time manual testing. Gemini can generate adversarial tests and diagnose failures, and ADK lets us run deterministic, tool-based checks.
+
+So the question we keep asking — *"Can this app answer?"* — turns out to be the wrong one. **The real question is: can we prove it's safe enough to release?**
+
+*(advance to Slide 4)*
+
+---
+
+### SLIDE 4 — The Business Problem *(0:55 – 2:05)*
 
 Today, most teams answer that question by hand. They try a few sample prompts, ask a subject-matter expert to eyeball the responses, run a security check or two, and then someone makes a judgment call.
 
@@ -185,21 +205,21 @@ Thank you.
 
 | Slide | Role in talk | Speak? | Time | Running total |
 |-------|--------------|--------|------|---------------|
-| 1 Cover | Intro + problem hook | ✅ Full | 0:40 | 0:40 |
-| 2 Agenda | Visual only | ⏭️ Silent transition | — | 0:40 |
-| 3 Team & Track | Visual only (covered in intro) | ⏭️ Silent transition | — | 0:40 |
-| 4 Problem | Business problem + why manual fails | ✅ Full | 1:10 | 1:50 |
-| 5 Solution | What it is + lifecycle | ✅ Full | 1:00 | 2:50 |
-| 6 Demo | Operator workflow | ✅ Full | 0:55 | 3:45 |
-| 7 Architecture | Google pipeline end-to-end | ✅ Full | 1:00 | 4:45 |
-| 8 Under the Hood | Hybrid design / novelty | ✅ Brief | 0:25 | 5:10 |
-| 9 Proof of Execution | "It really ran" screenshots | ✅ Brief | 0:25 | 5:35 |
-| **13 Proof Metrics** | **The numbers (climax)** | ✅ **Full — money slide** | 0:30 | 6:05 |
-| 10 Model Armor | Differentiation | ✅ Full | 0:30 | 6:35* |
+| 1 Cover | Warm hook (Option B) | ✅ Brief | 0:18 | 0:18 |
+| 2 Agenda | One orienting line | ✅ One line | 0:08 | 0:26 |
+| 3 Team & Track | Intro + name + track + "real question" | ✅ Full | 0:29 | 0:55 |
+| 4 Problem | Business problem + why manual fails | ✅ Full | 1:10 | 2:05 |
+| 5 Solution | What it is + lifecycle | ✅ Full | 1:00 | 3:05 |
+| 6 Demo | Operator workflow | ✅ Full | 0:55 | 4:00 |
+| 7 Architecture | Google pipeline end-to-end | ✅ Full | 1:00 | 5:00 |
+| 8 Under the Hood | Hybrid design / novelty | ✅ Brief | 0:25 | 5:25 |
+| 9 Proof of Execution | "It really ran" screenshots | ✅ Brief | 0:25 | 5:50 |
+| **13 Proof Metrics** | **The numbers (climax)** | ✅ **Full — money slide** | 0:30 | 6:20 |
+| 10 Model Armor | Differentiation | ✅ Full | 0:30 | 6:50* |
 | 11 Security | Guardrails | ✅ Condensed | folded | — |
 | 12 Scale & Reuse | Reuse map | ⏭️ Mostly visual | folded | — |
 | 14 Roadmap | Skip per brief | ⏭️ Silent / skip | — | — |
-| 15 Close | Final line | ✅ 15 sec | 0:15 | ~6:25 |
+| 15 Close | Final line | ✅ 15 sec | 0:15 | ~6:40 |
 
 > **\* Important timing note:** Slides 11–13 of the *deck* are out of narration order. Your strongest proof (the 0.840→0.942, 8→0 numbers) is physically on **deck slide 13**, not 11/12. Two clean options:
 >
@@ -207,7 +227,7 @@ Thank you.
 >
 > **Option B: reorder the deck** so the metrics slide (currently 13) sits right after Proof of Execution (9). If you want this, say the word and I'll move it in the file.
 >
-> The script above is written for **Option A flow** but I placed the metrics block before Model Armor for emphasis — **rehearse one fixed order and lock it.** Don't improvise the sequence on recording day.
+> The script above is written for **Option A flow** but I placed the metrics block before Model Armor for emphasis — **rehearse one fixed order and lock it.** Don't improvise the sequence on recording day. At ~6:50 to the end of Model Armor you're close to the cap, so keep slides 11–12 tight (or fold them into the close) to land comfortably under 7:00.
 
 ---
 
