@@ -152,61 +152,51 @@ or this release is blocked.
 
 That's what GenAI Guardrail Factory is:
 
-a pre-production safety release gate
-for enterprise GenAI applications.
+a **CI/CD-style safety release gate**
+for enterprise GenAI applications —
 
-For this proof-of-concept,
-my target app was an HR Policy assistant,
-running on synthetic HR documents.
+the same way code passes automated tests
+before it ships,
 
-But I want to be clear — [PAUSE]
+your GenAI app has to pass safety
+before it goes live.
+
+For the proof-of-concept,
+my target app was an HR Policy assistant
+on synthetic HR documents —
+
+but I want to be clear: [PAUSE]
 
 **the HR assistant is just the test vehicle.
 The product is the gate around it** —
 
 designed to wrap any GenAI app.
 
-Now, plenty of tools can scan a model.
-What makes this different comes down to three things.
+Plenty of tools can scan a model.
+Three things make this different.
 
-**First — it's agentic, not a wrapper.** [PAUSE]
+**It's agentic** — a Google ADK agent
+actively calls tools to score the app,
+instead of filtering text.
 
-A Google ADK evaluator agent actively *calls* tools
-to score groundedness, toxicity, and PII —
+**It's grounded** — every check runs
+against your own source documents.
 
-it doesn't just pass text through a filter.
-
-**Second — it's grounded in enterprise data.**
-
-Every check runs against your own source documents,
-so a "safe" verdict is backed by real evidence,
-not the model's opinion of itself.
-
-**Third — it's built for the enterprise.**
-
-Configurable thresholds,
-category floors,
-critical-failure limits,
-audit logs,
+**And it's enterprise-ready** —
+configurable thresholds, audit logs,
 and Cloud Run deployment.
 
-And here's the real novelty: [PAUSE]
+The real novelty? [PAUSE]
+It doesn't stop at flagging risk —
 
-it doesn't stop at flagging risk.
+it hardens the app and re-tests,
+until safety is proven.
 
-It diagnoses the failure,
-hardens the app,
-and re-tests —
+**So this isn't AI evaluating AI.
+It's AI evaluating, explaining, hardening,
+and verifying AI** —
 
-until safety is proven, or the release stays blocked.
-
-So this isn't AI evaluating AI.
-
-**It's AI evaluating, explaining, hardening,
-and verifying AI.**
-
-In a moment I'll show you exactly
-what that looks like in a real run.
+and in a moment, you'll see it run.
 
 ---
 
