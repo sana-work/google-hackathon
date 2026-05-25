@@ -1,6 +1,6 @@
 # GUARDRAIL FACTORY — TELEPROMPTER SCRIPT
 ### Read straight down. Each line = one breath. [PAUSE] = beat. ▸ = click to next slide.
-### Target ~6:40. Don't rush the bold lines — let them land.
+### Target ~6:05–6:15 spoken (trimmed). Don't rush the bold lines — let them land.
 
 ---
 
@@ -55,29 +55,22 @@ can we prove it's safe enough to release?**
 
 ## ▸ SLIDE 4 — THE PROBLEM
 
-Today, most teams answer that question by hand.
+Today, most teams answer that by hand —
+a few prompts, an expert eyeballing responses,
+a security check, a judgment call.
 
-They try a few sample prompts,
-ask an expert to eyeball the responses,
-run a security check or two,
-
-and then someone makes a judgment call.
-
-That's fine for a controlled demo. [PAUSE]
+Fine for a demo. [PAUSE]
 Production is a different world.
 
-In production, nobody follows your script.
+There, nobody follows your script.
+People probe for sensitive data,
+override instructions,
 
-People ask edge-case questions.
-They probe for sensitive data.
-They try to override instructions.
+ask the assistant to approve things
+it has no authority to approve —
 
-They'll ask the assistant to approve something
-it has no authority to approve.
-
-And every so often,
-the model answers with total confidence —
-while being completely ungrounded in your actual documents.
+and sometimes it answers with total confidence,
+while being completely ungrounded in your documents.
 
 That opens four doors you can't leave open: [PAUSE]
 
@@ -86,40 +79,28 @@ PII leakage,
 jailbreak or role-override,
 and policy-boundary violations.
 
-And this isn't just a developer problem.
+And this isn't just a developer problem —
 
-When one of those slips through,
-it lands on compliance leaders,
-risk and security teams,
-CISOs,
+when one slips through, it lands on
+compliance, risk, the CISO,
 
 and the business owner whose name is on the release.
 
-In BFSI, that's not theoretical —
-governance and auditability are mandatory.
-
+In BFSI, that's not theoretical.
 "It worked when we tested it"
 is not an audit trail.
 
-The hard part is that the manual approach
-simply doesn't scale.
+And doing this by hand doesn't scale —
 
-**Standing up a safety framework by hand
-takes six to nine months —**
+**a safety framework takes six to nine months,**
+and every prompt or model change
+forces you to start over.
 
-and then every prompt change, model upgrade,
-or document refresh
-forces you to do it all over again.
-
-So what enterprises are missing
-isn't another assistant.
+So what's missing isn't another assistant.
 
 It's a release gate —
-
-something that gives a clear, repeatable verdict:
-
-this app is safe to move forward,
-or this release is blocked.
+a clear, repeatable verdict:
+safe to ship, or blocked.
 
 ---
 
@@ -130,89 +111,67 @@ That's what GenAI Guardrail Factory is:
 a **CI/CD-style safety release gate**
 for enterprise GenAI applications —
 
-the same way code passes automated tests
-before it ships,
+just as code passes automated tests before it ships,
+your GenAI app must pass safety before it goes live.
 
-your GenAI app has to pass safety
-before it goes live.
+My proof-of-concept wraps an HR Policy assistant —
+but to be clear: [PAUSE]
 
-For the proof-of-concept,
-my target app was an HR Policy assistant
-on synthetic HR documents —
-
-but I want to be clear: [PAUSE]
-
-**the HR assistant is just the test vehicle.
+**the assistant is just the test vehicle.
 The product is the gate around it** —
-
 designed to wrap any GenAI app.
 
 Plenty of tools can scan a model.
-Three things make this different.
+Three things make this different:
 
-**It's agentic** — a Google ADK agent
-actively calls tools to score the app,
+**it's agentic** — a Google ADK agent
+actively calls tools to score the app;
 
-**It's grounded** — every check runs
-against your own source documents.
+**it's grounded** — every check runs
+against your own source documents;
 
-**And it's enterprise-ready** —
-configurable thresholds, audit logs,
-and Cloud Run deployment.
+**and it's enterprise-ready** —
+thresholds, audit logs, Cloud Run.
 
-The real novelty? [PAUSE]
+But the real novelty? [PAUSE]
 It doesn't stop at flagging risk —
-
-it hardens the app and re-tests,
+it hardens the app and re-tests
 until safety is proven.
 
 **So this isn't AI evaluating AI.
 It's AI evaluating, explaining, hardening,
-and verifying AI** —
+and verifying AI.**
 
 ---
 
 ## ▸ SLIDE 6 — SOLUTION IN ACTION
 
-This is the working dashboard image—
+This is the working dashboard —
 the operator's view of a real run.
 
-A team configures the model,
-the thresholds,
-the policy corpus,
-and the run mode.
+A team configures the model, thresholds,
+and policy corpus, then submits the app —
 
-They submit the target app,
-and Gemini fans out adversarial tests across categories —
+and Gemini fans out adversarial tests:
+hallucination, PII extraction,
+jailbreaks, toxicity, policy-risk.
 
-hallucination,
-PII extraction,
-jailbreak attempts,
-toxicity,
-and policy-risk scenarios.
-
-Google ADK then routes every response
-to the right tool.
-
-The groundedness checker confirms the answer
-is actually backed by source documents.
-
-The PII scanner hunts for sensitive identifiers.
-
-The toxicity judge checks tone and safety.
+Google ADK routes every response to the right tool —
+the groundedness checker,
+the PII scanner,
+the toxicity judge.
 
 Cross a threshold the wrong way,
 and deployment is blocked —
 right here on screen.
 
-From there the system moves into auto-remediation,
-hardens the prompt,
-re-runs,
+From there it auto-remediates,
+hardens the prompt, re-runs,
 
 and only flips to approved
 once recovery is proven.
 
-So this screen isn't a report. [PAUSE]
+So this isn't a report. [PAUSE]
 
 **It's a live safety workflow
 you can watch make a decision.**
@@ -221,96 +180,72 @@ you can watch make a decision.**
 
 ## ▸ SLIDE 7 — ARCHITECTURE
 
-Here's how it all runs end-to-end
+Here's how it runs end-to-end
 on Google Cloud.
 
-On the left is the target app —
-our HR Policy assistant.
+The target app — our HR assistant —
+sends requests into a FastAPI Orchestrator
+that controls the run and routes results.
 
-Its requests flow into a FastAPI Orchestrator,
-which controls the run,
-manages thresholds,
-and routes results.
+At the core is the Google ADK LlmAgent,
+powered by Gemini 2.5 Flash —
 
-At the core sits the Google ADK LlmAgent,
-powered by Gemini 2.5 Flash.
-
-This is the brain
-that generates the adversarial tests,
+the brain that generates the tests,
 diagnoses failures,
-and proposes the prompt hardening.
+and proposes the hardening.
 
-But — and this is the crucial design choice — [PAUSE]
+But here's the crucial design choice: [PAUSE]
 
 the deploy decision is not left
 to a free-form model answer.
 
-The agent calls dedicated tools:
-the groundedness checker,
-the PII scanner,
-the toxicity judge.
+The agent calls dedicated tools —
+groundedness, PII, toxicity —
 
-Grounding is anchored in ChromaDB,
-against the synthetic HR documents —
-
-so every answer is measured
-against real source content.
+with grounding anchored in ChromaDB
+against the real source documents.
 
 Those scores feed the deterministic release gate,
 
 which applies the policy:
-groundedness, toxicity, and PII thresholds,
-a category floor,
-and a zero-critical-failures rule.
+the thresholds, a category floor,
+and zero critical failures.
 
-For the PoC, run history lives in a SQLite RunStore,
-and Cloud Run makes the service deployable.
+Run history lives in a SQLite RunStore,
+Cloud Run makes it deployable,
 
-At enterprise scale,
-that same evidence flows into BigQuery and Looker
-for governance dashboards.
+and at enterprise scale that evidence
+flows into BigQuery and Looker.
 
 So the pipeline reads cleanly: [PAUSE]
 
-load documents,
-build the RAG context,
-generate tests,
-execute,
-evaluate,
-gate,
-remediate,
-re-test.
+load, ground, test, evaluate,
+gate, remediate, re-test.
 
 ---
 
 ## ▸ SLIDE 8 — UNDER THE HOOD
 
-One quick point on why this design holds up.
+One quick point on why this holds up.
 
 It's deliberately hybrid.
-
 Gemini does the semantic work —
-inventing attacks,
-spotting failure patterns,
-suggesting fixes.
+inventing attacks, spotting patterns, suggesting fixes.
 
 But the final verdict is deterministic,
 driven by fixed thresholds.
 
-That split matters,
-
-because governance needs the same inputs
-to produce the same decision every time —
-
-consistent, traceable, audit-ready.
+That matters, because governance needs
+the same inputs to give the same decision
+every time — traceable and audit-ready.
 
 **So the novelty isn't "AI evaluating AI." [PAUSE]
 It's that the verdict is governed —
-the same inputs always produce the same decision,
+same inputs, same decision,
 with a full evidence trail behind it.**
 
 That's what turns a clever demo
-into something a risk team can actually sign off on.
+into something a risk team can sign off on.
 
 ---
 
@@ -374,16 +309,11 @@ The natural question:
 how is this different from Google Model Armor?
 
 Model Armor is runtime protection.
-
 It guards live prompts, responses,
-documents, and agent interactions —
+and agent interactions —
 
-against things like prompt injection,
-jailbreaks,
-data leakage,
-and harmful content —
-
-while the app is in use.
+against prompt injection, jailbreaks,
+and data leakage, while the app is in use.
 
 Guardrail Factory works one step earlier.
 
@@ -408,8 +338,8 @@ You want both.
 ## ▸ SLIDES 12 & 13 — SECURITY, SCALE & VALUE
 ### (Keep tight. Fold into the close if you're near 6:50.)
 
-Security is not feature in this application,
-Security is the application.
+Security isn't a feature in this application —
+security is the application.
 
 And because the architecture is modular
 and runs on Cloud Run,
