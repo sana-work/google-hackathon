@@ -1,17 +1,45 @@
-Scan this repository and summarize current observability/logging.
+Scan this entire repository and create a clear technical documentation file named REPOSITORY_OVERVIEW_AND_OBSERVABILITY.md.
 
-Find:
-- all log statements
-- error handling
-- metrics/tracing if any
-- Kafka/message logging if any
-- API request/response logging
-- agent, LLM, RAG, or tool logging if any
+The document should explain:
 
-For each, provide:
-File | Component | What is logged | Fields captured | Missing observability fields | PII/security risk | Recommendation
+1. What this repository does
+- Purpose of the application/service
+- Main business or technical problem it solves
+- High-level architecture
+- Main runtime flow
+- Key modules/packages/folders and their responsibilities
+- External dependencies and integrations
+- APIs, background jobs, Kafka/message flows, agents, tools, LLM/RAG components if present
+- Configuration files and environment variables
+- How to run, build, test, and deploy the project if this information is available
 
-Check specifically whether these are present:
-correlation_id, event_id, event_type, timestamp, application_id, environment, service_name, component, status, latency_ms, error_code, request_id, agent_id, tool_id, rag_id, model_name, token counts.
+2. Features supported by this repository
+Create a feature table with:
+Feature | Description | Main Files/Folders | Entry Point | Dependencies/Integrations
 
-Also identify gaps and suggest P0/P1/P2 changes to make this repo observability-ready.
+3. Current observability and logging inventory
+Scan all files for logging, metrics, tracing, audit events, error handling, API request/response logs, Kafka/message logs, agent/LLM/RAG/tool logs, and monitoring hooks.
+
+Create a table with:
+File | Component | Log/Metric/Event Present | What is Captured | Log Level | Fields Captured | Missing Observability Fields | PII/Sensitive Data Risk | Recommendation
+
+Check specifically whether the repo captures:
+correlation_id, event_id, event_type, timestamp, application_id, environment, service_name, component, status, latency_ms, error_code, request_id, user_hash, agent_id, tool_id, rag_id, model_name, input_tokens, output_tokens, total_tokens, estimated_cost, feedback_id.
+
+4. Observability gaps
+Group missing items into:
+P0 - must fix for basic observability
+P1 - needed for production monitoring
+P2 - enhancements
+
+5. Recommended standard event schema
+Suggest a JSON schema this repository should use for observability events.
+
+6. Final summary
+Include:
+- What the repo currently does well
+- What observability exists today
+- What is missing
+- Recommended next steps
+
+Do not modify application code. Only create or update the documentation file.
