@@ -86,13 +86,9 @@ compliance, risk, the CISO,
 
 and the business owner whose name is on the release.
 
-In BFSI, that's not theoretical.
-"It worked when we tested it"
-is not an audit trail.
 
-And doing this by hand doesn't scale —
+**And building a safety framework takes six to nine months,**
 
-**a safety framework takes six to nine months,**
 and every prompt or model change
 forces you to start over.
 
@@ -238,11 +234,6 @@ driven by fixed thresholds.
 That matters, because governance needs
 the same inputs to give the same decision
 every time — traceable and audit-ready.
-
-**So the novelty isn't "AI evaluating AI." [PAUSE]
-It's that the verdict is governed —
-same inputs, same decision,
-with a full evidence trail behind it.**
 
 That's what turns a clever demo
 into something a risk team can sign off on.
